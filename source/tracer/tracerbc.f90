@@ -6,7 +6,7 @@ module tracerbc
   use inputs
 
   implicit none
-  integer, parameter :: flg_debug = 0
+  integer, parameter :: flg_debug = 1
   real, dimension(nscl) :: tau,airval
   integer, dimension(nscl) :: ictype,rmodel,rdorg,rpartner,asflux
   integer, dimension(2,nscl) :: bnd
@@ -17,7 +17,7 @@ module tracerbc
   contains
 
 ! iscl      : scalar number (temperature is always iscl=1)
-! tau       : reaction time scale
+! tau       : reaction time scale (not used in code)
 ! ictype    : initial condition (0 = nothing, 1 = horiz. band,
 !                                2 = vertical band in x, 3 = vertical band in y,
 !                                4 = point source, 5 = vertical gradient,
@@ -29,19 +29,19 @@ module tracerbc
 ! bnd       :
 ! point     :
 ! rmodel    : reaction model type (0 = no reaction, 1 = single tracer decay/growth,
-!                                  2 = two tracers decay/growth, 3 = carbonate chemistry)
+!                                  2 = two tracers decay/growth, 3 = carbonate chemistry) (not used in code)
 ! rdorg     : reaction decay or growth (0 = decaying tracer, 1 = growing tracer)
 ! rpartner  : reaction partner (iscl number of coupled tracer for reaction,
 !                               0 = no coupled tracer)
 ! asflux    : air-sea flux boundary condition (0 = for no flux, 1 = for flux [also need
-!             flag_airseaflux.eq.1 in pars.f])
-! airval    : value of tracer in air (only need set for use with asflux and flag_airseaflux)
+!             flag_airseaflux.eq.1 in pars.f]) (not used in code)
+! airval    : value of tracer in air (only need set for use with asflux and flag_airseaflux) (not used in code)
 
     subroutine applytracerbc(it)
       integer, intent(in) :: it
       integer :: iscl, np, zt
       real :: ta, vals
-
+      ! why is tau necessary?
       !! active tracers (temperature)
             iscl = 1;
             ictype(iscl) = 0;   val(iscl) = 273.15 + iTsurf;      tau(iscl)    = 0;
@@ -49,37 +49,37 @@ module tracerbc
             np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
 
             !! passive tracers
-            iscl = 2;
-            ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
+            iscl = 2; !carbon dioxide (becomes active due to phototsynthesis reactions)
+            ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 0;
             asflux(iscl) = 1;   airval(iscl) = 8.56056;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 3;
+            iscl = 3;!bicarbonate (becomes active due to shell formation)
             ictype(iscl) = 1;   val(iscl) = c2;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 4;
+            iscl = 4;!carbonate (becomes active due to reactishell dissolution)
             ictype(iscl) = 1;   val(iscl) = c3;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 5;
+            iscl = 5; ! boric acid
             ictype(iscl) = 1;   val(iscl) = c4;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 6;
+            iscl = 6; !p
             ictype(iscl) = 1;   val(iscl) = c5;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 7;
+            iscl = 7; !z
             ictype(iscl) = 1;   val(iscl) = c6; tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 8;
+            iscl = 8; !n
             ictype(iscl) = 1;   val(iscl) = c7;     tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);

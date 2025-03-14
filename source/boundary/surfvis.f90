@@ -59,7 +59,7 @@ SUBROUTINE surfvis(it)
     ! GET AVERAGE FLUCTUATING EDDY VISCOSITY
     DO iy=iys,iye
       DO ix=1,nnx
-        e(ix,iy,iz)=AMAX1(e(ix,iy,iz),sml_eg) !this is just ensuring energy is conversed. energy cannot be 0 in a grid space
+        e(ix,iy,iz)=AMAX1(e(ix,iy,iz),sml_eg)
       ENDDO
     ENDDO
 

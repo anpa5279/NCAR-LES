@@ -75,7 +75,7 @@
     ! 3 STAGE RUNGE-KUTTA TIME STEPPING
     DO istage=1,3 !DO 8999 istage=1,3 !looking at RK3 manipulation terms to update time step
       dtzeta = dt*zetas(istage) !units= time. used in RK3 solving solve/comp1
-      dtgama = dt*gama(istage) !units= time. used in comp_p and comp2
+      dtgama = dt*gama(istage) !units= time. used in copm_p and comp2
 
       ! COMPUTE DERIVATIVES OF (U,V,W)
       CALL exchange ! mpi process

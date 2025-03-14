@@ -73,7 +73,7 @@ SUBROUTINE init
   xl      = 160.0
   yl      = 160.0
   zl      = -96.0
-  izi     = NINT((zi/zl)*nnz) !finding the closest integer via rounding for the mixing layer depth
+  izi     = NINT((zi/zl)*nnz) !finding the closest integer via rounding 
 
   ! IF STRETCHED GRID SPECIFY LOCATION OF FIRST POINT
   zw1 = -0.5
@@ -83,7 +83,7 @@ SUBROUTINE init
   bnn      = 1.0
   f2w      = 0.13
   f_p      = f2w*grav/u_10
-  npm      = 4
+  npm      = 4 !does not do anything`
   sigma_p  = pi2*f_p
   grav_w   = grav
 

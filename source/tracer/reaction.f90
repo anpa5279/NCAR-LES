@@ -29,7 +29,7 @@ contains !creates an interface for the functions and can check that any calls ma
   function react_src(ix,iy,iscl,iz) !react_src must be defined
     ! ix, iy, iscl, iz (in): location of interest
     real, dimension(nscl-1) :: react_src !dimension= defines this as an array
-    integer, intent(in) :: ix, iy, iscl, iz !last time iscl is used in the code
+    integer, intent(in) :: ix, iy, iscl, iz !iscl does not show up in this code. this is the last time it is used
 
     integer :: zzi, i
     real, dimension(0:nscl-2) :: co2, co2tmp !dimension= defines this as an array, array indices are 0:nscl-2
@@ -49,9 +49,9 @@ contains !creates an interface for the functions and can check that any calls ma
     ! C(2) = Bicarbonate, [HCO3-], t(ix,iy,3,iz)
     ! C(3) = Carbonate, [CO32-], t(ix,iy,4,iz)
     ! C(4) = Boric Acid, [B(OH)3], t(ix,iy,5,iz)
-    ! C(5) = Tetrahydroxyborate, [B(OH)4-], t(ix,iy,6,iz)
-    ! C(6) = Hydrogen Ion, [H+], t(ix,iy,7,iz)
-    ! C(7) = Hydroxide, [OH-], t(ix,iy,8,iz)
+    ! C(5) =C(8)= phytoplankton, [C106H175O42N16P], t(ix,iy,9,iz)
+    ! C(6)= zooplankton, , t(ix,iy,13,iz)
+    ! C(7)= nitrogen, [N2], t(ix,iy,14,iz)
 
     co2(0) = t(ix,iy,2,iz)
     co2(1) = t(ix,iy,3,iz)
@@ -59,7 +59,7 @@ contains !creates an interface for the functions and can check that any calls ma
     co2(3) = t(ix,iy,5,iz)
     co2(4) = t(ix,iy,6,iz)
     co2(5) = t(ix,iy,7,iz)
-    co2(6) = t(ix,iy,8,iz)
+    
 
     if(chem0d == 1) then
       temper = iTsurf
@@ -140,7 +140,7 @@ contains !creates an interface for the functions and can check that any calls ma
     enddo
 
     ! calculate F_n for initial y
-    F_n = dydt(t_rkc, y_n, temper) !Derivative evaluated at current state for chemical reactions to occur
+    F_n = dydt(t_rkc, y_n, temper) !Derivative evaluated at current state
 
     ! load initial estimate for eigenvector
     if(work(2) < UROUND) then
@@ -457,10 +457,22 @@ contains !creates an interface for the functions and can check that any calls ma
     real, dimension(nscl-1) :: c
     real, intent(in) :: t_rkc, temper
     real K1s, K2s, Kw, Kb, Rgas, salt
-    integer i
+    integer i, flg_light
     logical reduced
     real a1, a2, a3, a4, a5, a6, a7
-    real b1, b2, b3, b4, b5, b6, b7
+    real b1, b2, b3, b4, b5, b6, b7, function_light
+    
+
+    !NPZ parameters
+    real :: vm = 2.0/86400              ! 1/s
+    real :: kn = 1.0        ! umolN/l
+    real :: rm = 1.5/86400              ! 1/s
+    real :: death_rate_zoo = 0.2/86400  ! 1/s
+    real :: lambda = 1.0     ! umolN/l
+    real :: death_rate_phyto = 0.1/86400! 1/s
+    real :: gamma = 0.7
+    real :: irradiance0=1.0 
+    real :: irradiance=1.0 !this will later be a function of depth
 
     reduced = .true.
     salt   = 35.0
@@ -484,41 +496,46 @@ contains !creates an interface for the functions and can check that any calls ma
          0.053105*(salt**0.5)*temper)*(1.0e6) !(Dickson, 1990)
     Rgas = 0.0083143
 
-    a1 = exp(1246.98-6.19*(10.0**4)/temper - 183.0*log(temper)) !K. Smith 2018
-    a2 = (4.7e7)*exp(-23.3/(Rgas*temper))/(1.0e6)
-    a3 = (5.0e10)/(1.0e6)
-    a4 = (6.0e9)/(1.0e6)
-    a5 = (1.4e-3)*(1.0e6)
-    a6 = (4.58e10)*exp(-(20.8/(Rgas*temper)))/(1.0e6)
-    a7 = (3.05e10)*exp(-(20.8/(Rgas*temper)))/(1.0e6)
-    b1 = a1/K1s
-    b2 = (Kw*a2/K1s)*(1.0e6)
-    b3 = a3*K2s
-    b4 = (a4*Kw/K2s)*(1.0e6)
-    b5 = (a5/Kw)/(1.0e6)
-    b6 = (a6*Kw/Kb)*(1.0e6)
-    b7 = a7*K2s/Kb
+   !adding terms for NPZ model
+    if (flg_light == 0) then          ! Linear response
 
-    c(6) = (a1*c(1) + b3*c(2) + a5)/(b1*c(2) + a3*c(3) + b5*c(7))
+            function_light = irradiance / irradiance0
 
-    dy(0) = b1*c(2)*c(6)+b2*c(2)-a1*c(1)-a2*c(1)*c(7)
+        elseif (flg_light == 1) then      ! Saturating response
 
-    dy(1) = a1*c(1)+a2*c(1)*c(7)-b1*c(2)*c(6)-b2*c(2) &
-         +a3*c(3)*c(6)-b3*c(2)-a4*c(2)*c(7)+b4*c(3) &
-         +a7*c(3)*c(4)-b7*c(5)*c(2)
+            function_light = irradiance / (irradiance + irradiance0)
 
-    dy(2) = -a3*c(3)*c(6)+ b3*c(2)+a4*c(2)*c(7)-b4*c(3) &
-         -a7*c(3)*c(4)+b7*c(5)*c(2)
+        elseif (flg_light == 2) then      ! Saturating response
 
-    dy(3) = -a6*c(4)*c(7)+ b6*c(5)-a7*c(3)*c(4)+b7*c(5)*c(2)
+            function_light = 1.0 - exp(-irradiance / irradiance0)
 
-    dy(4) = a6*c(4)*c(7)- b6*c(5)+a7*c(3)*c(4)-b7*c(5)*c(2)
+        elseif (flg_light == 3) then      ! Saturating response
 
-    dy(5) = 0
+            function_light = tanh(-irradiance / irradiance0)
 
-    dy(6) = b2*c(2)-a2*c(1)*c(7)-a4*c(2)*c(7)+b4*c(3)+a5 &
-         -b5*c(6)*c(7)-a6*c(4)*c(7)+b6*c(5)
+        elseif (flg_light == 4) then      ! Saturating and photo-inhibiting response
 
+            function_light = irradiance / irradiance0 * exp(1.0 - irradiance / irradiance0)
+
+        end if
+
+   !calculting source terms 
+    dy(0) = 0
+
+    dy(1) = 0       
+
+    dy(2) = 0
+
+    dy(3) = 0
+
+    dy(4) =(vm * (c(7) / (kn + c(7))) * function_light * c(5) - &
+         rm*lambda*c(5) * (1.0 - exp(-lambda * c(5))) * c(6) - death_rate_phyto * c(5))
+         
+    dy(5)= (gamma * rm*lambda*c(5) * (1.0 - exp(-lambda * c(5))) * c(6) - death_rate_zoo * c(6))
+
+    dy(6)= (-vm * (c(7) / (kn + c(7))) * function_light * c(5) + (1.0 - gamma) * &
+                rm*lambda*c(5) * (1.0 - exp(-lambda * c(5))) * c(6) + death_rate_phyto * c(5) + death_rate_zoo * c(6))
+    
     do i = 0,nscl-2
        dydt(i) = dy(i)
     enddo
