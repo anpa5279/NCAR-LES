@@ -1,193 +1,115 @@
 module tracerbc
-  use con_data, only: dz,dx,dy
+  use con_data, only: dz,dx,dy, zl
   use con_stats, only: z, zz
-  use pars, only: iys,iye,izs,ize,izi,nnx,nnz,nny,nscl
+  use pars, only: flg_alk, flg_npz, iys,iye,izs,ize,izi,nnx,nnz,nny,nscl
   use fields, only: t
+  use inputs
+
   implicit none
-  integer, parameter :: flg_debug = 0
-  integer, dimension(nscl) :: ictype
+  real, dimension(nscl) :: tau,airval
+  integer, dimension(nscl) :: ictype,rmodel,rdorg,rpartner,asflux
   integer, dimension(2,nscl) :: bnd
-  integer, dimension(2) :: bnds
-  integer, dimension(3,nscl) :: point
-  integer, dimension(3) :: points
   real, dimension(nscl) :: val
+  real, dimension(nscl) :: chng
   contains
 
 ! iscl      : scalar number (temperature is always iscl=1)
 ! tau       : reaction time scale
-! ictype    : initial condition (0 = air-sea flux, 1 = horiz. band, 
+! ictype    : initial condition (0 = nothing, 1 = horiz. band,
 !                                2 = vertical band in x, 3 = vertical band in y,
-!                                4 = point source, 5 = vertical gradient, 
-!                                6 = horiz. gradient in x, 7 = horiz. gradient in y)
-! kconst    : air-sea interface flux rate (if 0 then there is no flux across top boundary)
+!                                4 = point source, 5 = vertical gradient,
+!                                6 = horiz. gradient in x, 7 = horiz. gradient in y
+!                                8= exponential decay in -z, 9= exponential decay in +z
+!                                10= exponential decay in -z with a constant layer)
+!             ictype does not work for iscl=1 (temperature), that is set in init/randoc.f
 ! val       : value of initial finite or source band/point
 ! np        : width of initial finite or source band
 ! zt        : upper/left most level or finite or source band
-! bnd       : 
-! point     : 
+! bndz       :
 ! rmodel    : reaction model type (0 = no reaction, 1 = single tracer decay/growth,
 !                                  2 = two tracers decay/growth, 3 = carbonate chemistry)
 ! rdorg     : reaction decay or growth (0 = decaying tracer, 1 = growing tracer)
-! rpartner  : reaction partner (iscl number of coupled tracer for reaction, 
+! rpartner  : reaction partner (iscl number of coupled tracer for reaction,
 !                               0 = no coupled tracer)
+! asflux    : air-sea flux boundary condition (0 = for no flux, 1 = for flux [also need
+!             flag_airseaflux.eq.1 in pars.f])
+! airval    : value of tracer in air (only need set for use with asflux and flag_airseaflux)
 
-    subroutine applytracerbc(it)
-      integer, intent(in) :: it
+    subroutine applytracerbc
       integer :: iscl, np, zt
-      real :: ta, vals
+      real :: ta, zl
 
-      !! tracer 1 - temperature
-      iscl = 1;  
-      
-      !! tracers 
-      iscl = 2;   
-      ictype(iscl) = 1;   val(iscl) = 14.0
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            !! active tracers (temperature)
+            iscl = 1; 
+            ictype(iscl) = 0;   val(iscl) = 273.15 + iTsurf;      tau(iscl)    = 0;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 3;   
-      ictype(iscl) = 1;   val(iscl) = 0.18
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            !! passive tracers
+            iscl = 2;!carbon dioxide (CO2)
+            ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
+            asflux(iscl) = 1;   airval(iscl) = 8.56056;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 4;   
-      ictype(iscl) = 1;   val(iscl) = 0.01
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 3;!bicarbonate (HCO3)
+            ictype(iscl) = 1;   val(iscl) = c2;  tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 5;   
-      ictype(iscl) = 1;   val(iscl) = 0.12
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 4;!carbonate (CO3)
+            ictype(iscl) = 1;   val(iscl) = c3;  tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 6;   
-      ictype(iscl) = 1;   val(iscl) = 2.0
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 5;!Boric acid (B(OH)3)
+            ictype(iscl) = 1;   val(iscl) = c4;  tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 7;   
-      ictype(iscl) = 1;   val(iscl) = 3.0e-3
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 6; !Tetrahydroxyborate (B(OH)4)
+            ictype(iscl) = 1;   val(iscl) = c5;  tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 8;  
-      ictype(iscl) = 1;   val(iscl) = 0.025
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 7; !hydrogen ion (H+)
+            ictype(iscl) = 1;   val(iscl) = c6; tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 9;   
-      ictype(iscl) = 1;   val(iscl) = 180.0
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+            iscl = 8; !Hydroxl ion (OH-)
+            ictype(iscl) = 1;   val(iscl) = c7;     tau(iscl)      = 1;
+            asflux(iscl) = 0;   airval(iscl) = 0;
+            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            chng(iscl)=0;
 
-      iscl = 10;   
-      ictype(iscl) = 1;   val(iscl) = 0.031
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
+        do iscl = 2,nscl
+          
+          if (ictype(iscl).eq.1) call hbndsource(iscl,bnd(:,iscl),val(iscl));
+          if (ictype(iscl).eq.4) call pointsource(iscl, bnd(:,iscl), val(iscl));
+          if (ictype(iscl).eq.5) call vgradsource(iscl,bnd(:,iscl),val(iscl));
+          if (ictype(iscl).eq.8) call zdecay(iscl, chng(iscl), bnd(:,iscl), val(iscl));
+          if (ictype(iscl).eq.9) call nutrients(iscl, chng(iscl), bnd(:,iscl), val(iscl));
 
-      iscl = 11;   
-      ictype(iscl) = 1;   val(iscl) = 1.5e-3
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 12;   
-      ictype(iscl) = 1;   val(iscl) = 0.28
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 13;   
-      ictype(iscl) = 1;   val(iscl) = 3.5e-3
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 14;   
-      ictype(iscl) = 1;   val(iscl) = 1.5e-4
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 15;  
-      ictype(iscl) = 1;   val(iscl) = 230.0
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-      
-      iscl = 16;   
-      ictype(iscl) = 1;   val(iscl) = 0.08
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 17;   
-      ictype(iscl) = 1;   val(iscl) = 1.5
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      iscl = 18;  
-      ictype(iscl) = 1;   val(iscl) = 0.18
-      np = nnz+2;  zt = 0; bnd(:,iscl) = znptobnd(zt,np);
-
-      do iscl = 2,nscl
-         bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
-         if (it.eq.1) then
-            if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
-            !if (ictype(iscl).eq.2) call vxbndsource(iscl,bnds,vals);
-            !if (ictype(iscl).eq.3) call vybndsource(iscl,bnds,vals);
-            !if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
-            !if (ictype(iscl).eq.6) call hxgradsource(iscl,bnds,vals);
-            !if (ictype(iscl).eq.7) call hygradsource(iscl,bnds,vals);
-!            call bfm_profiles
-         endif
-         !if (ictype(iscl).eq.4) call pointsource(iscl,points,vals); 
-         bnds = 0; vals = 0; points = 0;
-      enddo
-      
-      if(flg_debug == 1) then
-          open(13, file='tracerbc.txt',access='append')
-          write(13,'(A)') '------------------------'
-          write(13,'(A,i3)') 'RUNNING FOR IT= ',it
-          write(13,'(A,f9.6)') 'Z for 5m above H', z(izi)+5.0
-          write(13,'(A,f9.6)') 'Z for 5m below H', z(izi)-5.0
-          close(13)
-      end if
-
+        enddo
     end subroutine
 
-    subroutine bfm_profiles
-      integer :: ix,iy,iz,iscl
-      do iz=izs,ize
-         do iy=iys,iye
-            do ix=1,nnx
-!               do iscl=2,nscl
-!                  t(ix,iy,iscl,iz)=1.0
-!               end do
-               t(ix,iy,2,iz) = -7.0*tanh(1.25*abs(z(iz))-100.0)+7.0
-               t(ix,iy,3,iz) = -0.09*tanh(1.25*abs(z(iz))-100.0)+0.09
-               t(ix,iy,4,iz) = -0.005*tanh(1.25*abs(z(iz))-100.0)+0.005
-               t(ix,iy,5,iz) = -0.06*tanh(1.25*abs(z(iz))-100.0)+0.06
-
-               t(ix,iy,6,iz) = -1.0*tanh(1.25*abs(z(iz))-100.0)+1.0 +1.0e-10
-               t(ix,iy,7,iz) = -(1.5e-3)*tanh(1.25*abs(z(iz))-100.0)+1.5e-3
-               t(ix,iy,8,iz) = -0.0125*tanh(1.25*abs(z(iz))-100.0)+0.0125
-
-               t(ix,iy,9,iz) = 180.0*exp(-abs(zz(iz)))**0.03 + 90.0
-!               if(abs(z(iz)).le.100.0)then
-                  t(ix,iy,10,iz) = -0.015*tanh(1.25*abs(z(iz))-100.0)+0.015
-                  t(ix,iy,11,iz) = -(0.75e-3)*tanh(1.25*abs(z(iz))-100.0) + 0.75e-3
-                  t(ix,iy,12,iz) = -(0.14)*tanh(1.25*abs(z(iz))-100.0) + 0.14
-                  t(ix,iy,13,iz) = -(1.75e-3)*tanh(1.25*abs(z(iz))-100.0)+1.75e-3
-                  t(ix,iy,14,iz) = -(0.75e-4)*tanh(1.25*abs(z(iz))-100.0)+0.75e-4
-!                  t(ix,iy,16,iz) = 0.0
-!                  t(ix,iy,17,iz) = 0.0
-!               else
-!                  t(ix,iy,10,iz) = 0.0
-!                  t(ix,iy,11,iz) = 0.0
-!                  t(ix,iy,12,iz) = 0.0
-!                  t(ix,iy,13,iz) = 0.0
-!                  t(ix,iy,14,iz) = 0.0
-                  t(ix,iy,16,iz) =0.02*tanh(1.25*abs(z(iz))-100.0)+0.0242
-                  t(ix,iy,17,iz) =0.5*tanh(1.25*abs(z(iz))-100.0)+0.86
-!               endif
-
-               t(ix,iy,15,iz) = 20.0*exp(-abs(z(iz)))**0.03+194.0
-               t(ix,iy,18,iz) = -0.09*tanh(1.25*z(iz)-100.0)+0.09
-               
-            end do
-         end do
-      end do
-    end subroutine
-
-    subroutine hbndsource(iscl, bnds, vals)
+    subroutine hbndsource(iscl, bnd, val)
       integer, intent(in) :: iscl
-      integer, intent(in), dimension(2) :: bnds
-      real, intent(in) :: vals
+      integer, intent(in), dimension(2) :: bnd
+      real, intent(in) :: val
       integer :: ix,iy,iz
-      do iz=bnds(1),bnds(2)
+      do iz=bnd(1),bnd(2)
          do iy=iys,iye
             do ix=1,nnx
                if ((iz >= izs) .and. (iz <= ize)) then
-                     t(ix,iy,iscl,iz) = vals
+                     t(ix,iy,iscl,iz) = val
                endif
             end do
          end do
@@ -195,109 +117,79 @@ module tracerbc
 
     end subroutine
 
-!!$    subroutine vxbndsource(iscl, bnds, vals)
-!!$      integer, intent(in) :: iscl
-!!$      integer, intent(in), dimension(2) :: bnds
-!!$      integer, intent(in) :: vals
-!!$      integer :: ix,iy,iz
-!!$      do iy=iys,iye
-!!$         do iz=izs,ize
-!!$            do ix=bnds(1),bnds(2)
-!!$               t(ix,iy,iscl,iz) = vals
-!!$            end do
-!!$         end do
-!!$      end do
-!!$
-!!$    end subroutine
+    subroutine vgradsource(iscl, bnd, val)
+      integer, intent(in) :: iscl
+      integer, intent(in), dimension(2) :: bnd
+      real, intent(in) :: val
+      integer :: ix,iy,iz,zi
 
-!!$    subroutine vybndsource(iscl, bnds, vals)
-!!$      integer, intent(in) :: iscl
-!!$      integer, intent(in), dimension(2) :: bnds
-!!$      integer, intent(in) :: vals
-!!$      integer :: ix,iy,iz
-!!$      do iy=bnds(1),bnds(2)
-!!$         do iz=izs,ize
-!!$            do ix=1,nnx
-!!$               if ((iy >= iys) .and. (iy <= iye)) then
-!!$                     t(ix,iy,iscl,iz) = vals
-!!$               endif
-!!$            end do
-!!$         end do
-!!$      end do
-!!$
-!!$    end subroutine
+      zi  = z(bnd(2))
+      do iy=iys,iye
+         do iz=bnd(1),bnd(2)
+            do ix=1,nnx
+               if ((iz >= izs) .and. (iz <= ize)) then
+                  t(ix,iy,iscl,iz) = (val/zi)*(zi-zz(iz))
+               endif
+            end do
+         end do
+      end do
 
-!    subroutine vgradsource(iscl, bnds, vals)
-!      integer, intent(in) :: iscl
-!      integer, intent(in), dimension(2) :: bnds
-!      real, intent(in) :: vals
-!      integer :: ix,iy,iz,zi
+    end subroutine
 
-!      zi  = z(bnds(2))
-!      do iy=iys,iye
-!         do iz=bnds(1),bnds(2)
-!            do ix=1,nnx
-!               if ((iz >= izs) .and. (iz <= ize)) then
-!                  t(ix,iy,iscl,iz) = (vals/zi)*(zi-zz(iz))
-!               endif
-!            end do
-!         end do
-!      end do
+    subroutine zdecay(iscl, chng, bnd, val)
+      integer, intent(in) :: iscl
+      real, intent(in) :: chng
+      real, intent(in) :: val
+      integer, intent(in), dimension(2) :: bnd
+      integer :: ix,iy,iz
 
-!    end subroutine
+      do iy=iys,iye
+         do iz=bnd(1),bnd(2)
+            do ix=1,nnx
+              if ((iz >= izs) .and. (iz <= ize)) then
+                t(ix,iy,iscl,iz) =val*exp(chng*z(iz-1))
+              endif
+            end do
+         end do
+      end do
+    end subroutine
 
-!!$    subroutine hxgradsource(iscl, bnds, vals)
-!!$      integer, intent(in) :: iscl
-!!$      integer, intent(in), dimension(2) :: bnds
-!!$      integer, intent(in) :: vals
-!!$      integer :: ix,iy,iz,xi
-!!$
-!!$      xi=dx*real(bnds(2))
-!!$      do iy=iys,iye
-!!$         do iz=izs,ize
-!!$            do ix=bnds(1),bnds(2)
-!!$               t(ix,iy,iscl,iz) = (vals/xi)*(xi-dx*real(ix))
-!!$            end do
-!!$         end do
-!!$      end do
-!!$
-!!$    end subroutine
+    subroutine nutrients(iscl, chng, bnd, val)
+      integer, intent(in) :: iscl
+      real, intent(in) :: chng
+      real, intent(in) :: val
+      integer, intent(in), dimension(2) :: bnd
+      integer :: ix,iy,iz, nnz
 
-!!$    subroutine hygradsource(iscl, bnds, vals)
-!!$      integer, intent(in) :: iscl
-!!$      integer, intent(in), dimension(2) :: bnds
-!!$      integer, intent(in) :: vals
-!!$      integer :: ix,iy,iz,yi
-!!$
-!!$      yi=dy*real(bnds(2))
-!!$      do iy=bnds(1),bnds(2)
-!!$         do iz=izs,ize
-!!$            do ix=1,nnx
-!!$               if ((iy >= iys) .and. (iy <= iye)) then
-!!$                  t(ix,iy,iscl,iz) = (vals/yi)*(yi-dy*real(iy))
-!!$               endif
-!!$            end do
-!!$         end do
-!!$      end do
-!!$
-!!$    end subroutine
-!!$
-!!$    subroutine pointsource(iscl, points, vals)
-!!$      integer, intent(in) :: iscl
-!!$      integer, intent(in), dimension(3) :: points
-!!$      integer, intent(in) :: vals
-!!$      integer :: ix,iy,iz
-!!$      do iy=points(2),points(2) + 2
-!!$         do iz=points(3),points(3) + 2
-!!$            do ix=points(1),points(1) + 2
-!!$               if ((iz >= izs).and.(iz <= ize) .and. (iy >= iys).and.(iy <= iye)) then
-!!$                  t(ix,iy,iscl,iz) = vals
-!!$               endif
-!!$            end do
-!!$         end do
-!!$      end do
-!!$
-!!$    end subroutine
+      do iy=iys,iye
+         do iz=bnd(1),bnd(2)
+            do ix=1,nnx
+              if ((iz >= izs) .and. (iz <= ize)) then
+                t(ix,iy,iscl,iz) =val*exp(-chng*(z(iz)-zl))
+              endif
+            end do
+         end do
+      end do
+    end subroutine
+
+    subroutine pointsource(iscl, bnd, val)
+      integer, intent(in) :: iscl
+      integer, intent(in), dimension(2) :: bnd
+      real, intent(in) :: val
+      real :: spread=1
+      integer :: ix,iy,iz,zi
+      
+      !point source at the surface in the middle
+      do iy=iys,iye
+        do iz=bnd(1),bnd(2)
+            do ix=1,nnx
+              if ((iz >= izs) .and. (iz <= ize)) then
+                t(ix, iy, iscl,iz)=2*val/((2*4.0*ATAN(1.0))**(3/2)*spread**3)*exp(-((ix-nnx/2)**2+(iy-nny/2)**2+(iz)**2)/(2*spread**2))
+              endif
+            end do
+        end do
+      end do
+    end subroutine
 
     function znptobnd(zt,np)
       integer, intent(in) :: zt
@@ -323,14 +215,14 @@ module tracerbc
       integer, dimension(2) :: xnptobnd
       integer :: ix
 
-      ! set the first bound, and make sure it doesn't exceed dimensions   
+      ! set the first bound, and make sure it doesn't exceed dimensions
       ix = xtoix(xt)
       xnptobnd(1) = ix - int((np-1)/2)
       if (xnptobnd(1) < 0) then
         xnptobnd(1) = 0
       end if
 
-      ! set the second bound based upon the first                         
+      ! set the second bound based upon the first
       xnptobnd(2) = xnptobnd(1) + np -1
 
     end function
@@ -341,14 +233,14 @@ module tracerbc
       integer, dimension(2) :: ynptobnd
       integer :: iy
 
-      ! set the first bound, and make sure it doesn't exceed dimensions   
+      ! set the first bound, and make sure it doesn't exceed dimensions
       iy = ytoiy(yt)
       ynptobnd(1) = iy - int((np-1)/2)
       if (ynptobnd(1) < 0) then
         ynptobnd(1) = 0
       end if
 
-      ! set the second bound based upon the first                         
+      ! set the second bound based upon the first
       ynptobnd(2) = ynptobnd(1) + np -1
 
     end function
@@ -377,12 +269,12 @@ module tracerbc
       ztoiz = int(zt/dz)
 
     end function
-    
+
     function xtoix(xt)
       integer, intent(in) :: xt
       integer :: xtoix
 
-      ! note that this will only work for equispaced z grids              
+      ! note that this will only work for equispaced z grids
       xtoix = int(xt/dx)
 
     end function
@@ -391,10 +283,9 @@ module tracerbc
       integer, intent(in) :: yt
       integer :: ytoiy
 
-      ! note that this will only work for equispaced z grids              
+      ! note that this will only work for equispaced z grids
       ytoiy = int(yt/dy)
 
     end function
-
+    
 end module
-
