@@ -9,7 +9,7 @@ SUBROUTINE setup(it)
   it = iti
   it_counter = it - iti
 
-  ! TURN ON NEW SGS MODEL AT A PARTICULAR STEP
+  !TURN ON NEW SGS MODEL AT A PARTICULAR STEP
   IF(it >= new_vis .AND. ivis0 == 1) THEN
     ivis = 1
   ELSE
@@ -44,15 +44,15 @@ SUBROUTINE setup(it)
           tsfcc(1),method, ivis
   ENDIF
 
-  ! BC FLAGS
+  !BC FLAGS
   ibcu = iradup !upper boundary layer flag. iradup is defined in pars. =0
   ibcl = 0 !lower boundary layer flag. when =0, lower boundary condition set by similarity theory 
 
-  ! WAVENUMBERS, INTRODUCE A NORMALIZED SET OF WAVENUMBERS TO ELIMINATE
-  ! COMPUTATION IN DERIVATIVES XDERIV AND YDERIV
+  !WAVENUMBERS, INTRODUCE A NORMALIZED SET OF WAVENUMBERS TO ELIMINATE
+  !COMPUTATION IN DERIVATIVES XDERIV AND YDERIV
   DO i=1,nnx
-    xkn(i) = FLOAT(i-1)*pi2/xl
-    IF(i>ncx)xkn(i) = -FLOAT(nnx-i+1)*pi2/xl
+    xkn(i) = FLOAT(i-1)*2.0*pi/xl
+    IF(i>ncx)xkn(i) = -FLOAT(nnx-i+1)*2.0*pi/xl
   ENDDO
 
   fn = 1.0/FLOAT(nnx)
@@ -61,8 +61,8 @@ SUBROUTINE setup(it)
   ENDDO
 
   DO i=1,nny
-    ykn(i) = FLOAT(i-1)*pi2/yl
-    IF(i>ncy)ykn(i) = -FLOAT(nny-i+1)*pi2/yl
+    ykn(i) = FLOAT(i-1)*2.0*pi/yl
+    IF(i>ncy)ykn(i) = -FLOAT(nny-i+1)*2.0*pi/yl
   ENDDO
 
   fn = 1.0/FLOAT(nny)
@@ -83,7 +83,7 @@ SUBROUTINE setup(it)
 
   xnn = ABS(batag*dtdzf(1))
 
-  ! CHOOSE CORRECT SIGN SO GRAVITY WAVES PROPAGATE OUT OF THE DOMAIN
+  !CHOOSE CORRECT SIGN SO GRAVITY WAVES PROPAGATE OUT OF THE DOMAIN
   sgn = -1.0
   IF(ibcu==1) THEN
     DO iy=1,nny
@@ -97,10 +97,10 @@ SUBROUTINE setup(it)
     ENDDO
   ENDIF
 
-  ! SET LENGTH SCALE FOR SGS MODEL (length scale dslg)
+  !SET LENGTH SCALE FOR SGS MODEL (length scale dslg)
   IF(iz_space == 0) THEN
 
-    ! UNIFORM VERITCAL SPACING
+    !UNIFORM VERITCAL SPACING
     dx32 = dx*3./2.
     dy32 = dy*3./2.
     dsl  = (ABS(dx32*dy32*dzw(1)))**(1./3.)
@@ -109,15 +109,15 @@ SUBROUTINE setup(it)
     IF(l_root)  WRITE(6,2000) dsl
     IF(l_debug) WRITE(nprt,2000) dsl
 
-    ! CREATE DSL ARRAY FOR EASY INDEXING IN COMP1
+    !CREATE DSL ARRAY FOR EASY INDEXING IN COMP1
     DO iz=0,nnzp1
       dsl_z(iz) = dslg
     ENDDO
 
-  ! VARIABLE VERTICAL SPACING
+  !VARIABLE VERTICAL SPACING
   ELSE
 
-    ! JUST ESTIMATE DSL FOR AVERAGE SPACING
+    !JUST ESTIMATE DSL FOR AVERAGE SPACING
     dx32 = dx*3./2.
     dy32 = dy*3./2.
 
@@ -134,7 +134,7 @@ SUBROUTINE setup(it)
   gridr = 1.0
   sml_eg = smal_e*gridr
 
-  ! GET VISCOSITY MODEL PARAMETERS
+  !GET VISCOSITY MODEL PARAMETERS
   IF(ivis /= 1) THEN  !ivis0 == 1 (new eddy viscosity model), then ivis=1. else it is the old eddy viscosity model
     viscon = 0.0
     xksurf = 0.0
@@ -145,19 +145,19 @@ SUBROUTINE setup(it)
     ENDDO
   ENDIF
 
-  ! SET STOKES VELOCITY FOR OCEANIC FLOW
+  !SET STOKES VELOCITY FOR OCEANIC FLOW
   CALL stokesv
-  !  CALL stokes_ideal
+  ! CALL stokes_ideal
 
-  ! CAN ADD A TIME SO AS TO SKIP INTO ANY PART OF THE SPECIFIED GEOSTROPIC ARRAYS
-  ! ARRAYS
-  ! TIME FACTOR IN SECONDS
+  !CAN ADD A TIME SO AS TO SKIP INTO ANY PART OF THE SPECIFIED GEOSTROPIC ARRAYS
+  !ARRAYS
+  !TIME FACTOR IN SECONDS
   t_factor = 7200.0
 
-  ! FOR PRINT OUT TO GET MORE DIGITS
+  !FOR PRINT OUT TO GET MORE DIGITS
   t_ref = 290.16
 
-  ! DO NOT LOOK FOR ZI BELOW ZI_MIN
+  !DO NOT LOOK FOR ZI BELOW ZI_MIN
   zi_min = -5.0
   iz_min = 1
   DO iz=1,nnz-1
@@ -170,7 +170,7 @@ SUBROUTINE setup(it)
 
   RETURN
 
-! FORMAT STATEMENTS
+!FORMAT STATEMENTS
 6 FORMAT(///,' DATA FROM RESTART FILE AT STEP =',I5,' U_* = ',e15.6,        &
       ' TS = ',e15.6,' Q_* = ',e15.6,///)
 510 FORMAT(' RESTART ***** CASE WITH : ******',/)

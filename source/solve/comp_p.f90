@@ -1,5 +1,5 @@
 SUBROUTINE comp_p
-! SETUP PRESSURE SOLVER
+!SETUP PRESSURE SOLVER
 
 !this is the modules folder
   USE pars  !setting up variable types, defining some
@@ -20,19 +20,19 @@ SUBROUTINE comp_p
   nb = myid - ncpu_s !nd only appears in call mpi_sendrecv. myid= which process it is OR process rank. ncpu_s= number of slabs of xy
   nt = myid + ncpu_s !nt only appears in call mpi_sendrecv. 
 
-  ! SEND BOTH R3 AND UPDATED W (FROM COMP1) TO PROCESSOR ABOUT THE CURRENT MYID
+  !SEND BOTH R3 AND UPDATED W (FROM COMP1) TO PROCESSOR ABOUT THE CURRENT MYID
   IF(iss == 0) THEN !iss=starting processor. m
     nb = mpi_proc_null !set up so it does crash. for the mpi system (in the mpi package when we download to compile)
   ENDIF
 
-  IF(ise == numprocs-1) THEN ! if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1). numprocs= total number of processes OR size of cluster
+  IF(ise == numprocs-1) THEN !if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1). numprocs= total number of processes OR size of cluster
     nt = mpi_proc_null
   ENDIF
 
   nsend = 2*nnx*(iye + 1 - iys)
   nrecv = nsend
-  DO iy=iys,iye ! iterating through y
-    DO ix=1,nnx ! iterating through x
+  DO iy=iys,iye !iterating through y
+    DO ix=1,nnx !iterating through x
       fs(ix,iy,1) = r3(ix,iy,ize)
       fs(ix,iy,2) = w(ix,iy,ize)
     ENDDO
@@ -50,8 +50,8 @@ SUBROUTINE comp_p
     ENDDO
   ENDIF
 
-  ! SETUP GENERAL PRESSURE CALCULATION RELIES ON RHS FROM STEP N-1 BEING
-  ! INCLUDED IN VELOCITY-ARRAYS ALREADY
+  !SETUP GENERAL PRESSURE CALCULATION RELIES ON RHS FROM STEP N-1 BEING
+  !INCLUDED IN VELOCITY-ARRAYS ALREADY
   DO iz=izs,ize
     izm1 = iz -1
     DO iy=iys,iye
@@ -86,7 +86,7 @@ SUBROUTINE comp_p
     ENDIF
   ENDDO
 
-  ! CHECK FOR RADIATION BC, ALL PROCESSORS
+  !CHECK FOR RADIATION BC, ALL PROCESSORS
   IF(ibcu == 1) THEN
     DO iy=iys,iye
       DO ix=1,nnx
@@ -96,7 +96,7 @@ SUBROUTINE comp_p
     ENDDO
   ENDIF
 
-  ! Y CONTRIBUTION
+  !Y CONTRIBUTION
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx

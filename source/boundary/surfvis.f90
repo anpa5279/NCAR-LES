@@ -16,7 +16,7 @@ SUBROUTINE surfvis(it)
   viscon = 0.0
   vise   = 0.0
 
-  ! ONLY ROOT PROCESS(ES) COMPUTE
+  !ONLY ROOT PROCESS(ES) COMPUTE
   IF(iss == 0) THEN
     iz   = 1
     izm1 = iz - 1
@@ -33,14 +33,14 @@ SUBROUTINE surfvis(it)
 
     IF(ismlt == 1) THEN !ismlt = 1 ; use businger formulas in MO
       CALL busngr(zeta,phim,phis,psim,psis)
-    ELSE ! = 0 ; use large and everyone elses formulas in MO
+    ELSE != 0 ; use large and everyone elses formulas in MO
       CALL fzol(zeta,phim,phis,psim,psis)
     ENDIF
 
     viscon = vk*ABS(z(1))/(utau*phim)
     vise   = utau*vk*ABS(z(1))/phim
 
-    ! GET SPECIAL VALUE AT Z1 TO MATCH WITH SURFACE LAYER
+    !GET SPECIAL VALUE AT Z1 TO MATCH WITH SURFACE LAYER
     uws = 0.0
     vws = 0.0
 
@@ -56,7 +56,7 @@ SUBROUTINE surfvis(it)
     uws = uws*fnxy
     vws = vws*fnxy
 
-    ! GET AVERAGE FLUCTUATING EDDY VISCOSITY
+    !GET AVERAGE FLUCTUATING EDDY VISCOSITY
     DO iy=iys,iye
       DO ix=1,nnx
         e(ix,iy,iz)=AMAX1(e(ix,iy,iz),sml_eg) !this is just ensuring energy is conversed. energy cannot be 0 in a grid space
@@ -69,12 +69,12 @@ SUBROUTINE surfvis(it)
       DO ix=1,nnx
         alwk(ix,iy)=dslk
 
-        ! NO STABILITY CORRECTED LENGTH SCALES WHEN NEW EDDY VISCOSITY IS ON
+        !NO STABILITY CORRECTED LENGTH SCALES WHEN NEW EDDY VISCOSITY IS ON
         xkvis(ix,iy)=ck*alwk(ix,iy)*sqrt(e(ix,iy,iz))*dfac(1)
       ENDDO
     ENDDO
 
-    ! GET AVERAGE VISCOSITY
+    !GET AVERAGE VISCOSITY
     xkavg = 0.0
     DO iy=iys,iye
       DO ix=1,nnx
@@ -100,7 +100,7 @@ SUBROUTINE surfvis(it)
     xksurf = AMIN1(xksurf,vise) !can be postiive or negative
   ENDIF
 
-  ! BROADCAST VALUES TO OTHER PROCESSES
+  !BROADCAST VALUES TO OTHER PROCESSES
   send(1) = xksurf
   send(2) = viscon
   send(3) = vise
@@ -113,7 +113,7 @@ SUBROUTINE surfvis(it)
 
   RETURN
 
-! FORMAT
+!FORMAT
 6000  FORMAT(' dfac = ',e12.4,' xkavg = ',e12.4,' xkz1 = ',e12.4,/,         &
             ' vise = ',e12.4,' xksurf = ',e12.4)
 

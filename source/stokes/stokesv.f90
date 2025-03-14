@@ -1,7 +1,7 @@
 SUBROUTINE stokesv
-! GET STOKES DRIFT VELOCITY USING DONELAN SPECTRUM MATCHED TO WAVE DATA
-! SEE ALVES ET AL., JPO 2003, VOL. 33
-! COMPARE ALL PDF VARIABLES IN SR. PDF_NDOT
+!GET STOKES DRIFT VELOCITY USING DONELAN SPECTRUM MATCHED TO WAVE DATA
+!SEE ALVES ET AL., JPO 2003, VOL. 33
+!COMPARE ALL PDF VARIABLES IN SR. PDF_NDOT
   USE pars
   USE fields
   USE fftwk
@@ -10,15 +10,15 @@ SUBROUTINE stokesv
 
   INCLUDE 'mpif.h'
 
-  ! DONELAN SPACE (CONSTANTS SET IN INIT)
-  ! RECOMPUTE PEAK IF WE CHANGE U_10 !!!
+  !DONELAN SPACE (CONSTANTS SET IN INIT)
+  !RECOMPUTE PEAK IF WE CHANGE U_10 !!!
   CALL speed2stress(u_10,v_10,cd_10,tau_x,tau_y)
 
   speedval = SQRT(u_10**2 + v_10**2) !v_10 is 0, so this is just u_10
   f_p     = f2w*grav/speedval
-  sigma_p = pi2*f_p
+  sigma_p = 2.0*pi*f_p
 
-  ! SET PARAMETERS THOUGH NOT USED HERE
+  !SET PARAMETERS THOUGH NOT USED HERE
   stokesw = 0.0
   stokesa = 0.0
   stokess = 0.0
@@ -26,14 +26,9 @@ SUBROUTINE stokesv
   range_min = 0.1
   range_max = 5000.0
   DO iz=1,nnzp1
-    z_pt = zz(iz)
-    CALL s_int(range_min,range_max,value)
+    z_pt = zz(iz) !middle of the cell
+    CALL s_int(range_min,range_max,value) !value = varying stokes vertically with depth. this calls midpnt which uses function stokes_ker to solve the vertical direction. 
     stokes(iz) = value
-
-    ! FOR NO STOKES
-    IF(flg_stokes /= 1) THEN
-      stokes(iz) = 0.0
-    ENDIF
   ENDDO
 
   IF(l_root) THEN
@@ -45,7 +40,7 @@ SUBROUTINE stokesv
 
   RETURN
 
-! FORMAT
+!FORMAT
 2212  FORMAT('#k ',/,'#m 4',/,'#lw 1.0',/,(2e15.6))
 6000  FORMAT(' iz ',10x,' zz',10x,' stokes',/,(1x,i3,2e12.4))
 

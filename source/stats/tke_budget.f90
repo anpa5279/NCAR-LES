@@ -1,8 +1,8 @@
 SUBROUTINE tke_budget
-! GET TERMS IN RESOLVED SCALE TKE BUDGET AS IN GABLS WRITEUP AT W-POINTS AT
-! ISTAGE = 1
-! T_DISS AND TR_TAU ARE IN COMP1
-! only called in les_mpi
+!GET TERMS IN RESOLVED SCALE TKE BUDGET AS IN GABLS WRITEUP AT W-POINTS AT
+!ISTAGE = 1
+!T_DISS AND TR_TAU ARE IN COMP1
+!only called in les_mpi
 
   USE pars
   USE fields
@@ -13,13 +13,13 @@ SUBROUTINE tke_budget
 
   DO iz=1,nnz
     pxym(iz)   = 0.0
-    stat(iz,1) = 0.0        ! TKE TRANSPORT = WQ
-    stat(iz,2) = 0.0        ! PRESSURE TRANSPORT = WP
+    stat(iz,1) = 0.0        !TKE TRANSPORT = WQ
+    stat(iz,2) = 0.0        !PRESSURE TRANSPORT = WP
   ENDDO
 
   DO iz=izs,ize
 
-    ! GET MEAN P_STAR PRESSURE
+    !GET MEAN P_STAR PRESSURE
     izm1 = iz - 1
     pxym(iz) = 0.0
     DO iy=iys,iye
@@ -35,13 +35,13 @@ SUBROUTINE tke_budget
 
   CALL mpi_sum_z(pxym(1),i_root,myid,nnz,1)
 
-  ! GET TRANSPORT TERMS AS VERTICAL ARRAYS 
+  !GET TRANSPORT TERMS AS VERTICAL ARRAYS 
   DO iz=izs,ize
     izm1 = iz - 1
     DO iy=iys,iye
       DO ix=1,nnx
 
-        ! GET ESTIMATE OF TURBULENT TRANSPORT TERM
+        !GET ESTIMATE OF TURBULENT TRANSPORT TERM
         ufluc   = u(ix,iy,iz) - uxym(iz)
         vfluc   = v(ix,iy,iz) - vxym(iz)
         wfluc   = w(ix,iy,iz) - wxym(iz)
@@ -49,7 +49,7 @@ SUBROUTINE tke_budget
         stat(iz,1)  = stat(iz,1) + 0.25*(wfluc + wfluc_l)*(ufluc**2 +       &
               vfluc**2 + 0.5*(wfluc_l**2 + wfluc**2))
 
-        ! GET ESTIMATE OF PRESSURE TRANSPORT TERM
+        !GET ESTIMATE OF PRESSURE TRANSPORT TERM
         pfluc = p(ix,iy,iz) - pxym(iz) -(e(ix,iy,iz)+e(ix,iy,izm1))/3.0 -   &
               0.5*((u(ix,iy,iz)+stokes(iz)*dir_x)**2 + (v(ix,iy,iz)+        &
               stokes(iz)*dir_y)**2 + 0.5*(w(ix,iy,iz)*w(ix,iy,iz)+          &
@@ -63,12 +63,12 @@ SUBROUTINE tke_budget
 
   CALL mpi_sum_z(stat(1,1),i_root,myid,nnz*2,1)
 
-  ! WE HAVE ALL TERMS ON ALL PROCESSORS FOR ALL Z, ADD THEM UP
+  !WE HAVE ALL TERMS ON ALL PROCESSORS FOR ALL Z, ADD THEM UP
   DO iz=1,nnz
     izp1 = iz + 1
     izm1 = iz - 1
 
-    ! TREAT TR_TAU AT BOTTOM SPECIAL, TR_TAU = 0.0
+    !TREAT TR_TAU AT BOTTOM SPECIAL, TR_TAU = 0.0
     IF(iz == 1) tr_tau(izm1) = 0.0
 
     IF(iz == nnz) THEN
@@ -86,7 +86,7 @@ SUBROUTINE tke_budget
     dudz = (uxym(izp1) - uxym(iz))*dzu_i(izp1)
     dvdz = (vxym(izp1) - vxym(iz))*dzu_i(izp1)
 
-    ! GATHER ALL BUDGET TERMS
+    !GATHER ALL BUDGET TERMS
     t_tran(iz)  = t_wq(iz) + t_wp(iz) + t_tau(iz)
     t_rprod(iz) = -(dudz*uwle(iz) + dvdz*vwle(iz))
     t_sprod(iz) =  (dudz*uwsb(iz) + dvdz*vwsb(iz))

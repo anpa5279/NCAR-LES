@@ -1,5 +1,5 @@
 FUNCTION ran1(idum)
-! STOLEN FROM NUMERICAL RECIPES, P. 271
+!STOLEN FROM NUMERICAL RECIPES, P. 271
 
   INTEGER, PARAMETER :: ntab = 32
   INTEGER :: idum, ia, im, iq, ir, ndiv

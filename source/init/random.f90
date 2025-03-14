@@ -1,5 +1,5 @@
 SUBROUTINE random
-! GEOSTROPHIC WINDS DESIGNED FOR COMPARISON CASE
+!GEOSTROPHIC WINDS DESIGNED FOR COMPARISON CASE
 !this is not called anywhere
   USE pars
   USE fields
@@ -10,7 +10,7 @@ SUBROUTINE random
   REAL :: psi(nnx,iys:iye), psix(nnx,iys:iye), psiy(nnx,iys:iye,izs:izs),   &
         uxx(nnx,iys:iye), vyy(nnx,iys:iye,izs:izs)
 
-  ! NOTE SET NMATCH IN SR. ISO SO THAT IT IS COMPATIBLE WITH CONDITIONS HERE
+  !NOTE SET NMATCH IN SR. ISO SO THAT IT IS COMPATIBLE WITH CONDITIONS HERE
   DO iz=1,nnz
     ug(iz)   = ugcont
     vg(iz)   = vgcont
@@ -68,18 +68,18 @@ SUBROUTINE random
     ENDDO
   ENDDO
 
-  ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
+  !SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
   idum = -1 - myid
   DO iz=izs,ize
 
-    ! AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
-    ! MAKE SURE AMPV IS SET IF FREE CONVECTION SO THAT WE HAVE MOTIONS AT FIRST
-    ! TIME STEP
+    !AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
+    !MAKE SURE AMPV IS SET IF FREE CONVECTION SO THAT WE HAVE MOTIONS AT FIRST
+    !TIME STEP
     ampv = 0.0
     ampv = 0.001
     ampt = 0.10
 
-    ! SIMPLE RANDOM FIELD SCALED BETWEEN -0.5 AND 0.5
+    !SIMPLE RANDOM FIELD SCALED BETWEEN -0.5 AND 0.5
     sum_psi = 0.0
     DO iy=iys,iye
       DO ix=1,nnx
@@ -130,7 +130,7 @@ SUBROUTINE random
       ENDDO
     ENDIF
 
-    ! CHECK DIVERGENCE OF INITIAL FIELD
+    !CHECK DIVERGENCE OF INITIAL FIELD
     DO iy=iys,iye
       DO ix=1,nnx
         uxx(ix,iy) = u(ix,iy,iz)
@@ -155,10 +155,10 @@ SUBROUTINE random
   WRITE(nprt,6000)
   WRITE(nprt,6100) (iz,divz(iz),iz=izs,ize)
 
-  ! FIX FOR BAROCLINIC AND SUBSIDENCE EFFECTS
+  !FIX FOR BAROCLINIC AND SUBSIDENCE EFFECTS
   RETURN
 
-! FORMAT
+!FORMAT
 6000  FORMAT(' check of divergence for initial state',/,' iz ',5x,' divergence')
 6100  FORMAT(i5,e15.6)
 

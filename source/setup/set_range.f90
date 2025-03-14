@@ -54,11 +54,11 @@ SUBROUTINE set_range
   izs = iz_s(myid)
   ize = iz_e(myid)
 
-  ! GET STARTING AND ENDING PROCESSOR ID ON EACH VERTICAL SLAB
+  !GET STARTING AND ENDING PROCESSOR ID ON EACH VERTICAL SLAB
   iss = is_s(myid) !starting processor
   ise = is_e(myid) !ending processor
 
-  ! DEBUG RANGES
+  !DEBUG RANGES
   IF(l_debug) THEN
     WRITE(nprt,1200) myid, (nn, ix_s(nn), ix_e(nn), jx_s(nn), jx_e(nn),     &
           kx_s(nn), kx_e(nn), nn = 0,numprocs-1)
@@ -68,7 +68,7 @@ SUBROUTINE set_range
 
   RETURN
 
-! FORMAT
+!FORMAT
 7002  FORMAT(' 7002 gridd nnx = ',i4,' nny = ',i4,' nnz = ',i4)
 1200  FORMAT(' myid =  ',i4,/,' nn',5x,' ixs ',5x,' ixe ',5x,' jxs ',5x,    &
             ' jxe ',5x,' kxs ',5x,' kxe',/,(7i6))

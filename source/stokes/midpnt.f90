@@ -1,21 +1,21 @@
 SUBROUTINE midpnt(a,b,s,n)
-
+  !calculates the integral of a function using the midpoint rule
+  !only used to calculate stokes drift. 
   INTEGER it,j
 
   IF(n .eq. 1) THEN
-    s = (b - a)*stokes_ker(0.5*(a+b))
+    s = (b - a)*stokes_ker(0.5*(a+b)) !function stokes_ker is only called in this subroutine and is not defined in this file
   ELSE
     it   = 3**(n-2)
 
     tnm  = FLOAT(it)
     del  = (b - a)/(3.0*tnm)
-    ddel = del + del
     x    = a + 0.5*del
     sum = 0.0
 
     DO j=1,it
       sum = sum + stokes_ker(x)
-      x   = x + ddel
+      x   = x + 2.0 * del
       sum = sum + stokes_ker(x)
       x   = x + del
     ENDDO
@@ -24,7 +24,7 @@ SUBROUTINE midpnt(a,b,s,n)
 
   RETURN
 
-! FORMAT
+!FORMAT
 6000  FORMAT(' n = ',i4,' it = ',i4)
 1200  FORMAT(' 1200 a = ',e15.6,' b = ',e15.6,/,'      s = ',e15.6,' n = ',i5)
 

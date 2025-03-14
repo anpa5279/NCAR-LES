@@ -1,9 +1,9 @@
 SUBROUTINE lower(it)
-! used if parameter ifree=0 and iss=0. if ifree==1, then lower_free.f90 is used instead
-! SETUP LOWER BC FOR PLANE AT IZ = 1
-! CAN USE BUSINGER OR LARGE FORMULAS WITH WIND
-! INDEX F(.,.,2) INDICATES LOWER.
-! THREADED VERSION
+!used if parameter ifree=0 and iss=0. if ifree==1, then lower_free.f90 is used instead
+!SETUP LOWER BC FOR PLANE AT IZ = 1
+!CAN USE BUSINGER OR LARGE FORMULAS WITH WIND
+!INDEX F(.,.,2) INDICATES LOWER.
+!THREADED VERSION
 
   USE pars
   USE fields
@@ -43,7 +43,7 @@ SUBROUTINE lower(it)
     ENDDO
   ENDDO
 
-  ! PARTIAL SUMS OF SURFACE FLUXES AND MEAN SCALAR
+  !PARTIAL SUMS OF SURFACE FLUXES AND MEAN SCALAR
   sfc_flx(1) = 0.0
   sfc_flx(2) = 0.0
   DO iy=iys,iye
@@ -91,7 +91,7 @@ SUBROUTINE lower(it)
     ENDDO
   ENDDO
 
-  ! INITIALIZE U,V,W,T AND DERIVATIVES AT IZM1
+  !INITIALIZE U,V,W,T AND DERIVATIVES AT IZM1
   DO iy=iys,iye
     DO ix=1,nnx
       u(ix,iy,izm1)  = ubc(ix,iy,2)
@@ -108,8 +108,8 @@ SUBROUTINE lower(it)
     ENDDO
   ENDDO
 
-  ! NO NEED TO CALL DERIVATIVES HERE SINCE WBC = 0
-  ! CHANGE FOR MORE GENERAL LOWER BC
+  !NO NEED TO CALL DERIVATIVES HERE SINCE WBC = 0
+  !CHANGE FOR MORE GENERAL LOWER BC
   DO iscl=1,nscl
     DO iy=iys,iye
       DO ix=1,nnx
@@ -120,7 +120,7 @@ SUBROUTINE lower(it)
 
   RETURN
 
-! FORMAT
+!FORMAT
 2345  FORMAT(' in lower 2345 uwsfc = ',e15.6,' vwsfc = ',e15.6,' wtsfc = ', &
             e15.6,' tsfcc = ',e15.6)
 

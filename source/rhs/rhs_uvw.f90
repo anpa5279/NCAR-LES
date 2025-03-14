@@ -1,6 +1,6 @@
 SUBROUTINE rhs_uvw(istep)
-! GET RHS OF (U,V,W) EQUATIONS FOR PENCIL SIZE (NNX,IYS:IYE,IZS:IZE)
-! called in solve/comp1 only
+!GET RHS OF (U,V,W) EQUATIONS FOR PENCIL SIZE (NNX,IYS:IYE,IZS:IZE)
+!called in solve/comp1 only
   USE pars
   USE fields
   USE fftwk
@@ -20,7 +20,7 @@ SUBROUTINE rhs_uvw(istep)
     weit  = dzw(iz)/(dzw(iz) + dzw(izp1))
     weit1 = 1.0 - weit
 
-    ! DYNAMICS
+    !DYNAMICS
     DO iy=iys,iye
       DO ix=1,nnx
         uzm = (u(ix,iy,iz)-u(ix,iy,izm1))*dzu_i(iz)
@@ -31,33 +31,33 @@ SUBROUTINE rhs_uvw(istep)
         u_avg = u(ix,iy,iz)*weit1 + u(ix,iy,izp1)*weit
         v_avg = v(ix,iy,iz)*weit1 + v(ix,iy,izp1)*weit
 
-        ! ADVECTION
+        !ADVECTION
         u_adv =  v(ix,iy,iz)*(vx(ix,iy,iz)-uy(ix,iy,iz)) - 0.5*(w(ix,iy,iz) &
               *(uz - wx(ix,iy,iz))+w(ix,iy,izm1)*(uzm - wx(ix,iy,izm1)))
         v_adv = -u(ix,iy,iz)*(vx(ix,iy,iz)-uy(ix,iy,iz)) + 0.5*(w(ix,iy,iz) &
               *(wy(ix,iy,iz) - vz)+w(ix,iy,izm1)*(wy(ix,iy,izm1) - vzm))
         w_adv = u_avg*(uz - wx(ix,iy,iz)) - v_avg*(wy(ix,iy,iz) - vz)
 
-        ! CORIOLIS, VERTICAL, AND HORIZONTAL COMPONENTS
+        !CORIOLIS, VERTICAL, AND HORIZONTAL COMPONENTS
         u_cor =  fcor*(v(ix,iy,iz) + stokes(iz)*dir_y) - fcor_h*w(ix,iy,iz)
         v_cor = -fcor*(u(ix,iy,iz) + stokes(iz)*dir_x)
         w_cor =  fcor_h*u(ix,iy,iz)
 
-        ! BUOYANCY (WITH HYDROSTATIC PART)
+        !BUOYANCY (WITH HYDROSTATIC PART)
         w_buy = batag*(t(ix,iy,1,iz)*weit1 + t(ix,iy,1,izp1)*weit)
 
-        ! GEOSTROPHIC WIND
+        !GEOSTROPHIC WIND
         u_geo = -fcor*vg(iz)
         v_geo =  fcor*(ug(iz)-ugal)
 
-        ! TOTALS
+        !TOTALS
         r1(ix,iy,iz) = u_adv + u_cor + u_geo
         r2(ix,iy,iz) = v_adv + v_cor + v_geo
         r3(ix,iy,iz) = w_adv + w_cor + w_buy
       ENDDO
     ENDDO
 
-    ! STOKES TERM
+    !STOKES TERM
     stokavg = stokes(iz)*weit1 + stokes(izp1)*weit
     DO iy=iys,iye
       DO ix=1,nnx
@@ -72,7 +72,7 @@ SUBROUTINE rhs_uvw(istep)
       ENDDO
     ENDDO
 
-    ! GET TAU_13,_23 AT IZ-1
+    !GET TAU_13,_23 AT IZ-1
     IF (iz/=1 .OR. ibcl/=0) THEN
       DO iy=iys,iye
         DO ix=1,nnx
@@ -93,8 +93,8 @@ SUBROUTINE rhs_uvw(istep)
       ENDDO
     ENDIF
 
-    ! X AND Z HORIZONTAL SGS FLUXES FOR U,V,W
-    ! TAU_11,_12,_13,_23 AT IZ
+    !X AND Z HORIZONTAL SGS FLUXES FOR U,V,W
+    !TAU_11,_12,_13,_23 AT IZ
     DO iy=iys,iye
       DO ix=1,nnx
         fnt1(ix,iy) = -(vis_m(ix,iy,iz)+vis_m(ix,iy,izm1))*ux(ix,iy,iz)
@@ -129,7 +129,7 @@ SUBROUTINE rhs_uvw(istep)
       ENDDO
     ENDDO
 
-    ! SAVE SGS FLUXES FOR PRINTOUT
+    !SAVE SGS FLUXES FOR PRINTOUT
     IF(istep == 1) THEN
       uwsb(iz)   = 0.0
       vwsb(iz)   = 0.0
@@ -154,7 +154,7 @@ SUBROUTINE rhs_uvw(istep)
     ENDIF
   ENDDO
 
-  ! SGS FLUXES TAU_12,_22,_23 THAT DEPEND ON Y-DERIVS
+  !SGS FLUXES TAU_12,_22,_23 THAT DEPEND ON Y-DERIVS
   DO iz=izs,ize
     izm1 = iz - 1
     DO iy=iys,iye
@@ -212,7 +212,7 @@ SUBROUTINE rhs_uvw(istep)
 
   CALL mpi_sum_z(r3_sum,i_root,myid,nnz,1)
 
-  ! MAKE SURE <R3> = 0 AND SET R3 = 0 AT TOP
+  !MAKE SURE <R3> = 0 AND SET R3 = 0 AT TOP
   DO iz=izs,ize
     IF(iz == nnz) THEN
       DO iy=iys,iye

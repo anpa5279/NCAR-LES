@@ -1,6 +1,6 @@
 SUBROUTINE get_means(istage)
-! GET MEANS FOR ALL VARIABLES FOR USE IN ISO, SURFVIS, COMP1, COMPMN
-! only called in les_mpi
+!GET MEANS FOR ALL VARIABLES FOR USE IN ISO, SURFVIS, COMP1, COMPMN
+!only called in les_mpi
   USE pars
   USE fields
   USE fftwk
@@ -57,7 +57,7 @@ SUBROUTINE get_means(istage)
     CALL mpi_sum_z(t_mn(1,iscl),i_root,myid,nnzp1,1)
   ENDDO
 
-  ! SET E TO MINIMUM VALUE
+  !SET E TO MINIMUM VALUE
   DO iz=izs-1,ize+1
     DO iy=iys,iye
       DO ix=1,nnx
@@ -66,7 +66,7 @@ SUBROUTINE get_means(istage)
     ENDDO
   ENDDO
 
-  ! GET TERMS WHICH CONTRIBUTE TO MEAN PRESSURE CAREFUL WITH SUM
+  !GET TERMS WHICH CONTRIBUTE TO MEAN PRESSURE CAREFUL WITH SUM
   DO iz=izs,ize
     izm1 = iz - 1
     DO iy=iys,iye
@@ -84,8 +84,8 @@ SUBROUTINE get_means(istage)
   CALL mpi_sum_z(engz(1),i_root,myid,nnzp1,1)
   CALL mpi_sum_z(engsbz(1),i_root,myid,nnzp1,1)
 
-  ! SAVE MEANS AND DIVERGENCE FOR PRINTOUT AND COMPMN
-  ! ALL CPUS HAVE MEANS OVER ALL Z
+  !SAVE MEANS AND DIVERGENCE FOR PRINTOUT AND COMPMN
+  !ALL CPUS HAVE MEANS OVER ALL Z
   IF(istage .eq. 1) THEN
     DO iz=izs,ize
       izm1 = iz - 1

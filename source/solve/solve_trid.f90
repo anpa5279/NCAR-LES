@@ -1,6 +1,6 @@
 SUBROUTINE solve_trid(pt, ptop)
-! TRIDIAGONAL SOLVER
-! ODD ORDER FOR PTOP, PTOP2, BECAYSE OF 2D FFT
+!TRIDIAGONAL SOLVER
+!ODD ORDER FOR PTOP, PTOP2, BECAYSE OF 2D FFT
 !only called in solve/pressure with variables (pt=pt, ptop=ptopfft)
 
   USE pars
@@ -30,7 +30,7 @@ SUBROUTINE solve_trid(pt, ptop)
       ENDDO
     ENDDO
 
-    ! LOWER BOUNDARY, FILL EXTERIOR PRESSURE (NOT USED)
+    !LOWER BOUNDARY, FILL EXTERIOR PRESSURE (NOT USED)
     DO lp=jxs,jxe !bottom boundary mesh 
       bb(1,lp)  = 1.0
       aa(1,lp)  = fac_u(1)
@@ -39,8 +39,8 @@ SUBROUTINE solve_trid(pt, ptop)
       pt(0,lp,kp) = 0.0
     ENDDO
 
-    ! UPPER BOUNDARY, FILL EXTERIOR PRESSURE (NOT USED)
-    IF(ibcu == 1) THEN ! ibcu    = 1 ; upper boundary condition set by radiation bc
+    !UPPER BOUNDARY, FILL EXTERIOR PRESSURE (NOT USED)
+    IF(ibcu == 1) THEN !ibcu    = 1 ; upper boundary condition set by radiation bc
       DO lp=jxs,jxe !applying conditions to the top boundary
         bb(nnz,lp) = 0.0
         aa(nnz,lp) = 0.0
@@ -58,7 +58,7 @@ SUBROUTINE solve_trid(pt, ptop)
       ENDDO
     ENDIF
 
-    ! SPECIAL SITUATION FOR ZEROTH MODE MAKES MEAN PRESSURE = 0
+    !SPECIAL SITUATION FOR ZEROTH MODE MAKES MEAN PRESSURE = 0
     IF(kp == 1 .AND. jxs == 1) THEN
       DO iz=1,nnz
         dd(iz,1) = 1.0
@@ -72,7 +72,7 @@ SUBROUTINE solve_trid(pt, ptop)
       ENDDO
     ENDIF
 
-    ! SOLVE SYSTEM
+    !SOLVE SYSTEM
     CALL tridv(bb,dd,aa,rh,nnz,jxs,jxe) !TRIDIAGONAL MATRIX SOLVER WITH MULTIPLE VECTORS. output rh
 
     DO lp=jxs,jxe

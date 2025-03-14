@@ -3,7 +3,7 @@ SUBROUTINE vgrid(z1,zi,zl,nnz,z,l_root,ldebug)
   REAL :: z(0:nnz+1)
   LOGICAL :: l_root, l_debug
 
-  ! BUILD GRID UP TO ZI FIRST
+  !BUILD GRID UP TO ZI FIRST
   z_frst = z1
   z_cntr = zl
   n_pbl  = nnz
@@ -39,7 +39,7 @@ SUBROUTINE vgrid(z1,zi,zl,nnz,z,l_root,ldebug)
 
   RETURN
 
-! FORMAT
+!FORMAT
 9000  FORMAT(' Cannot find stretching factor',/,' z_fac = ',e15.6,          &
             ' z_facn = ',e15.6,' knt = ',i3)
 9100  FORMAT(' Stretching factor = ',e15.6,/,' Match point       = ',       &

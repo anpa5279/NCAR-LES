@@ -10,8 +10,8 @@ SUBROUTINE iso(it)
 
   REAL :: sfk(1:nnz)
 
-  ! GET ISOTROPY FACTOR AND SCALE IT TO MATCH AT APPROPRIATE HEIGHT
-  ! USES BC FROM LOWER AND UPPER
+  !GET ISOTROPY FACTOR AND SCALE IT TO MATCH AT APPROPRIATE HEIGHT
+  !USES BC FROM LOWER AND UPPER
   DO iz=1,nnz
     dfac(iz) = 0.0
     sfk(iz)  = 0.0
@@ -21,7 +21,7 @@ SUBROUTINE iso(it)
     dfac(iz) = 1.0
   ENDDO
 
-  ! SET MATCH EQUAL TO FRACTION OF INITIAL ZI IN SR. RANDOM
+  !SET MATCH EQUAL TO FRACTION OF INITIAL ZI IN SR. RANDOM
   nmatch = nnz
   DO i=0,numprocs-1,ncpu_s
     IF(nmatch >= iz_s(i) .AND. nmatch <= iz_e(i)) myid_newvis = i
@@ -33,7 +33,7 @@ SUBROUTINE iso(it)
     weit = dzw(iz)/(dzw(iz) + dzw(izp1))
     weit1 = 1.0 - weit
 
-    ! GET FLUCTUATING STRAINS
+    !GET FLUCTUATING STRAINS
     DO j=iys,iye
       DO i=1,nnx
         s11 = weit1*ux(i,j,iz)**2 + weit*ux(i,j,izp1)**2
@@ -71,8 +71,8 @@ SUBROUTINE iso(it)
   ENDDO
 
 
-  ! RESCALE RATIO TO GIVE UNITY AT MATCH HEIGHT
-  ! IF NESTED GRID, MATCH VALUE AT UPPER BOUNDARY OF COARSER GRID
+  !RESCALE RATIO TO GIVE UNITY AT MATCH HEIGHT
+  !IF NESTED GRID, MATCH VALUE AT UPPER BOUNDARY OF COARSER GRID
   IF(myid == myid_newvis) THEN
     dfacm = dfac(nmatch)
   ENDIF
@@ -85,9 +85,9 @@ SUBROUTINE iso(it)
     dfac(iz) = AMIN1(dfac(iz), 1.0)
   ENDDO
 
-  ! GATHER DFAC ON ALL PROCESSES FOR PRINTING
-  ! USE IN TKE_VIS
-  ! USE REDUCE AND DIVIDE BY NUMBER OF SLAB CPUS
+  !GATHER DFAC ON ALL PROCESSES FOR PRINTING
+  !USE IN TKE_VIS
+  !USE REDUCE AND DIVIDE BY NUMBER OF SLAB CPUS
   CALL mpi_sum_z(dfac,i_root,myid,nnz,1)
 
   fncpu_s = 1.0/FLOAT(ncpu_s)
@@ -97,7 +97,7 @@ SUBROUTINE iso(it)
 
   RETURN
 
-! FORMAT
+!FORMAT
 6001 FORMAT(' iz = ',i3,' sfk = ',e15.6,' smk = ',e15.6,' dfac = ',e15.6)
 6000 FORMAT(' in sr. iso, nmatch = ',i3,/,' ivis = ',i3,'iz',5x,'dfac'      &
             ,/,(i3,1x,e15.6))

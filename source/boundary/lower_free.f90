@@ -1,8 +1,8 @@
 SUBROUTINE lower_free(it)
-!!! CHECK LOWER FREE FLAG (if parameter ifree=1). this is in les_mpi.f90. if ifree==0 and iss==0, then lower.f90 instead of this
-! SETUP LOWER BC FOR FREE CONVECTION WHERE EACH PROCESSOR APPLIES LOG-LAW AT
-! SEVERAL (IX,IY) FOR IZ = 1
-! INDEX F(.,.,2) INDICATES LOWER
+!!!CHECK LOWER FREE FLAG (if parameter ifree=1). this is in les_mpi.f90. if ifree==0 and iss==0, then lower.f90 instead of this
+!SETUP LOWER BC FOR FREE CONVECTION WHERE EACH PROCESSOR APPLIES LOG-LAW AT
+!SEVERAL (IX,IY) FOR IZ = 1
+!INDEX F(.,.,2) INDICATES LOWER
 
   USE pars
   USE fields
@@ -16,7 +16,7 @@ SUBROUTINE lower_free(it)
   REAL :: sbuf(2+2*nscl,mxs:mxe,iys:iye)
   REAL :: rbuf((2+2*nscl)*nnx*(iye+1-iys))
 
-  ! BROADCAST LEVEL 1 DATA EVERYWHERE
+  !BROADCAST LEVEL 1 DATA EVERYWHERE
   IF(iss == 0) THEN
     DO iy=iys,iye
       DO ix=1,nnx
@@ -36,13 +36,13 @@ SUBROUTINE lower_free(it)
 
   num = nnx*(iye + 1 - iys)*(2+nscl)
 
-  ! SEND ALL OF ROOT DATA TO OTHER PROCESSORS
+  !SEND ALL OF ROOT DATA TO OTHER PROCESSORS
   CALL mpi_send_root(u_level1(1,iys,1),num,myid,numprocs,ncpu_s)
 
-  ! EVERY TASK GETS THEIR OWN FLUXES AND SURFACE SCALARS
+  !EVERY TASK GETS THEIR OWN FLUXES AND SURFACE SCALARS
   CALL suft2(u_level1,it)
 
-  ! SEND SURFACE SCALARS AND MOMENTUM FLUXES BACK TO ROOT(S)
+  !SEND SURFACE SCALARS AND MOMENTUM FLUXES BACK TO ROOT(S)
   IF(numprocs /= 1) THEN !numprocs= total number of processes OR size of cluster
     DO iy=iys,iye
       DO ix=mxs,mxe
@@ -77,8 +77,8 @@ SUBROUTINE lower_free(it)
     CONTINUE
   ENDIF
 
-! ONLY FOR ROOT ROW = 0
-! GET SUMS OF SURFACE CONDITIONS AND SET SURFACE BOUNDARY CONDITIONS
+!ONLY FOR ROOT ROW = 0
+!GET SUMS OF SURFACE CONDITIONS AND SET SURFACE BOUNDARY CONDITIONS
   IF(iss == 0) THEN
     buf(1) = 0.0
     buf(2) = 0.0
@@ -140,7 +140,7 @@ SUBROUTINE lower_free(it)
       ENDDO
     ENDDO
 
-    ! INITIALIZE U,V,W,T AND DERIVATIVES AT IZM1
+    !INITIALIZE U,V,W,T AND DERIVATIVES AT IZM1
     DO iy=iys,iye
       DO ix=1,nnx
         u(ix,iy,izm1)  = ubc(ix,iy,2)

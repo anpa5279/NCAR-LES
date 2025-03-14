@@ -1,6 +1,6 @@
 SUBROUTINE get_derv
-! GET UX,UY,VX,VY AT ALL Z FOR THIS NODE USING PARALLEL FFT
-! CAN BE IMPROVED USING EXCHANGE TO SEND DERIVATIVES
+!GET UX,UY,VX,VY AT ALL Z FOR THIS NODE USING PARALLEL FFT
+!CAN BE IMPROVED USING EXCHANGE TO SEND DERIVATIVES
 
   USE pars
   USE fields
@@ -18,7 +18,7 @@ SUBROUTINE get_derv
     iz_ee = ize
   ENDIF
 
-  ! MAKE SURE <W> = 0
+  !MAKE SURE <W> = 0
   DO iz=izs-1,ize+1
     w_sum = 0.0
     DO iy=iys,iye
@@ -54,7 +54,7 @@ SUBROUTINE get_derv
     CALL xderivp(wx(1,iys,iz),trigx(1,1),xk(1),nnx,iys,iye)
   ENDDO
 
-  ! GET Y DERIVATIVES FOR (U,V,W)
+  !GET Y DERIVATIVES FOR (U,V,W)
   CALL yd_mpi(uy(1,iys,izs-1),trigx(1,2),yk(1),nnx,nny,ixs,ixe,ix_s,ix_e,   &
         iys,iye,iy_s,iy_e,izs-1,ize+1,myid,ncpu_s,numprocs)
   CALL yd_mpi(vy(1,iys,izs-1),trigx(1,2),yk(1),nnx,nny,ixs,ixe,ix_s,ix_e,   &
