@@ -1,5 +1,5 @@
 SUBROUTINE get_dt(it,istart)
-!ROUTINE COMPUTES MAX TIME STEP FOR GIVEN CFL NUMBER
+! ROUTINE COMPUTES MAX TIME STEP FOR GIVEN CFL NUMBER
 
   USE pars
   USE con_data
@@ -28,16 +28,16 @@ SUBROUTINE get_dt(it,istart)
     STOP
   ENDIF
 
-  !CHOOSE FIXED OR VARIABLE TIME STEP
+  ! CHOOSE FIXED OR VARIABLE TIME STEP
   IF(ifix_dt /= 0) THEN
-    !IF USED, CHANGE TO FIT PROBLEM
+    ! IF USED, CHANGE TO FIT PROBLEM
     dt_new = 10.0
   ELSE
-    !NEW ESTIMATES OF BEST TIME STEP FROM CFL CONSTRAINT
+    ! NEW ESTIMATES OF BEST TIME STEP FROM CFL CONSTRAINT
     dt_new = AMIN1(cfl/vel_max, dt_max)
   ENDIF
 
-  !COMPARE AGAINST VISCOUS STABILITY LIMIT
+  ! COMPARE AGAINST VISCOUS STABILITY LIMIT
   !CFL=0.5
   IF(vismax*dt_new > 0.5) THEN
     dt_cfl = dt_new
@@ -47,14 +47,14 @@ SUBROUTINE get_dt(it,istart)
     ENDIF
   ENDIF
 
-  !FOR SAFETY IF RESTART SET TIMESTEP = SAVED TIMESTEP IN RESTART FILE
+  ! FOR SAFETY IF RESTART SET TIMESTEP = SAVED TIMESTEP IN RESTART FILE
   IF(it == iti .AND. iti /= 0) THEN
     dt_new = dt
   ENDIF
 
   RETURN
 
-!FORMAT
+! FORMAT
 6000  FORMAT('6000, sr. get_dt bad news, umax = ',e15.6,/,' vmax = ',       &
             e15.6,' wmax = ',e15.6,/,' vel_max = ',e15.5,/,' it = ',        &
              e15.6,/, ' infinite time step !!!')

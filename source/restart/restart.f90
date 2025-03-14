@@ -1,5 +1,5 @@
 SUBROUTINE restart
-!GET RESTART FILE FROM LOCAL DIRECTORY
+! GET RESTART FILE FROM LOCAL DIRECTORY
 
   USE pars
   USE fields
@@ -9,7 +9,7 @@ SUBROUTINE restart
   CHARACTER*80 path_res_c
   LOGICAL :: there
 
-  !CHECK IF FILE IS THERE
+  ! CHECK IF FILE IS THERE
   INQUIRE(file=path_res,exist=there)
 
   IF(there) THEN
@@ -19,7 +19,7 @@ SUBROUTINE restart
     STOP
   ENDIF
 
-  !GET CONSTANT FILE
+  ! GET CONSTANT FILE
   iloc = INDEX(path_res,' ')
   path_res_c = path_res(1:iloc-1)//'.con' !creating the files in the data folder
 
@@ -38,13 +38,13 @@ SUBROUTINE restart
 
   RETURN
 
-  !PROCESS ERRORS
+  ! PROCESS ERRORS
   200 CONTINUE
   WRITE(6,9001) path_res_c, nvelc
   CALL mpi_finalize(ierr)
   STOP
 
-!FORMAT
+! FORMAT
 6001  FORMAT(' SR. RESTART: FILE READ = ',A80)
 6002  FORMAT(' SR. RESTART: CONSTANT FILE READ = ',A80)
 6005  FORMAT(' 6005, SR. RESTART: cannot find restart file = ',a80)

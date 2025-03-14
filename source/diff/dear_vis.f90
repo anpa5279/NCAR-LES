@@ -1,5 +1,5 @@
 SUBROUTINE dear_vis(alk)
-!GET DEARDORFF STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
+! GET DEARDORFF STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
 !Deardorff 1980 (https://doi.org/10.1007/BF00119502)
 !The primary modification to the SGS model for SBL simulations was the inclusion of a Ri-based stability correction.
 !used an alternative form for the eddy-viscsoity model as an approach to improving the representation of stratification without resorting to solving prognostic equations for tau_ij
@@ -23,7 +23,7 @@ SUBROUTINE dear_vis(alk)
       ENDIF
 
       IF(ivis == 1 .AND. iz <= nmatch) THEN !updated vortex position and it is not the top boundary layer
-        !NO STABILITY CORRECTED LENGTH SCALES
+        ! NO STABILITY CORRECTED LENGTH SCALES
         DO j=iys,iye
           DO i=1,nnx
             alk(i,j,iz) = dslk
@@ -51,7 +51,7 @@ SUBROUTINE dear_vis(alk)
         ENDDO
       ENDDO
 
-      !SPECIAL CASE FOR IZ = 1
+      ! SPECIAL CASE FOR IZ = 1
       IF(iz==1 .AND. ibcl == 0) THEN !if bottom boundary layer and ibcl    = 0 ; lower boundary condition set by similarity theory (sr. setup)
         DO iy=iys,iye
           DO ix=1,nnx

@@ -1,10 +1,10 @@
 SUBROUTINE suft2(u_level1,it)
-  !(called in boundary/lower_free) only used if  parameter ifree=1 and then lower.f90 is not used. 
+  ! (called in boundary/lower_free) only used if  parameter ifree=1 and then lower.f90 is not used. 
   !EVERY TASK GETS THEIR OWN FLUXES AND SURFACE SCALARS
-!      u_level1(.,.,1) = u
-!      u_level1(.,.,2) = v
-!      u_level1(.,.,3) = theta
-!      u_level1(.,.,4) = more scalars
+!       u_level1(.,.,1) = u
+!       u_level1(.,.,2) = v
+!       u_level1(.,.,3) = theta
+!       u_level1(.,.,4) = more scalars
 
   USE pars
   USE inputs
@@ -22,7 +22,7 @@ SUBROUTINE suft2(u_level1,it)
 
   DO iy=iys,iye
     DO ix=mxs,mxe
-      !FIRST GUESS FOR UTAU
+      ! FIRST GUESS FOR UTAU
       utau = 0.001
       t10xy(1) = -qstar(1)/utau*zody*vk74in
       tsfcc(1) = u_level1(ix,iy,3) - t10xy(1)
@@ -37,11 +37,11 @@ SUBROUTINE suft2(u_level1,it)
         STOP
       ENDIF
 
-      !FOR UNSTABLE, FREE CONVECTION PBL
+      ! FOR UNSTABLE, FREE CONVECTION PBL
       iter = 0
       DO WHILE(iter <= 10)
         DO WHILE(diff > ABS(tol*amonin))
-          !LIMIT THE MIN(-L/Z) CHANGE TO ACCOMODATE STABLE FLOW
+          ! LIMIT THE MIN(-L/Z) CHANGE TO ACCOMODATE STABLE FLOW
           zeta_i = AMIN1(amonin/z1,zeta_mn_i)
           zeta_a = 1.0/zeta_i
 
@@ -87,7 +87,7 @@ SUBROUTINE suft2(u_level1,it)
 
   RETURN
 
-!FORMAT
+! FORMAT
 5050  FORMAT(' 5050, sr. suft2, trouble at ',/, ' ix = ',i6,'iy = ',i6,     &
             ' it = ',i6,' utau = ',e15.6,' amonin = ',e15.6)
 232   FORMAT(' stop because utau=',e15.6,' windm=',e15.6)

@@ -16,39 +16,39 @@ module tracerbc
   real, dimension(nscl) :: val
   contains
 
-!iscl      : scalar number (temperature is always iscl=1)
-!tau       : reaction time scale
-!ictype    : initial condition (0 = nothing, 1 = horiz. band,
-!                               2 = vertical band in x, 3 = vertical band in y,
-!                               4 = point source, 5 = vertical gradient,
-!                               6 = horiz. gradient in x, 7 = horiz. gradient in y)
-!            ictype does not work for iscl=1 (temperature), that is set in init/randoc.f
-!val       : value of initial finite or source band/point
-!np        : width of initial finite or source band
-!zt        : upper/left most level or finite or source band
-!bnd       :
-!point     :
-!rmodel    : reaction model type (0 = no reaction, 1 = single tracer decay/growth,
-!                                 2 = two tracers decay/growth, 3 = carbonate chemistry)
-!rdorg     : reaction decay or growth (0 = decaying tracer, 1 = growing tracer)
-!rpartner  : reaction partner (iscl number of coupled tracer for reaction,
-!                              0 = no coupled tracer)
-!asflux    : air-sea flux boundary condition (0 = for no flux, 1 = for flux [also need
-!            flag_airseaflux.eq.1 in pars.f])
-!airval    : value of tracer in air (only need set for use with asflux and flag_airseaflux)
+! iscl      : scalar number (temperature is always iscl=1)
+! tau       : reaction time scale
+! ictype    : initial condition (0 = nothing, 1 = horiz. band,
+!                                2 = vertical band in x, 3 = vertical band in y,
+!                                4 = point source, 5 = vertical gradient,
+!                                6 = horiz. gradient in x, 7 = horiz. gradient in y)
+!             ictype does not work for iscl=1 (temperature), that is set in init/randoc.f
+! val       : value of initial finite or source band/point
+! np        : width of initial finite or source band
+! zt        : upper/left most level or finite or source band
+! bnd       :
+! point     :
+! rmodel    : reaction model type (0 = no reaction, 1 = single tracer decay/growth,
+!                                  2 = two tracers decay/growth, 3 = carbonate chemistry)
+! rdorg     : reaction decay or growth (0 = decaying tracer, 1 = growing tracer)
+! rpartner  : reaction partner (iscl number of coupled tracer for reaction,
+!                               0 = no coupled tracer)
+! asflux    : air-sea flux boundary condition (0 = for no flux, 1 = for flux [also need
+!             flag_airseaflux.eq.1 in pars.f])
+! airval    : value of tracer in air (only need set for use with asflux and flag_airseaflux)
 
     subroutine applytracerbc(it)
       integer, intent(in) :: it
       integer :: iscl, np, zt
       real :: ta, vals
 
-      !!active tracers (temperature)
+      !! active tracers (temperature)
             iscl = 1;
             ictype(iscl) = 0;   val(iscl) = 273.15 + iTsurf;      tau(iscl)    = 0;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
 
-            !!passive tracers
+            !! passive tracers
             iscl = 2;
             ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
             asflux(iscl) = 1;   airval(iscl) = 8.56056;
@@ -146,14 +146,14 @@ module tracerbc
       integer, dimension(2) :: znptobnd
       integer :: iz
 
-      !set the first bound, and make sure it doesn't exceed dimensions
+      ! set the first bound, and make sure it doesn't exceed dimensions
       iz = ztoiz(zt)
       znptobnd(1) = iz - int((np-1)/2)
       if (znptobnd(1) < 0) then
         znptobnd(1) = 0
       end if
 
-      !set the second bound based upon the first
+      ! set the second bound based upon the first
       znptobnd(2) = znptobnd(1) + np -1
 
     end function
@@ -164,14 +164,14 @@ module tracerbc
       integer, dimension(2) :: xnptobnd
       integer :: ix
 
-      !set the first bound, and make sure it doesn't exceed dimensions
+      ! set the first bound, and make sure it doesn't exceed dimensions
       ix = xtoix(xt)
       xnptobnd(1) = ix - int((np-1)/2)
       if (xnptobnd(1) < 0) then
         xnptobnd(1) = 0
       end if
 
-      !set the second bound based upon the first
+      ! set the second bound based upon the first
       xnptobnd(2) = xnptobnd(1) + np -1
 
     end function
@@ -182,14 +182,14 @@ module tracerbc
       integer, dimension(2) :: ynptobnd
       integer :: iy
 
-      !set the first bound, and make sure it doesn't exceed dimensions
+      ! set the first bound, and make sure it doesn't exceed dimensions
       iy = ytoiy(yt)
       ynptobnd(1) = iy - int((np-1)/2)
       if (ynptobnd(1) < 0) then
         ynptobnd(1) = 0
       end if
 
-      !set the second bound based upon the first
+      ! set the second bound based upon the first
       ynptobnd(2) = ynptobnd(1) + np -1
 
     end function
@@ -201,7 +201,7 @@ module tracerbc
       integer :: iz
 
       iz = ztoiz(zt)
-      if (dr > 0) then !surface res
+      if (dr > 0) then ! surface res
         restobnd(1) = 0
         restobnd(2) = iz
       else
@@ -214,7 +214,7 @@ module tracerbc
       integer, intent(in) :: zt
       integer :: ztoiz
 
-      !note that this will only work for equispaced z grids
+      ! note that this will only work for equispaced z grids
       ztoiz = int(zt/dz)
 
     end function
@@ -223,7 +223,7 @@ module tracerbc
       integer, intent(in) :: xt
       integer :: xtoix
 
-      !note that this will only work for equispaced z grids
+      ! note that this will only work for equispaced z grids
       xtoix = int(xt/dx)
 
     end function
@@ -232,7 +232,7 @@ module tracerbc
       integer, intent(in) :: yt
       integer :: ytoiy
 
-      !note that this will only work for equispaced z grids
+      ! note that this will only work for equispaced z grids
       ytoiy = int(yt/dy)
 
     end function

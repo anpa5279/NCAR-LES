@@ -1,8 +1,8 @@
 SUBROUTINE upper
-!(called in les_mpi) if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1)
-!SET BOUNDARY CONDITION ON UPPER BOUNDARY IZ = NNZ
-!OPTION FOR SPECIAL RADIATION BOUNDAYR CONDITION
-!INDEX F(.,.,1) INDICATES UPPER
+! (called in les_mpi) if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1)
+! SET BOUNDARY CONDITION ON UPPER BOUNDARY IZ = NNZ
+! OPTION FOR SPECIAL RADIATION BOUNDAYR CONDITION
+! INDEX F(.,.,1) INDICATES UPPER
 
   USE pars
   USE fields
@@ -22,7 +22,7 @@ SUBROUTINE upper
 
   IF(ibcu == 0) THEN
 
-    !BOUNDARY CONDITIONS ARE GRADIENT CONDITIONS
+    ! BOUNDARY CONDITIONS ARE GRADIENT CONDITIONS
     DO iy=iys,iye
       DO ix=1,nnx
         wbc(ix,iy,1) = 0.0
@@ -35,7 +35,7 @@ SUBROUTINE upper
     ENDDO
 
     DO iscl=1,nscl
-      !FIRST GET AVERAGE SCALAR GRADIENT
+      ! FIRST GET AVERAGE SCALAR GRADIENT
       dtdzf(iscl) = 0.0
       DO iy=iys,iye
         DO ix=1,nnx
@@ -57,8 +57,8 @@ SUBROUTINE upper
     ENDDO
 
   ELSE IF(ibcu == 1) THEN
-    !SPECIAL IF IRADUP BC
-    !GET ESTIMATE OF W FROM CONTINUTITY AND LINEARIZED RELATION FOR PRESSURE
+    ! SPECIAL IF IRADUP BC
+    ! GET ESTIMATE OF W FROM CONTINUTITY AND LINEARIZED RELATION FOR PRESSURE
     xmeanp = 0.0
     grad_ug = ug(nnz) - ug((nnz-1))
     DO iy=iys,iye
@@ -101,14 +101,14 @@ SUBROUTINE upper
       u(ix,iy,izp1) = ubc(ix,iy,1)
       v(ix,iy,izp1) = vbc(ix,iy,1)
 
-      !NOTE W AND E NNZ+1 VALUES ARE NOT NEEDED
+      ! NOTE W AND E NNZ+1 VALUES ARE NOT NEEDED
       w(ix,iy,izp1) = wbc(ix,iy,1)
       e(ix,iy,izp1) = ebc(ix,iy,1)
       r3(ix,iy,izp1)= 0.0
       r5(ix,iy,izp1)= 0.0
 
-      !SET DERIVATIVES AT TOP OF BOX (WX,WY NOT NEEDED)
-      !UX,UY,VX,VY ARE USED IN E PRODUCTION, BUT NEGLECT AT TOP OF BOX FROM BC
+      ! SET DERIVATIVES AT TOP OF BOX (WX,WY NOT NEEDED)
+      ! UX,UY,VX,VY ARE USED IN E PRODUCTION, BUT NEGLECT AT TOP OF BOX FROM BC
       wx(ix,iy,izp1) = 0.0
       wy(ix,iy,izp1) = 0.0
       ux(ix,iy,izp1) = 0.0

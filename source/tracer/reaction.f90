@@ -6,28 +6,28 @@
   implicit none
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!Parameters
+  !! Parameters
 
-  !LOCATED IN MODULES/PAR.F
-  !flg_reaction : Flag to turn on or off the reaction models
+  ! LOCATED IN MODULES/PAR.F
+  ! flg_reaction : Flag to turn on or off the reaction models
 
-  !LOCATED IN TRACER/TRACERBC.F90
-  !rmodel       : An array of models to be used in the reactive tracers. Models are
-  !               separated out in the react_src function
-  !rdorg        : An array of 0 or 1, 0 = decaying reaction, 1 = growing reaction
-  !rpartner     : An array dictating what tracers are coupled to each other
-  !tau          : The timescale to be used.
+  ! LOCATED IN TRACER/TRACERBC.F90
+  ! rmodel       : An array of models to be used in the reactive tracers. Models are
+  !                separated out in the react_src function
+  ! rdorg        : An array of 0 or 1, 0 = decaying reaction, 1 = growing reaction
+  ! rpartner     : An array dictating what tracers are coupled to each other
+  ! tau          : The timescale to be used.
 
-  !flg_debug    : Write a debug file
-!PARAMETER in fortran means that the value remains fixed throughout the code
+  ! flg_debug    : Write a debug file
+! PARAMETER in fortran means that the value remains fixed throughout the code
   integer, parameter :: flg_debug = 0
 
 contains !creates an interface for the functions and can check that any calls made to the subroutine are formally correct
 
-  !REACT_SRC: calculate the scalar reaction source term for a given scalar
-  !           and point. This is called in rhs_scl for each scalar.
+  ! REACT_SRC: calculate the scalar reaction source term for a given scalar
+  !            and point. This is called in rhs_scl for each scalar.
   function react_src(ix,iy,iscl,iz) !react_src must be defined
-    !ix, iy, iscl, iz (in): location of interest
+    ! ix, iy, iscl, iz (in): location of interest
     real, dimension(nscl-1) :: react_src !dimension= defines this as an array
     integer, intent(in) :: ix, iy, iscl, iz !last time iscl is used in the code
 
@@ -38,20 +38,20 @@ contains !creates an interface for the functions and can check that any calls ma
     integer :: steps
 
     !!!!!!!!!!!!!
-    !!Zeebe et al. 2001 Carbonate Chemistry
+    !! Zeebe et al. 2001 Carbonate Chemistry
     !!!!!!!!!!!!!
 
     t_rkc  = time
     t_end  = time + dt*0.5
     task   = 1
 
-    !C(1) = Carbon Dioxide, [CO2], t(ix,iy,2,iz)
-    !C(2) = Bicarbonate, [HCO3-], t(ix,iy,3,iz)
-    !C(3) = Carbonate, [CO32-], t(ix,iy,4,iz)
-    !C(4) = Boric Acid, [B(OH)3], t(ix,iy,5,iz)
-    !C(5) = Tetrahydroxyborate, [B(OH)4-], t(ix,iy,6,iz)
-    !C(6) = Hydrogen Ion, [H+], t(ix,iy,7,iz)
-    !C(7) = Hydroxide, [OH-], t(ix,iy,8,iz)
+    ! C(1) = Carbon Dioxide, [CO2], t(ix,iy,2,iz)
+    ! C(2) = Bicarbonate, [HCO3-], t(ix,iy,3,iz)
+    ! C(3) = Carbonate, [CO32-], t(ix,iy,4,iz)
+    ! C(4) = Boric Acid, [B(OH)3], t(ix,iy,5,iz)
+    ! C(5) = Tetrahydroxyborate, [B(OH)4-], t(ix,iy,6,iz)
+    ! C(6) = Hydrogen Ion, [H+], t(ix,iy,7,iz)
+    ! C(7) = Hydroxide, [OH-], t(ix,iy,8,iz)
 
     co2(0) = t(ix,iy,2,iz)
     co2(1) = t(ix,iy,3,iz)
@@ -104,13 +104,13 @@ contains !creates an interface for the functions and can check that any calls ma
   end function intDriver
 
   function rkc_driver(t_rkc2, t_end, work, yLocal, temper) !rkc_driver must be defined
-    !Driver function for RKC integrator.
+    ! Driver function for RKC integrator.
     !
-    !t_tkc    the starting time.
-    !t_end    the desired end time.
-    !task     0 to take a single integration step, 1 to integrate to tEnd.
-    !work     Real work array, size 3.
-    !yLocal   Dependent variable array, integrated values replace initial conditions.
+    ! t_tkc    the starting time.
+    ! t_end    the desired end time.
+    ! task     0 to take a single integration step, 1 to integrate to tEnd.
+    ! work     Real work array, size 3.
+    ! yLocal   Dependent variable array, integrated values replace initial conditions.
 
     real, intent(in) :: t_rkc2
     real, intent(in) :: t_end, temper
@@ -139,10 +139,10 @@ contains !creates an interface for the functions and can check that any calls ma
        y_n(i) = yLocal(i)
     enddo
 
-    !calculate F_n for initial y
+    ! calculate F_n for initial y
     F_n = dydt(t_rkc, y_n, temper) !Derivative evaluated at current state for chemical reactions to occur
 
-    !load initial estimate for eigenvector
+    ! load initial estimate for eigenvector
     if(work(2) < UROUND) then
        do i = 0,nscl-2
           work(4+i) = F_n(i)
@@ -150,11 +150,11 @@ contains !creates an interface for the functions and can check that any calls ma
     endif
 
     do while (t_rkc < t_end)
-       !use time step stored in work(3)
+       ! use time step stored in work(3)
 
-       !estimate Jacobian spectral radius
-       !only if 25 steps passed
-       !spec_rad = work(4)
+       ! estimate Jacobian spectral radius
+       ! only if 25 steps passed
+       ! spec_rad = work(4)
        temp_arr(:)  = 0.0
        temp_arr2(:) = 0.0
        err          = 0.0
@@ -163,7 +163,7 @@ contains !creates an interface for the functions and can check that any calls ma
           work(3) = rkc_spec_rad(t_rkc, hmax, y_n, F_n, work(4), temp_arr2, temper)
        endif
 
-       !first step, estimate step size
+       ! first step, estimate step size
        if(work(2) < UROUND)then
           work(2) = hmax
           if((work(3) * work(2)) > 1.0)then
@@ -190,12 +190,12 @@ contains !creates an interface for the functions and can check that any calls ma
           endif
        endif
 
-       !check if last step
+       ! check if last step
        if((1.1 * work(2)) .ge. abs(t_end - t_rkc))then
           work(2) = abs(t_end - t_rkc)
        endif
 
-       !calculate number of steps
+       ! calculate number of steps
        m = 1 + nint(sqrt(1.54 * work(2) * work(3) + 1.0))
 
        if(m > m_max)then
@@ -205,13 +205,13 @@ contains !creates an interface for the functions and can check that any calls ma
 
        hmin = 10.0 * UROUND * max(abs(t_rkc), abs(t_rkc + work(2)))
 
-       !perform tentative time step
+       ! perform tentative time step
        yLocal = rkc_step(t_rkc, work(2), y_n, F_n, m, temper)
 
-       !calculate F_np1 with tenative y_np1
+       ! calculate F_np1 with tenative y_np1
        temp_arr = dydt(t_rkc + work(2), yLocal, temper)
 
-       !estimate error
+       ! estimate error
        err = 0.0
        do i = 0,nscl-2
           est = 0.0
@@ -222,15 +222,15 @@ contains !creates an interface for the functions and can check that any calls ma
        err = sqrt(err / 7.0)
 
        if (err > 1.0) then
-          !error too large, step is rejected
+          ! error too large, step is rejected
 
-          !select smaller step size
+          ! select smaller step size
           work(2) = 0.8 * work(2) / (err**(1.0/3.0))
 
-          !reevaluate spectral radius
+          ! reevaluate spectral radius
           work(3) = rkc_spec_rad(t_rkc, hmax, y_n, F_n, work(4), temp_arr2, temper)
        else
-          !step accepted
+          ! step accepted
           t_rkc = t_rkc + work(2)
           nstep = nstep + 1
 
@@ -250,7 +250,7 @@ contains !creates an interface for the functions and can check that any calls ma
              endif
           endif
 
-          !set "old" values to those for current time step
+          ! set "old" values to those for current time step
           work(0) = err
           work(1) = work(2)
 
@@ -259,7 +259,7 @@ contains !creates an interface for the functions and can check that any calls ma
              F_n(i) = temp_arr(i)
           enddo
 
-          !store next time step
+          ! store next time step
           work(2) = work(2) * max(0.1, fac)
           work(2) = max(hmin, min(hmax, work(2)))
 
@@ -273,14 +273,14 @@ contains !creates an interface for the functions and can check that any calls ma
   end function rkc_driver
 
   real function rkc_spec_rad(t_rkc, hmax, yLocal, F, v, Fv, temper) !rkc_spec_rad must be defined
-    !Function to estimate spectral radius.
+    ! Function to estimate spectral radius.
     !
-    !t_rkc    the time.
-    !hmax     Max time step size.
-    !yLocal   Array of dependent variable.
-    !F        Derivative evaluated at current state
-    !v
-    !Fv
+    ! t_rkc    the time.
+    ! hmax     Max time step size.
+    ! yLocal   Array of dependent variable.
+    ! F        Derivative evaluated at current state
+    ! v
+    ! Fv
 
     real, intent(in) :: t_rkc
     real, intent(in) :: hmax, temper
@@ -325,7 +325,7 @@ contains !creates an interface for the functions and can check that any calls ma
        enddo
     endif
 
-    !now iterate using nonlinear power method
+    ! now iterate using nonlinear power method
     sigma = 0.0
     do iter = 1,itmax
        Fv = dydt(t_rkc, v, temper)
@@ -359,14 +359,14 @@ contains !creates an interface for the functions and can check that any calls ma
   end function rkc_spec_rad
 
   function rkc_step(t_rkc, h, y_0, F_0, s, temper) !rkc_step must be defined
-    !Function to take a single RKC integration step
+    ! Function to take a single RKC integration step
     !
-    !t_rkc    the starting time.
-    !h        Time-step size.
-    !y_0      Initial conditions.
-    !F_0      Derivative function at initial conditions.
-    !s        number of steps.
-    !rkc_step Integrated variables
+    ! t_rkc    the starting time.
+    ! h        Time-step size.
+    ! y_0      Initial conditions.
+    ! F_0      Derivative function at initial conditions.
+    ! s        number of steps.
+    ! rkc_step Integrated variables
 
     real, intent(in) :: t_rkc
     real, intent(in) :: h, temper
@@ -389,7 +389,7 @@ contains !creates an interface for the functions and can check that any calls ma
     b_jm1 = 1.0 / (4.0 * (w0 * w0))
     b_jm2 = b_jm1
 
-    !calculate y_1
+    ! calculate y_1
     mu_t = w1 * b_jm1
     do i = 0,nscl-2
        y_jm2(i) = y_0(i)
@@ -417,7 +417,7 @@ contains !creates an interface for the functions and can check that any calls ma
        mu = 2.0 * b_j * w0 / b_jm1
        mu_t = mu * w1 / w0
 
-       !calculate derivative, use y array for temporary storage
+       ! calculate derivative, use y array for temporary storage
        y_j = dydt(t_rkc + (h * c_jm1), y_jm1, temper)
 
        do i = 0,nscl-2

@@ -1,6 +1,6 @@
 SUBROUTINE bcast_pbc
-!SEND UPPER BC TO OTHER PROCESSORS FOR FFT SOLUTION OF PRESSURE
-!only used in les_mpi
+! SEND UPPER BC TO OTHER PROCESSORS FOR FFT SOLUTION OF PRESSURE
+! only used in les_mpi
   USE pars
   USE fields
 
@@ -14,25 +14,25 @@ SUBROUTINE bcast_pbc
     irow_t = is_s(numprocs-1) + irow_r
     num = nnx*(iye+1-iys)
 
-    !CHECK WHICH ROW MYID IS IN
+    ! CHECK WHICH ROW MYID IS IN
     IF(iss /= is_s(numprocs-1)) THEN
-      !NOT IN TOP ROW, RECEIVE FROM TOP
+      ! NOT IN TOP ROW, RECEIVE FROM TOP
       CALL mpi_recv(pbc(1,iys,1),num,mpi_real8,irow_t,1,mpi_comm_world,     &
       istatus,ierr)
     ELSE
-      !MYID IS IN THE TOP ROW, SEND BELOW
+      ! MYID IS IN THE TOP ROW, SEND BELOW
       DO l=irow_r,irow_t-ncpu_s,ncpu_s
         CALL mpi_send(pbc(1,iys,1),num,mpi_real8,l,1,mpi_comm_world,ierr)
       END DO
     ENDIF
 
-    !REPEAT FOR NEXT VARIABLE
+    ! REPEAT FOR NEXT VARIABLE
     IF(iss /= is_s(numprocs-1)) THEN
-      !NOT IN TOP ROW, RECEIVE FROM TOP
+      ! NOT IN TOP ROW, RECEIVE FROM TOP
       CALL mpi_recv(pbc2(1,iys,1),num,mpi_real8,irow_t,1,mpi_comm_world,    &
       istatus,ierr)
     ELSE
-      !MYID IS IN THE TOP ROW, SEND BELOW
+      ! MYID IS IN THE TOP ROW, SEND BELOW
       DO l=irow_r,irow_t-ncpu_s,ncpu_s
         CALL mpi_send(pbc2(1,iys,1),num,mpi_real8,l,1,mpi_comm_world,ierr)
       END DO

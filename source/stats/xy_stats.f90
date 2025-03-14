@@ -1,27 +1,27 @@
 SUBROUTINE xy_stats
-!GET STATISTICS
-!only called in les_mpi
+! GET STATISTICS
+! only called in les_mpi
   USE pars
   USE fields
   USE con_data
   USE con_stats
 
-  !INDICES FOR INDEXING ARRAY STAT(.,.)
+  ! INDICES FOR INDEXING ARRAY STAT(.,.)
   INTEGER, PARAMETER ::                   &
-      js = 10,                            & !NUMBER OF NON-SCALAR STATS (never leaves this subrou)
-      ns = 5                                !NUMBER OF SCALAR STATS
+      js = 10,                            & ! NUMBER OF NON-SCALAR STATS (never leaves this subrou)
+      ns = 5                                ! NUMBER OF SCALAR STATS
   INTEGER, PARAMETER :: nstat = js + ns*nscl
   REAL :: stat(1:nnz,nstat)
 
-  !USE TRICK WITH MPI REDUCE OVER ALL Z TO GET AVERAGES BY SETTING STAT ARRAY
-  !EQUAL TO 0 FOR ALL Z ON EACH PROCESS
+  ! USE TRICK WITH MPI REDUCE OVER ALL Z TO GET AVERAGES BY SETTING STAT ARRAY
+  ! EQUAL TO 0 FOR ALL Z ON EACH PROCESS
   DO i=1,nstat
     DO iz=1,nnz
       stat(iz,i) = 0.0
     ENDDO
   ENDDO
 
-  !INDICES FOR SCALARS
+  ! INDICES FOR SCALARS
   m1 = js
   m2 = js + nscl
   m3 = js + 2*nscl
@@ -54,7 +54,7 @@ SUBROUTINE xy_stats
       ENDDO
     ENDDO
 
-    !GET SCALAR RESOLVED FLUXES AND VARIANCES
+    ! GET SCALAR RESOLVED FLUXES AND VARIANCES
     DO l=1,nscl
       IF(iupwnd /= 1 .or. iz == nnz) THEN
         DO iy=iys,iye
@@ -65,7 +65,7 @@ SUBROUTINE xy_stats
         ENDDO
       ELSE
 
-        !MONOTONE FLUXES
+        ! MONOTONE FLUXES
         DO iy=iys,iye
           DO ix=1,nnx
             stat(iz,m1+l) = stat(iz,m1+l) + AMAX1(sgn*w(ix,iy,iz),0.)*      &
@@ -79,7 +79,7 @@ SUBROUTINE xy_stats
 
       stat(iz,m1+l)= sgn*stat(iz,m1+l)
 
-      !GET HORIZONTAL SCALAR RESOLVED FLUXES
+      ! GET HORIZONTAL SCALAR RESOLVED FLUXES
       DO iy=iys,iye
         DO ix=1,nnx
           stat(iz,m2+l) = stat(iz,m2+l)+(u(ix,iy,iz)-uxym(iz))*            &
@@ -89,7 +89,7 @@ SUBROUTINE xy_stats
         ENDDO
       ENDDO
 
-      !SCALAR VARIANCES & HIGHER MOMENTS
+      ! SCALAR VARIANCES & HIGHER MOMENTS
       DO iy=iys,iye
         DO ix=1,nnx
           stat(iz,m4+l) = stat(iz,m4+l) + (t(ix,iy,l,iz) - txym(iz,l))**2
@@ -99,10 +99,10 @@ SUBROUTINE xy_stats
     ENDDO
   ENDDO
 
-  !ADD PARTIAL SUMS AND SEND TO ALL
+  ! ADD PARTIAL SUMS AND SEND TO ALL
   CALL mpi_sum_z(stat(1,1),i_root,myid,nnz*nstat,1)
 
-  !FILL ARRAYS FOR PRINTOUT AND CONSTANT FILE
+  ! FILL ARRAYS FOR PRINTOUT AND CONSTANT FILE
   DO iz=1,nnz
     ups(iz)    = stat(iz,1)*fnxy
     vps(iz)    = stat(iz,2)*fnxy
@@ -117,7 +117,7 @@ SUBROUTINE xy_stats
     uw_tot(iz) = uwle(iz) + uwsb(iz)
     vw_tot(iz) = vwle(iz) + vwsb(iz)
 
-    !GET SCALAR RESOLVED FLUXES AND VARIANCES
+    ! GET SCALAR RESOLVED FLUXES AND VARIANCES
     DO l=1,nscl
       wtle(iz,l)   = stat(iz,m1+l)*fnxy
       utle(iz,l)   = stat(iz,m2+l)*fnxy

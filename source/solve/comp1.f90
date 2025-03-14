@@ -1,10 +1,10 @@
 SUBROUTINE comp1(istep,it)
   !called in les_mpi always
-!3RD ORDER RK (RK3) TIME STEPPING AND MONOTONE SCALAR FLUXES IN X,Y,Z DESIGNED TO USE
-!MPI IN X AND Y DIRECTIONS (aka designed to work with the x-y layers that span in the z-direction)
-!istep = istage = which step of RK3
-!it = iterations (the time stepping aspect)
-!T_DISS AND TR_TAU ARE IN COMP1
+! 3RD ORDER RK (RK3) TIME STEPPING AND MONOTONE SCALAR FLUXES IN X,Y,Z DESIGNED TO USE
+! MPI IN X AND Y DIRECTIONS (aka designed to work with the x-y layers that span in the z-direction)
+! istep = istage = which step of RK3
+! it = iterations (the time stepping aspect)
+! T_DISS AND TR_TAU ARE IN COMP1
   USE pars
   USE fields
   USE fftwk
@@ -15,12 +15,12 @@ SUBROUTINE comp1(istep,it)
 
   INTEGER :: istatus(mpi_status_size) 
   INTEGER, PARAMETER ::                   &
-      js = 7,                            & !NUMBER OF NON-SCALAR STATS 
-      ns = 3                                !NUMBER OF SCALAR STATS
+      js = 7,                            & ! NUMBER OF NON-SCALAR STATS 
+      ns = 3                                ! NUMBER OF SCALAR STATS
   INTEGER, PARAMETER :: nstat = js + ns*nscl
   REAL :: stat(1:nnz,nstat)
 
-  !TEMP ARRAYS TO HOLD RHS FROM STEP N-1 AND FIELD VARIABLES FROM STEP N
+  ! TEMP ARRAYS TO HOLD RHS FROM STEP N-1 AND FIELD VARIABLES FROM STEP N
   REAL :: urhs(nnx,iys:iye,izs:ize),vrhs(nnx,iys:iye,izs:ize),              &
           wrhs(nnx,iys:iye,izs:ize),erhs(nnx,iys:iye,izs:ize),              &
           trhs(nnx,iys:iye,nscl,izs:ize)
@@ -28,9 +28,9 @@ SUBROUTINE comp1(istep,it)
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx
-        !applying RK3
-        !rs are velocity defined in rhs/rhs_uvw
-        !dtzeta is the time*constant defined in les_mpi
+        ! applying RK3
+        ! rs are velocity defined in rhs/rhs_uvw
+        ! dtzeta is the time*constant defined in les_mpi
         urhs(ix,iy,iz) = u(ix,iy,iz) + dtzeta*r1(ix,iy,iz)
         vrhs(ix,iy,iz) = v(ix,iy,iz) + dtzeta*r2(ix,iy,iz)
         wrhs(ix,iy,iz) = w(ix,iy,iz) + dtzeta*r3(ix,iy,iz)
@@ -44,24 +44,24 @@ SUBROUTINE comp1(istep,it)
     DO l=1,nscl !looping scalars. nscl= number of scalars and vars (when nscl=1 then you only observe temperature temperature. for more details see tracer/tracerbc subroutine applytracerbc(it))
       DO iy=iys,iye !looping y
         DO ix=1,nnx !looping x
-        !applying RK3
-        !r4 is defined in rhs/rhs_scl
+        ! applying RK3
+        ! r4 is defined in rhs/rhs_scl
           trhs(ix,iy,l,iz) = t(ix,iy,l,iz) + dtzeta*r4(ix,iy,l,iz) !t= scalars
         ENDDO
       ENDDO
     ENDDO
   ENDDO
 
-  !GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
+  ! GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
   CALL tke_vis(istep) !only called here
   CALL rhs_uvw(istep) !only called here. updating values for RK3
 
-  !EVALUATE RHS OF SCALAR EQUATIONS=
+  ! EVALUATE RHS OF SCALAR EQUATIONS=
   DO l=1,nscl !looping scalars
     CALL rhs_scl(istep,l,it)!only called here. updating values for RK3 for every scalar
   ENDDO
 
-  !GATHER STAT SUMS ON ROOT PROCESSOR USING MPI_REDUCTION OVER ALL PROCESSORS
+  ! GATHER STAT SUMS ON ROOT PROCESSOR USING MPI_REDUCTION OVER ALL PROCESSORS
   IF(istep == 1) THEN !if in the first step of RK3
     DO j=1,nstat
       DO iz=1,nnz
@@ -115,7 +115,7 @@ SUBROUTINE comp1(istep,it)
     ENDDO
   ENDIF
 
-  !SAVE OLD RHS IN FIELD VARIABLES FOR RK ADVANCEMENT
+  ! SAVE OLD RHS IN FIELD VARIABLES FOR RK ADVANCEMENT
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx

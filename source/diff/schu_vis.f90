@@ -1,8 +1,8 @@
 subroutine schu_vis(alk)
-!GET SCHUMANN STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
-!similar to Deardorff
+! GET SCHUMANN STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
+! similar to Deardorff
 !The Schumann resonances (SR) are a set of spectrum peaks in the extremely low frequency portion of the Earth 's electromagnetic field spectrum. Schumann resonances are global electromagnetic resonances, generated and excited by lightning discharges in the cavity formed by the Earth's surface and the ionosphere
-!only called in diff/tke_vis
+! only called in diff/tke_vis
   USE pars
   USE fields
   USE con_data
@@ -21,14 +21,14 @@ subroutine schu_vis(alk)
         dfack = dfac(iz)
       ENDIF
 
-      !NO STABILITY CORRECTED LENGTH SCALES
+      ! NO STABILITY CORRECTED LENGTH SCALES
       DO j=iys,iye
         DO i=1,nnx
           alk(i,j,iz) = dslk
         END DO
       END DO
 
-      !STABILITY CORRECTION FOR VERTICAL SCALAR FLUX
+      ! STABILITY CORRECTION FOR VERTICAL SCALAR FLUX
       DO j=iys,iye
         DO i=1,nnx
           vis_m(i,j,iz)  = ck*dslk*SQRT(e(i,j,iz))*dfack
@@ -40,7 +40,7 @@ subroutine schu_vis(alk)
         ENDDO
       ENDDO
 
-      !SPECIAL CASE FOR IZ = 1
+      ! SPECIAL CASE FOR IZ = 1
       IF(iz==1 .AND. ibcl == 0) THEN
         DO iy=iys,iye
           DO ix=1,nnx

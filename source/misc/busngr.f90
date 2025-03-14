@@ -1,7 +1,7 @@
 SUBROUTINE busngr(zeta,phim,phis,psim,psis)
-!BUSINGER VERSION OF SIMILARITY THEORY
+! BUSINGER VERSION OF SIMILARITY THEORY
 
-  DATA pih /1.57079633/ !pi/2
+  DATA pih /1.57079633/ ! pi/2
   SAVE pih
 
   IF(zeta < 0.) THEN

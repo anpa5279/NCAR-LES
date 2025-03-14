@@ -1,6 +1,6 @@
 SUBROUTINE read_res
-!READ RESTART FILE INCLUDING CONSTANT FILE
-!CHANGED FOR IYS:IYE
+! READ RESTART FILE INCLUDING CONSTANT FILE
+! CHANGED FOR IYS:IYE
 
   USE pars
   USE fields
@@ -16,16 +16,16 @@ SUBROUTINE read_res
 
   ALLOCATE(temp(nvar,nnx,iys:iye))
 
-  !OPEN FILE
+  ! OPEN FILE
   CALL mpi_file_open(mpi_comm_world, path_res,                              &
         mpi_mode_create+mpi_mode_rdwr,mpi_info_null, nvel, ierr)
 
-  !SET FILE VIEW
+  ! SET FILE VIEW
   disp = 0
   CALL mpi_file_set_view(nvel,disp,mpi_real8,mpi_real8,'native',            &
         mpi_info_null,ierr)
 
-  !READ 3D FIELDS
+  ! READ 3D FIELDS
   nsize  = INT(nvar,k8)*nnx*nny
   nsize2 = INT(nvar,k8)*nnx*(iys-1)
   n_read = nvar*nnx*(iye+1-iys)
@@ -54,12 +54,12 @@ SUBROUTINE read_res
     ENDDO
   ENDDO
 
-  !CLOSE FILE
+  ! CLOSE FILE
   CALL mpi_file_close(nvel, ierr)
 
   DEALLOCATE(temp)
 
-  !EVERY MPI PROCESS READS CONSTANT FILE
+  ! EVERY MPI PROCESS READS CONSTANT FILE
   REWIND(nvelc)
   READ(nvelc,err=9993) c_c, c_hurr, c_s, case
 
@@ -72,16 +72,16 @@ SUBROUTINE read_res
 
   IF(l_root) WRITE(6,4001) case
 
-  !SPECIAL RESTART CONDITIONS
-  !SET CASE NAME TO CASE INPUT
+  ! SPECIAL RESTART CONDITIONS
+  ! SET CASE NAME TO CASE INPUT
   case   = case_inp
   IF(l_root) WRITE(6,4002) case_inp, utau, utausv
 
-  !IF NEW VIS MODEL SET MATCH POINT FOR OUTER GRID
+  ! IF NEW VIS MODEL SET MATCH POINT FOR OUTER GRID
   nmatch = nnz
   utau = utausv
 
-  !REDEFINE CASE ID TO INPUT VALUE
+  ! REDEFINE CASE ID TO INPUT VALUE
   IF(l_root) WRITE(6,4012) time
   IF(l_root) WRITE(6,4013) qstar(1), nmatch, case
 
@@ -101,7 +101,7 @@ SUBROUTINE read_res
   CALL mpi_finalize(ierr)
   STOP
 
-!FORMAT
+! FORMAT
 4001  FORMAT(' 4001, SR. RESTART: case from restart = ',a3)
 4002  FORMAT(' 4002, SR. RESTART:',/,                                       &
             ' files will be saved with case name = ',a3,/,' utau = ',e15.6, &

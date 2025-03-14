@@ -1,5 +1,5 @@
 SUBROUTINE get_dz
-!COMPUTE SPACING FOR GIVEN VERTICAL POINT DISTRIBUTION
+! COMPUTE SPACING FOR GIVEN VERTICAL POINT DISTRIBUTION
 
   USE pars
   USE fields
@@ -18,10 +18,10 @@ SUBROUTINE get_dz
     dzw_i(iz) = 1.0/dzw(iz)
   ENDDO
 
-  !BUILD Z GRID FOR U POINTS
+  ! BUILD Z GRID FOR U POINTS
   dzovr2 = dz*0.5
   DO iz=1,nnz+1
-    zz(iz) = 0.5*(z(iz) + z(iz-1))!averaging: so it is in the middle of the cell
+    zz(iz) = 0.5*(z(iz) + z(iz-1))! averaging: so it is in the middle of the cell
   ENDDO
 
   zz(0) = - zz(1)

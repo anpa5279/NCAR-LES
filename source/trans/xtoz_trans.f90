@@ -1,7 +1,7 @@
 SUBROUTINE xtoz_trans(f,g,nx,nz,ixs,ixe,ix_s,ix_e,iys,iye,izs,ize,iz_s,     &
   iz_e,myid,ncpu_s,numprocs)
-!only called in solve/pressure
-!TRANSPOSE ARRAY F(NX,IYS:IYE,IZS-1:IZE-1) --> G(0:NZ+1,IYS:IYE,IXS:IXE)
+! only called in solve/pressure
+! TRANSPOSE ARRAY F(NX,IYS:IYE,IZS-1:IZE-1) --> G(0:NZ+1,IYS:IYE,IXS:IXE)
 
   INCLUDE 'mpif.h'
 
@@ -14,7 +14,7 @@ SUBROUTINE xtoz_trans(f,g,nx,nz,ixs,ixe,ix_s,ix_e,iys,iye,izs,ize,iz_s,     &
   jk = (ize - izs + 1)*(iye - iys + 1)
   ij = (ixe - ixs + 1)*(iye - iys + 1)
 
-  !GET STARTING LOCATION
+  ! GET STARTING LOCATION
   iss = myid - (myid/ncpu_s)*ncpu_s
 
   DO i=iss,numprocs-1,ncpu_s

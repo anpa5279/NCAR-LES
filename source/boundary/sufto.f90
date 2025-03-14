@@ -1,5 +1,5 @@
 SUBROUTINE sufto(it)
-!used if parameter ifree=0 and iss=0 (called in lower) OR if the vortex position has been updated (called in surfvis and lower)
+! used if parameter ifree=0 and iss=0 (called in lower) OR if the vortex position has been updated (called in surfvis and lower)
   USE pars
   USE inputs
   USE fields
@@ -8,8 +8,8 @@ SUBROUTINE sufto(it)
 
   REAL :: buf(3+nscl)
 
-  !VERSION OF SIMILARITY THEORY ADAPTED FOR OCEAN FLOWS
-  !OPTION TO USE BUSINGER OR LARGE VERSION OF SIMILARITY THEORY
+  ! VERSION OF SIMILARITY THEORY ADAPTED FOR OCEAN FLOWS
+  ! OPTION TO USE BUSINGER OR LARGE VERSION OF SIMILARITY THEORY
   iz    = 1
   izm1  = iz - 1
   izp1  = iz + 1
@@ -36,7 +36,7 @@ SUBROUTINE sufto(it)
     ENDDO
   ENDDO
 
-  !GET X-Y SLAB SUMS
+  ! GET X-Y SLAB SUMS
   CALL mpi_sum_xy(buf,myid,iss,ise,(3+nscl))
 
   u1xy  = buf(1)*fnxy + ugal
@@ -52,16 +52,16 @@ SUBROUTINE sufto(it)
 
   t10xy(1)=-qstar(1)/utau*zody*vk74in
 
-  !CHECK FOR TEMPERATURE BC
+  ! CHECK FOR TEMPERATURE BC
   IF(isfc == 0 ) THEN
     tsfcc(1)=t1xy(1)-t10xy(1)
   ENDIF
 
-  !INPUT SURFACE WIND STRESS (TAU = 0.0184N/M^2)
-  !DENSITY RHO = 1000KG/M^3
-  utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w) !friction velocity=sqrt(tau_w/rho). tau_w=rho_a*ws10*ws10 (units check). ws10= wind speed
+  ! INPUT SURFACE WIND STRESS (TAU = 0.0184N/M^2)
+  ! DENSITY RHO = 1000KG/M^3
+  utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w) ! friction velocity=sqrt(tau_w/rho). tau_w=rho_a*ws10*ws10 (units check). ws10= wind speed
 
-  !SAVE OLD TAU
+  ! SAVE OLD TAU
   utausv = utau
   utau2  = utau*utau
   IF (ibuoy==0 .OR. qstar(1) == 0.) THEN
@@ -77,12 +77,12 @@ SUBROUTINE sufto(it)
   IF (t10xy(1)<0. .AND. qstar(1) .lt. 0.) THEN
     WRITE(6,1234)u1xy,v1xy,t1xy(1),tsfcc(1),amonin,utau,it
 
-    !TROUBLE IN SL ROUTINE
+    ! TROUBLE IN SL ROUTINE
     WRITE(nprt,9000)
     CALL mpi_finalize(ierr) 
     STOP
   ELSE
-    !FOR STABLE, NEUTRAL, AND UNSTABLE PBL, GET DRIFT VELOCITY
+    ! FOR STABLE, NEUTRAL, AND UNSTABLE PBL, GET DRIFT VELOCITY
     IF(ismlt == 1) THEN
       CALL busngr(zeta,phim,phis,psim,psis)
     ELSE
@@ -105,8 +105,8 @@ SUBROUTINE sufto(it)
     zol = zeta
     hol = zol*zi/z1
 
-    !EXAMPLES OF TWO OTHER SCALARS
-    !NOTE ROUNDOFF PROBLEM IN ANGLES ARE CLOSE TO MULTIPLES OF PI
+    ! EXAMPLES OF TWO OTHER SCALARS
+    ! NOTE ROUNDOFF PROBLEM IN ANGLES ARE CLOSE TO MULTIPLES OF PI
     utau2 = utau*utau
     au13m = utau2
     au23m = 0.0
@@ -115,7 +115,7 @@ SUBROUTINE sufto(it)
 
   RETURN
 
-!FORMAT
+! FORMAT
 9000  FORMAT(' Trouble in SR. sufto')
 1234  FORMAT(' ** check sfc u=',e12.3,' v=',e12.3,' t,ts=',2f10.3,' l=',    &
             e12.3,' u*=',e12.3,' at it=',i5)
