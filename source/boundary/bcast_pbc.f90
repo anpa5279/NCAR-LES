@@ -1,6 +1,6 @@
 SUBROUTINE bcast_pbc
 ! SEND UPPER BC TO OTHER PROCESSORS FOR FFT SOLUTION OF PRESSURE
-! only used in les_mpi
+
   USE pars
   USE fields
 
@@ -9,8 +9,8 @@ SUBROUTINE bcast_pbc
   INTEGER :: istatus(mpi_status_size)
   INTEGER :: irow_r
 
-  IF(numprocs /= 1) THEN !numprocs= total number of processes OR size of cluster, IF statement is for mpi
-    irow_r = MOD(myid,ncpu_s) !finding the remainder of myid/ncpu_s. myid= which process it is OR process rank , ncpu_s= 
+  IF(numprocs /= 1) THEN
+    irow_r = MOD(myid,ncpu_s)
     irow_t = is_s(numprocs-1) + irow_r
     num = nnx*(iye+1-iys)
 

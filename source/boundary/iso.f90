@@ -1,5 +1,5 @@
 SUBROUTINE iso(it)
-!only used when updating vortex position in main/les_mpi
+
   USE pars
   USE fields
   USE fftwk

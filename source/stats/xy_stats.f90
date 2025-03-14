@@ -1,6 +1,6 @@
 SUBROUTINE xy_stats
 ! GET STATISTICS
-! only called in les_mpi
+
   USE pars
   USE fields
   USE con_data
@@ -8,7 +8,7 @@ SUBROUTINE xy_stats
 
   ! INDICES FOR INDEXING ARRAY STAT(.,.)
   INTEGER, PARAMETER ::                   &
-      js = 10,                            & ! NUMBER OF NON-SCALAR STATS (never leaves this subrou)
+      js = 10,                            & ! NUMBER OF NON-SCALAR STATS
       ns = 5                                ! NUMBER OF SCALAR STATS
   INTEGER, PARAMETER :: nstat = js + ns*nscl
   REAL :: stat(1:nnz,nstat)

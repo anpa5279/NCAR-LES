@@ -1,6 +1,6 @@
 SUBROUTINE random
 ! GEOSTROPHIC WINDS DESIGNED FOR COMPARISON CASE
-!this is not called anywhere
+
   USE pars
   USE fields
   USE fftwk

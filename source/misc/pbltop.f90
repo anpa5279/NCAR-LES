@@ -1,5 +1,4 @@
 SUBROUTINE pbltop(itop)
-  ! only called in les_mpi
 ! ---------- get estimate of pbl top
 !            method = 0, min of wt flux
 !                        (good for buoyancy cases)

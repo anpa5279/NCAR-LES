@@ -1,9 +1,7 @@
 SUBROUTINE comp2
 ! ADD P GRADIENTS TO RHS
 ! USE ALREADY DEFINED P AT IZE+1 TO GET W (SEE SR. PRESSURE)
-! only used in les_mpi
 
-!this is the modules folder
   USE pars
   USE fields
   USE fftwk
@@ -84,16 +82,14 @@ SUBROUTINE comp2
     ! NOW ALL U-VARIABLES
     DO iy=iys,iye
       DO ix=1,nnx
-        ! applying RK3
         u(ix,iy,iz) = u(ix,iy,iz)+dtgama*r1(ix,iy,iz)
         v(ix,iy,iz) = v(ix,iy,iz)+dtgama*r2(ix,iy,iz)
       ENDDO
     ENDDO
 
-    DO iscl=1,nscl !looping scalars
-      DO iy=iys,iye !looping y
-        DO ix=1,nnx !looping x
-        ! applying RK3
+    DO iscl=1,nscl
+      DO iy=iys,iye
+        DO ix=1,nnx
           t(ix,iy,iscl,iz)  = t(ix,iy,iscl,iz)+dtgama*r4(ix,iy,iscl,iz)
         ENDDO
       ENDDO
@@ -103,11 +99,10 @@ SUBROUTINE comp2
   ! GATHER PARTIAL SUMS FOR W COMPUTATION
   CALL mpi_sum_z(r3_sum,i_root,myid,nnz,1)
 
-  DO iz=izs,MIN(ize,nnz-1) !looping z
-    DO iy=iys,iye !looping y
-      DO ix=1,nnx !looping x
+  DO iz=izs,MIN(ize,nnz-1)
+    DO iy=iys,iye
+      DO ix=1,nnx
         r3(ix,iy,iz) = r3(ix,iy,iz) - r3_sum(iz)
-        ! applying RK3
         w(ix,iy,iz)  = w(ix,iy,iz) + dtgama*r3(ix,iy,iz)
       ENDDO
     ENDDO

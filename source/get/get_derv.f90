@@ -48,7 +48,7 @@ SUBROUTINE get_derv
         wy(ix,iy,iz) = w(ix,iy,iz)
       ENDDO
     ENDDO
-    !below is getting derivatives with respect to x
+
     CALL xderivp(ux(1,iys,iz),trigx(1,1),xk(1),nnx,iys,iye)
     CALL xderivp(vx(1,iys,iz),trigx(1,1),xk(1),nnx,iys,iye)
     CALL xderivp(wx(1,iys,iz),trigx(1,1),xk(1),nnx,iys,iye)

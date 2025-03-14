@@ -1,6 +1,6 @@
 SUBROUTINE rhs_uvw(istep)
 ! GET RHS OF (U,V,W) EQUATIONS FOR PENCIL SIZE (NNX,IYS:IYE,IZS:IZE)
-! called in solve/comp1 only
+
   USE pars
   USE fields
   USE fftwk

@@ -1,5 +1,4 @@
 SUBROUTINE upper
-! (called in les_mpi) if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1)
 ! SET BOUNDARY CONDITION ON UPPER BOUNDARY IZ = NNZ
 ! OPTION FOR SPECIAL RADIATION BOUNDAYR CONDITION
 ! INDEX F(.,.,1) INDICATES UPPER

@@ -1,14 +1,13 @@
-SUBROUTINE tridv(b,d,a,r,n,j1,j2)!tridv(bb,dd,aa,rh,nnz,jxs,jxe)
+SUBROUTINE tridv(b,d,a,r,n,j1,j2)
 ! TRIDIAGONAL MATRIX SOLVER WITH MULTIPLE VECTORS (NOTE: J AND I LOOPS ARE
 ! REVERSED FROM CRAY VERSION)
-! INPUT:  N     - SIZE OF A,B,D, AND R (nnz)
-!         B     - BELOW DIAGONAL ELEMENTS (B(1) NOT USED) (bb)
-!         D     - DIAGONAL ELEMENTS (dd)
-!         A     - ABOVE DIAGONAL ELEMENTS (A(N) NOT USED) (aa)
-!         R     - RHS (rh)
-!         J1:J2 - RANGE OF INPUT VECTORS (jxs, jxe)
-! OUTPUT: R     - SOLUTION VECTOR (rh)
-! only called in solve/solve_trid tridv(bb,dd,aa,rh,nnz,jxs,jxe)
+! INPUT:  N     - SIZE OF A,B,D, AND R
+!         B     - BELOW DIAGONAL ELEMENTS (B(1) NOT USED)
+!         D     - DIAGONAL ELEMENTS
+!         A     - ABOVE DIAGONAL ELEMENTS (A(N) NOT USED)
+!         R     - RHS
+!         J1:J2 - RANGE OF INPUT VECTORS
+! OUTPUT: R     - SOLUTION VECTOR
 
   REAL :: b(n,j1:j2), d(n,j1:j2), a(n,j1:j2), r(n,j1:j2)
 

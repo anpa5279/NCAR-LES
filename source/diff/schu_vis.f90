@@ -1,8 +1,6 @@
 subroutine schu_vis(alk)
 ! GET SCHUMANN STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
-! similar to Deardorff
-!The Schumann resonances (SR) are a set of spectrum peaks in the extremely low frequency portion of the Earth 's electromagnetic field spectrum. Schumann resonances are global electromagnetic resonances, generated and excited by lightning discharges in the cavity formed by the Earth's surface and the ionosphere
-! only called in diff/tke_vis
+
   USE pars
   USE fields
   USE con_data

@@ -16,10 +16,10 @@ SUBROUTINE set_sav(it,istart)
   it=it+1
   it_counter = it - iti
 
-  dt    = dt_new !updates new time step 
+  dt    = dt_new
   dtg   = dt
-  mnout = (MOD(itcounter,imean)==0) .OR. (it==1)
-  mtape = (MOD(it_counter,itape)==0)
+  mnout = (MOD(it_counter,imean)==0) .OR. (it==1)
+  mtape = (MOD(it_counter,itape)==0) .OR. (it==1)
   micut = (MOD(it_counter,itcut)==0)
   mviz  = (MOD(it_counter,i_viz)==0)
 
@@ -31,7 +31,7 @@ SUBROUTINE set_sav(it,istart)
 
   ! DECIDE WHETHER VELOCITY FIELDS ARE SAVED
   msave = .FALSE.
-  IF(it_counter >= itstr .AND. mtape) THEN !if it_counter>1 and it can be divided by itape without a remainder
+  IF(it_counter >= itstr .AND. mtape) THEN
     itn=itn+1
     msave = .TRUE.
     CALL get_output_filenames

@@ -1,5 +1,5 @@
 SUBROUTINE sufto(it)
-! used if parameter ifree=0 and iss=0 (called in lower) OR if the vortex position has been updated (called in surfvis and lower)
+
   USE pars
   USE inputs
   USE fields
@@ -59,7 +59,7 @@ SUBROUTINE sufto(it)
 
   ! INPUT SURFACE WIND STRESS (TAU = 0.0184N/M^2)
   ! DENSITY RHO = 1000KG/M^3
-  utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w) ! friction velocity=sqrt(tau_w/rho). tau_w=rho_a*ws10*ws10 (units check). ws10= wind speed
+  utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w)
 
   ! SAVE OLD TAU
   utausv = utau
@@ -79,7 +79,7 @@ SUBROUTINE sufto(it)
 
     ! TROUBLE IN SL ROUTINE
     WRITE(nprt,9000)
-    CALL mpi_finalize(ierr) 
+    CALL mpi_finalize(ierr)
     STOP
   ELSE
     ! FOR STABLE, NEUTRAL, AND UNSTABLE PBL, GET DRIFT VELOCITY

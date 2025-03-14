@@ -1,6 +1,6 @@
 SUBROUTINE get_means(istage)
 ! GET MEANS FOR ALL VARIABLES FOR USE IN ISO, SURFVIS, COMP1, COMPMN
-! only called in les_mpi
+
   USE pars
   USE fields
   USE fftwk

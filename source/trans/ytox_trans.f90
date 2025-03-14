@@ -1,6 +1,5 @@
 SUBROUTINE ytox_trans(g,f,nx,ny,ixs,ixe,ix_s,ix_e,iys,iye,iy_s,iy_e,iz1,    &
   iz2,myid,ncpu_s,np)
-! only called in deriv/yd_mpi and fft/fft2d_mpi
 ! TRANSPOSE ARRAY G(NY,IXS:IXE,IZ1:IZ2) --> F(NX,IYS:IYE,IZ1:IZ2)
 
   INCLUDE 'mpif.h'

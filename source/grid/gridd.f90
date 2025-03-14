@@ -1,6 +1,5 @@
 SUBROUTINE gridd
-! ALLOCATE SPACE AND PASS ARRAYS USING MODULES. 
-!is responsible for allocating memory for various arrays used in a computational fluid dynamics (CFD) simulation. 
+! ALLOCATE SPACE AND PASS ARRAYS USING MODULES
 
   USE pars
   USE fields
@@ -9,7 +8,7 @@ SUBROUTINE gridd
   USE con_stats
 
   ! ESTABLISH ASSOCIATION BETWEEN POINTERS AND DATA STRUCTURES
-  CALL fill_cc !in modules/con_data
+  CALL fill_cc
   CALL fill_cs
 
   ! DEBUG FOR ARRAYS
@@ -50,7 +49,7 @@ SUBROUTINE gridd
     nnzp1 = nnz + 1
     nnzm1 = nnz - 1
     ivis = ivis0
-    fnxy  = 1.0/FLOAT(nxy) !FLOAT ensures real number not integer
+    fnxy  = 1.0/FLOAT(nnx*nny)
 
     WRITE(nprt,7001) nnx,nny,nnz
 

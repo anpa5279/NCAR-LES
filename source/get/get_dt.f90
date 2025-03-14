@@ -8,7 +8,6 @@ SUBROUTINE get_dt(it,istart)
   DATA dt_max /30.0/
   SAVE dt_max
 
-  !based on Courant Number (CFL=0.5 in setup/setcon)
   ucfl = umax
   vcfl = vmax
   wcfl = wmax
@@ -20,7 +19,7 @@ SUBROUTINE get_dt(it,istart)
   vel_max = AMAX1(vcflm,vel_max)
 
   IF(it == istart) THEN
-    vel_max = cfl/dt_max !max velocity according to CFL number
+    vel_max = cfl/dt_max
   ENDIF
 
   IF(vel_max <= 0.0) THEN
@@ -38,7 +37,6 @@ SUBROUTINE get_dt(it,istart)
   ENDIF
 
   ! COMPARE AGAINST VISCOUS STABILITY LIMIT
-  !CFL=0.5
   IF(vismax*dt_new > 0.5) THEN
     dt_cfl = dt_new
     dt_new = 0.5/vismax

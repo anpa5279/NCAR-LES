@@ -1,5 +1,4 @@
       subroutine dealias
-c         only called in les_mpi
 c
 c --------- wave cutoff filter using 2d fft
 c

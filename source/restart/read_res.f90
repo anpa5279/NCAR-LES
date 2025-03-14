@@ -65,7 +65,7 @@ SUBROUTINE read_res
 
   IF(iti <= 1)THEN
     time = 0.1
-    dt = 0.1 !initial time step size
+    dt = 0.1
   ENDIF
 
   CLOSE(nvelc)
