@@ -41,7 +41,7 @@ SUBROUTINE comp1(istep,it)
   ENDDO
 
   DO iz=izs,ize !looping z
-    DO l=1,nscl !looping scalars. nscl= number of scalars and vars (when nscl=1 then you only observe temperature temperature. for more details see tracer/tracerbc subroutine applytracerbc(it))
+    DO l=1,nscl !looping scalars. nscl= number of scalars and vars (when nscl=1 then you only observe temperature)
       DO iy=iys,iye !looping y
         DO ix=1,nnx !looping x
         !applying RK3

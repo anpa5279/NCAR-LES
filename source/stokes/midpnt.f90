@@ -1,6 +1,7 @@
 SUBROUTINE midpnt(a,b,s,n)
   !calculates the integral of a function using the midpoint rule
   !only used to calculate stokes drift. 
+  !the integral in eq 43 of Webb and Fox-Kemper 2011
   INTEGER it,j
 
   IF(n .eq. 1) THEN
