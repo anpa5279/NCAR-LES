@@ -51,6 +51,7 @@
     !CHOOSE ROUTINE FOR GETTING INITIAL GUESS
     CALL randoc !only time this is ever called/used
     CALL get_max
+    CALL applytracerbc(it) !defining initial conditions for scalars
   ELSE
     igrdr = 3 !data comes from restart file
     CALL restart
@@ -92,7 +93,6 @@
         CALL upper !you are therefore looking at upper boundary 
       ENDIF
 
-      CALL applytracerbc(it) !defining scalars 
       CALL bcast_pbc !SEND UPPER BC TO OTHER PROCESSORS FOR FFT SOLUTION OF PRESSURE
       CALL get_means(istage) !GET MEANS FOR ALL VARIABLES FOR USE IN ISO, SURFVIS, COMP1, COMPMN
 
