@@ -5,7 +5,7 @@ SUBROUTINE midpnt(a,b,s,n)
   INTEGER it,j
 
   IF(n .eq. 1) THEN
-    s = (b - a)*stokes_ker(0.5*(a+b)) !function stokes_ker is only called in this subroutine and is not defined in this file
+    s = (b - a)*stokes_ker(0.5*(a+b)) !apparently the surface value should be calculated with the 2nd moment and not the 3rd moment. 
   ELSE
     it   = 3**(n-2)
 

@@ -22,7 +22,7 @@ SUBROUTINE setcon
   smal_e = 1.0e-12
 
   !SET CONSTANTS IN EDDY VISCOSITY MODEL
-  ck       = 0.1
+  ck       = 0.1 !open channel flow
   ceps     = 0.93
   csmag    = SQRT(ck*SQRT(ck/ceps))
   stab_c   = 0.76

@@ -1,5 +1,5 @@
 SUBROUTINE lower_free(it)
-!!!CHECK LOWER FREE FLAG (if parameter ifree=1). this is in les_mpi.f90. if ifree==0 and iss==0, then lower.f90 instead of this
+!!!CHECK LOWER FREE FLAG (if parameter ifree=1) in les_mpi.f90. if ifree==0 and iss==0, then lower.f90 instead of this
 !SETUP LOWER BC FOR FREE CONVECTION WHERE EACH PROCESSOR APPLIES LOG-LAW AT
 !SEVERAL (IX,IY) FOR IZ = 1
 !INDEX F(.,.,2) INDICATES LOWER
@@ -111,7 +111,7 @@ SUBROUTINE lower_free(it)
 
     iz   = 1
     izm1 = iz - 1
-    dz_i = dzu_i(iz)
+    dz_i = dzu_i(iz) !inverse dz
 
     DO iy=iys,iye
       DO ix=1,nnx

@@ -196,7 +196,7 @@ SUBROUTINE rhs_scl(istep,iscl)
                 vis_s(ix,iy,izm1))*tx(ix,iy)
         ENDDO
       ENDDO
-      utsb(iz,iscl) = utsb(iz,iscl)*fnxy
+      utsb(iz,iscl) = utsb(iz,iscl)*fnxy !fnxy = 1/nx/ny
       wtsb(iz,iscl) = wtsb(iz,iscl)*fnxy
     ENDIF
   ENDDO

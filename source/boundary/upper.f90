@@ -1,5 +1,6 @@
 SUBROUTINE upper
 !(called in les_mpi) if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1)
+!it is called upper because this use to be an atmospheric model. nnz is the bottom of our domain
 !SET BOUNDARY CONDITION ON UPPER BOUNDARY IZ = NNZ
 !OPTION FOR SPECIAL RADIATION BOUNDAYR CONDITION
 !INDEX F(.,.,1) INDICATES UPPER

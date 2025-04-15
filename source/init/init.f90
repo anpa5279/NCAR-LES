@@ -17,8 +17,7 @@ SUBROUTINE init
   !CASE SPECIFIC DATA
   rho_a   = 1.0 !density of air
   rho_w   = 1000.0 !density of water
-  t00     = 283. !only here to be saved in modules/con_data
-  t00b    = 5000.0
+  t00b    = 5000.0 !1/(thermal expansion cofficient)
   cp_a    = 1.0057e03 !pressure coefficient of air
   cp_w    = 4.20e03 !pressure coefficient of water 
   gcp     = grav/cp_w
@@ -26,8 +25,8 @@ SUBROUTINE init
 
   !SPECIFY STOKES DRIFT PARAMETERS
   cpou10  = 0.6
-  turb_la = 0.3 !turbulent langmuir number (La_t=sqrt(friction velocity/stokes drift)). Langmuir turbulence occurs when a surface boundary layer is forced by wind in the presence of surface waves.
-  rlat    = 30 !angle of stokes drift 
+  turb_la = 0.3 !turbulent langmuir number (La_t=sqrt(friction velocity/stokes drift)). Langmuir turbulence occurs when a surface boundary layer is forced by wind in the presence of surface waves. fully developed flow according to Webb and Fox-Kemper 2011. 
+  rlat    = 30
 
   fcor    = 2.0*2.0*pi*SIN(rlat*d_to_r)/(24.0*3600.0)
   fcor_h  = 0.0
@@ -156,7 +155,7 @@ SUBROUTINE init
   cdbtm  = vk*vk/zody/zody
 
   !SET SURFACE FRICTION VELOCITY HERE AND IN SR. SUFTO
-  utau = SQRT(rho_a*(8.5e-4)*ws10*ws10/rho_w) !friction velocity=sqrt(tau_w/rho). tau_w=rho_a*ws10*ws10 (units check). ws10= wind speed. From Peter's turbulence textbook
+  utau = SQRT(rho_a*(8.5e-4)*ws10*ws10/rho_w) !friction velocity=sqrt(tau_w/rho). tau_w=rho_a*ws10*ws10 (units check). ws10= wind speed. From Peter's turbulence textbook. 8.5e-4 is proably a drag coefficient
 
   utau2    = utau*utau
   IF(ibuoy == 0 .or. qstar(1) == 0.) THEN

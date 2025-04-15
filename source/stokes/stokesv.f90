@@ -10,17 +10,16 @@ SUBROUTINE stokesv
 
   INCLUDE 'mpif.h'
 
-  !DONELAN SPACE (CONSTANTS SET IN INIT)
+  !DONELAN SPACE (CONSTANTS SET IN INIT) (Donelan et al. 1985)
   !RECOMPUTE PEAK IF WE CHANGE U_10 !!!
-  CALL speed2stress(u_10,v_10,cd_10,tau_x,tau_y)
+  CALL speed2stress(u_10,v_10,cd_10,tau_x,tau_y) !these variables are only used in speed2stress.f90
 
   speedval = SQRT(u_10**2 + v_10**2) !v_10 is 0, so this is just u_10
-  f_p     = f2w*grav/speedval
-  sigma_p = 2.0*pi*f_p
+  f_p     = f2w * grav / speedval !does not change 
+  sigma_p = 2 * pi * f_p ! does not change 
 
   !SET PARAMETERS THOUGH NOT USED HERE
   stokesw = 0.0
-  stokesa = 0.0
   stokess = 0.0
 
   range_min = 0.1

@@ -75,7 +75,7 @@ SUBROUTINE randoc
       !SIMPLE RANDOM FIELD SCALED BETWEEN 0 AND 1
       DO iy=iys,iye
         DO ix=1,nnx
-          CALL random_number(psi(ix,iy)) !generates a random real number between 0 and 1 and saves is to psi(ix,iy) 
+          CALL random_number(psi(ix,iy)) !generates a random real number [0, 1) and saves is to psi(ix,iy) 
         ENDDO
       ENDDO
 
@@ -107,7 +107,7 @@ SUBROUTINE randoc
           u(ix,iy,iz) = u(ix,iy,iz) - psiy(ix,iy,izs)*facv
           v(ix,iy,iz) = v(ix,iy,iz) + psix(ix,iy)*facv
           t(ix,iy,1,iz) = t(ix,iy,1,iz) + psi(ix,iy)*ampt
-          e(ix,iy,iz) = 0.0001
+          e(ix,iy,iz) = 0.0001 !only putting energy is the top grid cells 
         ENDDO
       ENDDO
     ENDIF

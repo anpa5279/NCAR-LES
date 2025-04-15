@@ -1,5 +1,4 @@
 **/build/
-**/modules/
 **/*.mod
 **/*.o
 **/*.so

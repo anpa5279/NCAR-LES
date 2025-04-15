@@ -181,7 +181,7 @@ subroutine tke_vis(istep)
               (stokes(izp1)*dir_y + v(ix,iy,izp1))*weit
         fnt2(ix,iy,iz) = e(ix,iy,iz)*v_avg(ix,iy) - 4.0*vis_m(ix,iy,iz)*    &
               ey(ix,iy,iz)
-        .(ix,iy,iz)   = r5(ix,iy,iz) - 0.5*(v_avg(ix,iy)*ey(ix,iy,iz))
+        r5(ix,iy,iz)   = r5(ix,iy,iz) - 0.5*(v_avg(ix,iy)*ey(ix,iy,iz))
       ENDDO
     ENDDO
   ENDDO
