@@ -129,8 +129,7 @@ MODULE pars
   CHARACTER*80 path_viz_xy, path_viz_xz, path_viz_yz, path_stuf
 !----------------------------------------------------------------------
   INTEGER ::                                                                &
-          myid, numprocs, i_root, ziloc, myid_newvis, ncpu_s, ncpu_z, maxp, &
-          nscl, nvar
+          myid, numprocs, i_root, ziloc, myid_newvis, ncpu_s, ncpu_z, maxp
   INTEGER, ALLOCATABLE, DIMENSION(:) ::                                     &
           ix_s, ix_e, jx_s, jx_e, kx_s, kx_e, mx_s, mx_e, iy_s, iy_e, jy_s, &
           jy_e, is_s, is_e, iz_s, iz_e
