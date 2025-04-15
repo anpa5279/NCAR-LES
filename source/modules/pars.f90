@@ -8,16 +8,15 @@ MODULE pars
 
   INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
   INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau
-  INTEGER, PARAMETER :: flg_reaction = 1  ! 3.1536e8 reaction model on or off
+  INTEGER, PARAMETER :: flg_reaction = 0  ! reaction model on or off
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: flg_npz = 1       ! changing NPZ model, mayzaud-poulet= 0 or ivlev=1
-  INTEGER, PARAMETER :: iti=0, itmax=80000, imean=1, ihst=01, itape=500,        &
+  INTEGER, PARAMETER :: iti=0, itmax=80000, imean=1, ihst=01, itape=100,        &
   itstr=1, it_his=120000, i_viz=120000
 
-  INTEGER, PARAMETER :: nscl = 8, nvar = (4+nscl) !number of scalars and vars
-  INTEGER, PARAMETER :: nxg1  = 32, nyg1  = 32, nzg1  = 32 !size of problem
+  INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars and vars
+  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
    maxnx2 = maxnx + 2, maxny2 = maxny + 2

@@ -41,12 +41,12 @@ SUBROUTINE comp1(istep,it)
   ENDDO
 
   DO iz=izs,ize !looping z
-    DO l=1,nscl !looping scalars. nscl= number of scalars and vars (when nscl=1 then you only observe temperature)
+    DO l=1,nscl !looping scalars
       DO iy=iys,iye !looping y
         DO ix=1,nnx !looping x
         !applying RK3
         !r4 is defined in rhs/rhs_scl
-          trhs(ix,iy,l,iz) = t(ix,iy,l,iz) + dtzeta*r4(ix,iy,l,iz) !t= scalars
+          trhs(ix,iy,l,iz) = t(ix,iy,l,iz) + dtzeta*r4(ix,iy,l,iz)
         ENDDO
       ENDDO
     ENDDO
