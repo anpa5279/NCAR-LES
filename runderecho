@@ -1,0 +1,123 @@
+#! /bin/bash
+#######################################################################
+### Set case parameters
+### user: User
+### jobn: The name of the output file in data directory
+### pnum: Project number for charging/allocation purposes
+### rnam: The name of the run
+### rtyp: The queue to submit
+### tihh: Time to run (hours)
+### timm: Time to run (minutes)
+### nnds: Number of nodes to run on
+### rund: Name of the run directory where data are placed
+### runo: Standard output filename
+### dirm: Location of the submit script and output directory
+### csrc: Directory containing code source
+
+user=apauls
+jobn=ncarles_test
+pnum=UCUB0167
+rnam=derecho_testrun
+rtyp=main
+jpri=economy
+tihh=4
+timm=0
+nnds=1
+runo=logfile.out
+rund=test
+csrc=source
+
+
+echo '--------------------------------------'
+echo ' Creating Directory and Copying Files '
+echo '--------------------------------------'
+
+rm -rf $rund
+mkdir $rund
+mkdir $rund/code
+mkdir $rund/data
+echo '---> Directory Made'
+
+cp $csrc/boundary/* $rund/code/
+cp $csrc/deriv/* $rund/code/
+cp $csrc/diff/* $rund/code/
+cp $csrc/fft/* $rund/code/
+cp $csrc/get/* $rund/code/
+cp $csrc/grid/* $rund/code/
+cp $csrc/init/* $rund/code/
+cp $csrc/main/* $rund/code/
+cp $csrc/misc/* $rund/code/
+cp $csrc/modules/* $rund/code/
+cp $csrc/mpi/* $rund/code/
+cp $csrc/restart/* $rund/code/
+cp $csrc/rhs/* $rund/code/
+cp $csrc/save/* $rund/code/
+cp $csrc/setup/* $rund/code/
+cp $csrc/solve/* $rund/code/
+cp $csrc/stats/* $rund/code/
+cp $csrc/stokes/* $rund/code/
+cp $csrc/tracer/* $rund/code/
+cp $csrc/trans/* $rund/code/
+echo '---> Code Base Copied'
+echo ''
+
+cd $rund/code
+
+
+echo '--------------------------------------'
+echo '      Compile Program      '
+echo '--------------------------------------'
+
+module purge
+module load ncarenv/23.06
+module load intel
+module load openmpi/main
+echo '---> Modules Load Complete'
+
+# PRE-COMPILE
+mpif90 -r8 -132 -O2 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
+echo '---> Precompile Complete'
+# COMPILE
+mpif90 -r8 -132 -O2 -o lesmpi *.f *.f90 -limf -lm
+echo '---> Compile Complete'
+
+# COPY EXECUTABLE TO MAIN DIRECTORY
+cd ../
+cp code/lesmpi .
+echo 4 > mach.file
+echo '---> Executable Made and Copied'
+echo '---> Complete Program Compile for' $rund
+echo ''
+
+###############################################
+### CREATE PBS SCRIPTS FOR ANALYSIS AND RUN ###
+###############################################
+
+# EXECUTE SCRIPT
+cat > EXEC_STEP << EXEC
+#!/bin/sh
+#PBS -N $rund
+#PBS -l walltime=$tihh:$timm:00
+#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -A $pnum
+#PBS -q $rtyp
+#PBS -l job_priority=$jpri
+#PBS -o exec.out
+#PBS -e exec.err
+
+module purge
+module load ncarenv/23.06
+module load intel/2023.0.0
+module load openmpi/main
+
+mpirun ./lesmpi > $runo
+EXEC
+
+
+echo '--------------------------------------'
+echo '       Execute Step       '
+echo '--------------------------------------'
+
+echo '---> Running' $rund
+qsub < EXEC_STEP
+echo ''
