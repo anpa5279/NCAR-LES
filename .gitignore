@@ -5,3 +5,4 @@
 **/*.dSYM
 **/lesmpi
 **/Makefile
+test/
