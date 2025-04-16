@@ -7,11 +7,11 @@ MODULE pars
 ! nys=ny/nslab=256/6=24
 ! PARAMETER in fortran means that the value remains fixed throughout the code
   INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on (1) or off (0).s goes to stokesv.f90
-  ! INTEGER, PARAMETER :: flg_lat = 0       ! solve using stokes drift (0) or utau (friction velocity, happens if =1). 
+  INTEGER, PARAMETER :: flg_lat = 0       ! solve using stokes drift (0) or utau (friction velocity, happens if =1). 
   INTEGER, PARAMETER :: flg_reaction = 0  ! 3.1536e8 reaction model on (1) or off (0). at equilibrium if 0. nscl = 8 if you want reactions to occur
   INTEGER, PARAMETER :: chem0d = 0        ! 1= constant surface temperature (iTsurf) or 0= looking at the first chemical's temperature
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param (need reaction flag to be on) or 0= no flux occurs
-  ! INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity (does not do anything). embedded eventually, i am working with older code. 
+  INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity (does not do anything). embedded eventually, i am working with older code. 
   INTEGER, PARAMETER :: iti=0, itmax=100000, imean=1, ihst=01, itape=100,        & !iti forces a restart, turns on reactions after a spin up. use with reactions. (try iti= 10).. 30 min tbefore ertrstart. if it still dies the issue is something. 
   itstr=1, it_his=120000, i_viz=120000
 

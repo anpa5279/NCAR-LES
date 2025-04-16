@@ -1,8 +1,0 @@
-The following modules were not unloaded:
-  (Use "module --force purge" to unload all):
-
-  1) ncarenv/24.12
-
-The following have been reloaded with a version change:
-  1) ncarenv/24.12 => ncarenv/23.06
-
