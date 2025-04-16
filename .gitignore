@@ -1,8 +1,6 @@
 **/build/
-**/modules/
 **/*.mod
 **/*.o
 **/*.so
 **/*.dSYM
-**/lesmpi
 **/Makefile
