@@ -30,7 +30,7 @@ SUBROUTINE init
   turb_la = 0.3 !turbulent langmuir number (La_t=sqrt(friction velocity/stokes drift)). Langmuir turbulence occurs when a surface boundary layer is forced by wind in the presence of surface waves.
   rlat    = 30 !angle of stokes drift 
 
-  fcor    = 2.0*pi2*SIN(rlat*d_to_r)/(24.0*3600.0)
+  fcor    = 0.0 !2.0*pi2*SIN(rlat*d_to_r)/(24.0*3600.0)
   fcor_h  = 0.0
   ugcont  = 0.0
   vgcont  = 0.
