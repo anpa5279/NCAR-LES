@@ -10,7 +10,7 @@ c #endif
       include 'mpif.h'
       logical there
 c
-      integer status(mpi_status_size), ierr !only needed to define because of fortran
+      integer status(mpi_status_size), ierr
       integer(kind=mpi_offset_kind) :: offset, disp
       integer(kind=k8)                 nsize, nsize2
 c

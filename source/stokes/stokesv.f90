@@ -14,7 +14,7 @@ SUBROUTINE stokesv
   ! RECOMPUTE PEAK IF WE CHANGE U_10 !!!
   CALL speed2stress(u_10,v_10,cd_10,tau_x,tau_y)
 
-  speedval = SQRT(u_10**2 + v_10**2) !v_10 is 0, so this is just u_10
+  speedval = SQRT(u_10**2 + v_10**2)
   f_p     = f2w*grav/speedval
   sigma_p = pi2*f_p
 

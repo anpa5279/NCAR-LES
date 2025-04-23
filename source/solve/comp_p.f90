@@ -1,12 +1,11 @@
 SUBROUTINE comp_p
 ! SETUP PRESSURE SOLVER
 
-!this is the modules folder
-  USE pars  !setting up variable types, defining some
-  USE fftwk !setting up variable types, but not defining
-  USE fields !setting up variable types, but not defining
-  USE con_data !setting up variable types, but not defining
-  USE con_stats !setting up variable types, but not defining
+  USE pars
+  USE fftwk
+  USE fields
+  USE con_data
+  USE con_stats
 
   INCLUDE 'mpif.h'
 
@@ -14,34 +13,33 @@ SUBROUTINE comp_p
   REAL :: fs(nnx,iys:iye,2), fr(nnx,iys:iye,2)
   INTEGER :: istatus(mpi_status_size)
 
-  gami = 1.0/dtgama !dtgama = dt*gama(istage) [1/s]
+  gami = 1.0/dtgama
 
-  !nb and nt are the destination and source nodes
-  nb = myid - ncpu_s !nd only appears in call mpi_sendrecv. myid= which process it is OR process rank. ncpu_s= number of slabs of xy
-  nt = myid + ncpu_s !nt only appears in call mpi_sendrecv. 
+  nb = myid - ncpu_s
+  nt = myid + ncpu_s
 
   ! SEND BOTH R3 AND UPDATED W (FROM COMP1) TO PROCESSOR ABOUT THE CURRENT MYID
-  IF(iss == 0) THEN !iss=starting processor. m
-    nb = mpi_proc_null !set up so it does crash. for the mpi system (in the mpi package when we download to compile)
+  IF(iss == 0) THEN
+    nb = mpi_proc_null
   ENDIF
 
-  IF(ise == numprocs-1) THEN ! if ending processor (ise) equals the size of the cluster minus 1 (numprocs-1). numprocs= total number of processes OR size of cluster
+  IF(ise == numprocs-1) THEN
     nt = mpi_proc_null
   ENDIF
 
   nsend = 2*nnx*(iye + 1 - iys)
   nrecv = nsend
-  DO iy=iys,iye ! iterating through y
-    DO ix=1,nnx ! iterating through x
+  DO iy=iys,iye
+    DO ix=1,nnx
       fs(ix,iy,1) = r3(ix,iy,ize)
       fs(ix,iy,2) = w(ix,iy,ize)
     ENDDO
   ENDDO
 
   CALL mpi_sendrecv(fs(1,iys,1),nsend,mpi_real8,nt,2,fr(1,iys,1),nrecv,     &
-        mpi_real8,nb,2,mpi_comm_world,istatus,ierr) !mpi_sendrecv = general fortran code. Sends and receives a message.
+        mpi_real8,nb,2,mpi_comm_world,istatus,ierr)
 
-  IF(iss /= 0) THEN !then update w (z-velocity) for RK3
+  IF(iss /= 0) THEN
     DO iy=iys,iye
       DO ix=1,nnx
         r3(ix,iy,izs-1) = fr(ix,iy,1)
@@ -62,21 +60,21 @@ SUBROUTINE comp_p
 
     CALL xderivp(fnt1(1,iys,iz),trigx(1,1),xk(1),nnx,iys,iye)
 
-    IF(iz == 1) THEN !if bottom
+    IF(iz == 1) THEN
       DO iy=iys,iye
         DO ix=1,nnx
           p(ix,iy,iz) = fnt1(ix,iy,iz) + ((w(ix,iy,iz) -wbc(ix,iy,2))*gami+ &
                 r3(ix,iy,iz))*dzw_i(iz)
         ENDDO
       ENDDO
-    ELSE IF(iz == nnz) THEN !if top
+    ELSE IF(iz == nnz) THEN
       DO iy=iys,iye
         DO ix=1,nnx
           p(ix,iy,iz) = fnt1(ix,iy,iz) + ((wbc(ix,iy,1) - w(ix,iy,izm1))*   &
                 gami - r3(ix,iy,izm1))*dzw_i(iz)
         ENDDO
       ENDDO
-    ELSE !the inbetween
+    ELSE
       DO iy=iys,iye
         DO ix=1,nnx
           p(ix,iy,iz) = fnt1(ix,iy,iz) + ((w(ix,iy,iz)  - w(ix,iy,izm1))*   &
@@ -116,7 +114,7 @@ SUBROUTINE comp_p
     ENDDO
   ENDDO
 
-  CALL pressure !only called here
+  CALL pressure
 
   RETURN
 END SUBROUTINE

@@ -1,6 +1,5 @@
 SUBROUTINE randoc
 ! RANDOM ICS FOR AN OCEAN SIMULATION
-!called in les_mpi before while loop when iti=0. data comes from random
 
   USE pars
   USE inputs
@@ -54,7 +53,7 @@ SUBROUTINE randoc
       ENDDO
     ENDDO
   ENDDO
-  
+
   ! INITIALIZE RANDOM NUMBER GENERATION
   CALL random_seed(size=n)
   ALLOCATE(seed(n))
@@ -63,7 +62,7 @@ SUBROUTINE randoc
 
   CALL random_seed(put=seed)
 
-  ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE (flow that is divergence free is incompressible and the net flux is 0)
+  ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
   idum = -1
   DO iz=izs,ize
     IF (iz<=8) THEN
@@ -75,7 +74,7 @@ SUBROUTINE randoc
       ! SIMPLE RANDOM FIELD SCALED BETWEEN 0 AND 1
       DO iy=iys,iye
         DO ix=1,nnx
-          CALL random_number(psi(ix,iy)) !generates a random real number between 0 and 1 and saves is to psi(ix,iy) 
+          CALL random_number(psi(ix,iy))
         ENDDO
       ENDDO
 

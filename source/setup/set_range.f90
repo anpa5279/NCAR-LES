@@ -55,8 +55,8 @@ SUBROUTINE set_range
   ize = iz_e(myid)
 
   ! GET STARTING AND ENDING PROCESSOR ID ON EACH VERTICAL SLAB
-  iss = is_s(myid) !starting processor
-  ise = is_e(myid) !ending processor
+  iss = is_s(myid)
+  ise = is_e(myid)
 
   ! DEBUG RANGES
   IF(l_debug) THEN

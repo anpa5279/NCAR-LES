@@ -1,25 +1,27 @@
 MODULE pars
 
-  IMPLICIT NONE !this line says, "computer you do not have to define the variable type, I will"
+  IMPLICIT NONE
 
-! commented below has to do with the mpi:
+! PARAMETERS ARE DESCRIBED IN PARAMS.pdf
 ! nslab=nproc/ncpu_s=256/24=6
 ! nys=ny/nslab=256/6=24
-! PARAMETER in fortran means that the value remains fixed throughout the code
-  INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on (1) or off (0).s goes to stokesv.f90
-  INTEGER, PARAMETER :: flg_lat = 0       ! solve using stokes drift (0) or utau (friction velocity, happens if =1). 
-  INTEGER, PARAMETER :: flg_reaction = 0  ! 3.1536e8 reaction model on (1) or off (0). at equilibrium if 0. nscl = 8 if you want reactions to occur
-  INTEGER, PARAMETER :: chem0d = 0        ! 1= constant surface temperature (iTsurf) or 0= looking at the first chemical's temperature
-  INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param (need reaction flag to be on) or 0= no flux occurs
-  INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity (does not do anything). embedded eventually, i am working with older code. 
-  INTEGER, PARAMETER :: iti=0, itmax=100000, imean=1, ihst=01, itape=100,        & !iti forces a restart, turns on reactions after a spin up. use with reactions. (try iti= 10).. 30 min tbefore ertrstart. if it still dies the issue is something. 
+
+  INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
+  INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau
+  INTEGER, PARAMETER :: flg_reaction = 1  ! 3.1536e8 reaction model on or off
+  INTEGER, PARAMETER :: chem0d = 0
+  INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
+  INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
+  INTEGER, PARAMETER :: flg_npz = 1       ! changing NPZ model, mayzaud-poulet= 0 or ivlev=1
+  INTEGER, PARAMETER :: iti=0, itmax=10000, imean=1, ihst=01, itape=500,        &
   itstr=1, it_his=120000, i_viz=120000
 
-  INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars(nscl) and number of variables saved to the file (nvar). 7 chemicals (3 DIC or 4 other). nscl=1 is temperature and no chemistry
-  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
+  INTEGER, PARAMETER :: nscl = 12, nvar = (4+nscl) !number of scalars and vars
+  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 128 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
    maxnx2 = maxnx + 2, maxny2 = maxny + 2
+
 
 ! INTERNAM FLAG DEFINITIONS
 !       igrdr   =  3; data comes from restart file
@@ -44,7 +46,7 @@ MODULE pars
 !
 !       it_his  = time step where history files start, incremented by itape
 !
-!       ismlt   = 1 ; use businger formulas in MO. (MO deals with scalar flux profile relations on the open ocean.)
+!       ismlt   = 1 ; use businger formulas in MO
 !                 0 ; use large and everyone elses formulas in MO
 !
 !       iupwnd  = 0;  use skew symmetric formulas for all derivatives
@@ -99,7 +101,7 @@ MODULE pars
   INTEGER ::                                                                &
           izi, iz_min
   REAL, ALLOCATABLE ::                                                      &
-          wind(:,:), tau13m(:,:), tau23m(:,:), taut3m(:,:,:), t_grnd(:,:,:)!allocatable= allows the variable to be dynamic and can change size. 
+          wind(:,:), tau13m(:,:), tau23m(:,:), taut3m(:,:,:), t_grnd(:,:,:)
 !----------------------------------------------------------------------
   REAL ::                                                                   &
          u_mn(0:maxnz1), v_mn(0:maxnz1), w_mn(0:maxnz1), t_mn(0:maxnz1,nscl)
@@ -131,8 +133,11 @@ MODULE pars
           myid, numprocs, i_root, ziloc, myid_newvis, ncpu_s, ncpu_z, maxp
   INTEGER, ALLOCATABLE, DIMENSION(:) ::                                     &
           ix_s, ix_e, jx_s, jx_e, kx_s, kx_e, mx_s, mx_e, iy_s, iy_e, jy_s, &
-          jy_e, is_s, is_e, iz_s, iz_e !allocatable= allows the variable to be dynamic and can change size. 
+          jy_e, is_s, is_e, iz_s, iz_e
 !----------------------------------------------------------------------
   REAL ::                                                                &
           fug, khen, bet_ost, kbub, u_tau, wa, wh
+!----------------------NPZ parameters that are called in the code----------------
+  REAL ::                                                                &
+          k_ext=0.1 
 END MODULE

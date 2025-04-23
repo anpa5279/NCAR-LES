@@ -1,5 +1,4 @@
 SUBROUTINE lower(it)
-! used if parameter ifree=0 and iss=0. if ifree==1, then lower_free.f90 is used instead
 ! SETUP LOWER BC FOR PLANE AT IZ = 1
 ! CAN USE BUSINGER OR LARGE FORMULAS WITH WIND
 ! INDEX F(.,.,2) INDICATES LOWER.

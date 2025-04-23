@@ -44,19 +44,18 @@ SUBROUTINE setcon
   ! THIS IS A SIMPLER VERSION SINCE ALL TERMS ARE LUMPED IN NON-LINEAR TERMS.
   ! CFL NUMBER IS FOR AN ENTIRE RK STEP IN THE CASE THREE STAGES
   ! CFL = MAX(U)*DT/DX
-  !these are rates
   zetas(1) = 0.0
   zetas(2) = -17.0/60.0
   zetas(3) = -5.0/12.0
   gama(1)  = 8.0/15.0
   gama(2)  = 5.0/12.0
   gama(3)  = 3.0/4.0
-  !etas(1)  = -1.0
-  !etas(2)  = -1.0 + 8.0/15.0
-  !etas(3)  = -1.0 + 2.0/3.0
+  etas(1)  = -1.0
+  etas(2)  = -1.0 + 8.0/15.0
+  etas(3)  = -1.0 + 2.0/3.0
 
   ! A FULL STEP, AT THE NEW TIME
-  !etas(4)  =  0.0
+  etas(4)  =  0.0
 
   cfl = 0.50
 

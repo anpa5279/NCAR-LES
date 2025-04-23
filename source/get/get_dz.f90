@@ -21,18 +21,18 @@ SUBROUTINE get_dz
   ! BUILD Z GRID FOR U POINTS
   dzovr2 = dz*0.5
   DO iz=1,nnz+1
-    zz(iz) = 0.5*(z(iz) + z(iz-1))! averaging: so it is in the middle of the cell
+    zz(iz) = 0.5*(z(iz) + z(iz-1))
   ENDDO
 
   zz(0) = - zz(1)
   DO iz=1,nnz+1
-    dzu(iz) = zz(iz) - zz(iz-1) !difference in z
+    dzu(iz) = zz(iz) - zz(iz-1)
   ENDDO
 
   dzu(0)     = dzu(1)
   dzu(nnz+2) = dzu(nnz+1)
   DO iz=0,nnz+2
-    dzu_i(iz) = 1.0/dzu(iz) !i stands for inverse
+    dzu_i(iz) = 1.0/dzu(iz)
   ENDDO
 
   RETURN

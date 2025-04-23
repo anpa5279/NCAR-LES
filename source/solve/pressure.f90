@@ -5,7 +5,6 @@ SUBROUTINE pressure
 ! VALUES (0 & NNZ+1) ARE NOT NEEDED BUT ARE USEFUL IN THE MATRIX TRANSPOSE WHEN
 ! WE RETURN (SEE SEND_ZTOX).
 ! ON EXIT P IS DEFINED AT ALL [IZS-1:IZE+1]
-!only called in solve/comp_p
 
   USE pars
   USE fields
@@ -37,7 +36,7 @@ SUBROUTINE pressure
   ! THE ORDER OF PFFT IS (Y,X,Z)
   CALL xtoz_trans(pfft,pt,nny,nnz,jys,jye,jy_s,jy_e,jxs,jxe,izs,ize,iz_s,   &
         iz_e,myid,ncpu_s,numprocs)
-  CALL solve_trid(pt, ptopfft) !only time this is called
+  CALL solve_trid(pt, ptopfft)
 
   ! TRANSPOSE BACK
   CALL ztox_trans(pt,pfft,nny,nnz,jys,jye,jy_s,jy_e,jxs,jxe,izs,ize,iz_s,   &

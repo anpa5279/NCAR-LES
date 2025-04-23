@@ -33,8 +33,7 @@ MODULE con_data
   SUBROUTINE fill_cc
   IMPLICIT NONE
 ! POINTER ASSOCIATIONS FOR CONSTANT VARIABLES
-! a pointer association ( => )
-! % acts like the . operator in python. c_c is a structure (which is con_d)
+
     zo     => c_c%zo
     vk     => c_c%vk
     vkin   => c_c%vkin

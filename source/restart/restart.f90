@@ -21,7 +21,7 @@ SUBROUTINE restart
 
   ! GET CONSTANT FILE
   iloc = INDEX(path_res,' ')
-  path_res_c = path_res(1:iloc-1)//'.con' !creating the files in the data folder
+  path_res_c = path_res(1:iloc-1)//'.con'
 
   INQUIRE(file=path_res_c,exist=there)
 

@@ -79,7 +79,7 @@ SUBROUTINE rhs_scl(istep,iscl)
       ENDDO
     ENDDO
 
-    IF(iupwnd /= 1) THEN !iupwnd=0, use skew symmetric formulas for all derivatives in scalar equations
+    IF(iupwnd /= 1) THEN
 
       ! SKEW SYMMETRIC ADVECTIVE FORM FOR VERTICAL FLUX = 0.5(WDT/DZ + D/DZ(WT))
       DO iy=iys,iye
@@ -95,7 +95,7 @@ SUBROUTINE rhs_scl(istep,iscl)
                 dzu_i(iz))
         ENDDO
       ENDDO
-    ELSE !iupwind=1, use hybrid upwind scheme for all derivatives in scalar equations
+    ELSE
       ! Z-DIRECTION SPECIAL
       IF(iz == 1) THEN
         DO iy=iys,iye
@@ -104,8 +104,8 @@ SUBROUTINE rhs_scl(istep,iscl)
             ! AIR-SEA FLUX BC
             IF(iscl==2)THEN
               Sc = 0.0d0
-              kconst = 0.0d0 !double precision
-              kbub = 0.0d0  !double precision
+              kconst = 0.0d0
+              kbub = 0.0d0
               tscal = 0.0d0
               tscal = t(ix,iy,1,iz) - 273.15d0
 
@@ -126,7 +126,7 @@ SUBROUTINE rhs_scl(istep,iscl)
               kbub = (2450.0*wa)/(bet_ost*(1.0+(14.0*bet_ost*Sc**(-0.5))**  &
                     (-1.0/1.2))**1.2)                       ! (WOOLF, 1997)
 
-              ! CALCULATE SURFACE FLUX RATE, but kconst and kbub =0, so can this be simplified?
+              ! CALCULATE SURFACE FLUX RATE
               IF(co2_asflux==1) THEN
                 flux_l(ix,iy) = (kconst)*((c1*1.10)-t(ix,iy,iscl,iz))
               ELSEIF(co2_asflux==2) THEN

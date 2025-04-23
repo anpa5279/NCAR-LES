@@ -59,7 +59,7 @@ MODULE con_stats
   IMPLICIT NONE
 ! POINTER ASSOCIATION FOR STAT ARRAYS
 ! GET SIZE OF STAT ARRAYS ISIZE FOR HISTORY FILES
-! a pointer association ( => ),
+
     isize = 0
 
     wwsb    => c_s%wwsb     ; isize = isize + size(wwsb)

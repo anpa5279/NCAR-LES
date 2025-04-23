@@ -1,6 +1,5 @@
 SUBROUTINE surfvis(it)
-!used if the vortex position has been updated (called in les_mpi)
-!surface viscosity
+
   USE pars
   USE fields
   USE fftwk
@@ -25,15 +24,15 @@ SUBROUTINE surfvis(it)
 
     CALL sufto(it)
 
-    IF(qstar(1) == 0.) THEN !if hflux=0 
+    IF(qstar(1) == 0.) THEN
       zeta = 0.0
     ELSE
-      zeta = ABS(z(1))/amonin 
+      zeta = ABS(z(1))/amonin
     ENDIF
 
-    IF(ismlt == 1) THEN !ismlt = 1 ; use businger formulas in MO
+    IF(ismlt == 1) THEN
       CALL busngr(zeta,phim,phis,psim,psis)
-    ELSE ! = 0 ; use large and everyone elses formulas in MO
+    ELSE
       CALL fzol(zeta,phim,phis,psim,psis)
     ENDIF
 
@@ -59,7 +58,7 @@ SUBROUTINE surfvis(it)
     ! GET AVERAGE FLUCTUATING EDDY VISCOSITY
     DO iy=iys,iye
       DO ix=1,nnx
-        e(ix,iy,iz)=AMAX1(e(ix,iy,iz),sml_eg) !this is just ensuring energy is conversed. energy cannot be 0 in a grid space
+        e(ix,iy,iz)=AMAX1(e(ix,iy,iz),sml_eg)
       ENDDO
     ENDDO
 
@@ -96,8 +95,8 @@ SUBROUTINE surfvis(it)
 
     xkz1 = vise - SQRT(uws**2 + vws**2)*viscon
     xksurf =  xkz1 - xkavg
-    xksurf = AMAX1(xksurf,0.0) !ensuring it is not negative. 
-    xksurf = AMIN1(xksurf,vise) !can be postiive or negative
+    xksurf = AMAX1(xksurf,0.0)
+    xksurf = AMIN1(xksurf,vise)
   ENDIF
 
   ! BROADCAST VALUES TO OTHER PROCESSES

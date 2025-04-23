@@ -1,5 +1,5 @@
 SUBROUTINE lower_free(it)
-!!! CHECK LOWER FREE FLAG (if parameter ifree=1). this is in les_mpi.f90. if ifree==0 and iss==0, then lower.f90 instead of this
+!!! CHECK LOWER FREE FLAG
 ! SETUP LOWER BC FOR FREE CONVECTION WHERE EACH PROCESSOR APPLIES LOG-LAW AT
 ! SEVERAL (IX,IY) FOR IZ = 1
 ! INDEX F(.,.,2) INDICATES LOWER
@@ -43,7 +43,7 @@ SUBROUTINE lower_free(it)
   CALL suft2(u_level1,it)
 
   ! SEND SURFACE SCALARS AND MOMENTUM FLUXES BACK TO ROOT(S)
-  IF(numprocs /= 1) THEN !numprocs= total number of processes OR size of cluster
+  IF(numprocs /= 1) THEN
     DO iy=iys,iye
       DO ix=mxs,mxe
         sbuf(1,ix,iy)  = tau13m(ix,iy)
@@ -61,7 +61,7 @@ SUBROUTINE lower_free(it)
     ENDDO
 
     irow_r = MOD(myid,ncpu_s)
-    IF(myid >= ncpu_s) THEN !if the process rank is greater than or equal to ncpu_s (8)
+    IF(myid >= ncpu_s) THEN
       num = (2+2*nscl)*(mxe+1-mxs)*(iye+1-iys)
       CALL mpi_send(sbuf(1,mxs,iys),num,mpi_REAL8,irow_r,1,mpi_comm_world,ierr)
     ELSE
@@ -73,7 +73,7 @@ SUBROUTINE lower_free(it)
       ENDDO
     ENDIF
 
-  ELSEIF(numprocs == 1) THEN !numprocs= total number of processes OR size of cluster
+  ELSEIF(numprocs == 1) THEN
     CONTINUE
   ENDIF
 

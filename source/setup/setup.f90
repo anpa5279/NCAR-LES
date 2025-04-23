@@ -45,8 +45,8 @@ SUBROUTINE setup(it)
   ENDIF
 
   ! BC FLAGS
-  ibcu = iradup !upper boundary layer flag. iradup is defined in pars. =0
-  ibcl = 0 !lower boundary layer flag. when =0, lower boundary condition set by similarity theory 
+  ibcu = iradup
+  ibcl = 0
 
   ! WAVENUMBERS, INTRODUCE A NORMALIZED SET OF WAVENUMBERS TO ELIMINATE
   ! COMPUTATION IN DERIVATIVES XDERIV AND YDERIV
@@ -97,7 +97,7 @@ SUBROUTINE setup(it)
     ENDDO
   ENDIF
 
-  ! SET LENGTH SCALE FOR SGS MODEL (length scale dslg)
+  ! SET LENGTH SCALE FOR SGS MODEL
   IF(iz_space == 0) THEN
 
     ! UNIFORM VERITCAL SPACING
@@ -135,7 +135,7 @@ SUBROUTINE setup(it)
   sml_eg = smal_e*gridr
 
   ! GET VISCOSITY MODEL PARAMETERS
-  IF(ivis /= 1) THEN  !ivis0 == 1 (new eddy viscosity model), then ivis=1. else it is the old eddy viscosity model
+  IF(ivis /= 1) THEN
     viscon = 0.0
     xksurf = 0.0
     nmatch = -1
@@ -155,7 +155,7 @@ SUBROUTINE setup(it)
   t_factor = 7200.0
 
   ! FOR PRINT OUT TO GET MORE DIGITS
-  t_ref = 290.16
+  t_ref = 273.15
 
   ! DO NOT LOOK FOR ZI BELOW ZI_MIN
   zi_min = -5.0
