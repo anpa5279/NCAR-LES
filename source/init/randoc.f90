@@ -1,6 +1,5 @@
 SUBROUTINE randoc
-!RANDOM ICS FOR AN OCEAN SIMULATION
-!called in les_mpi before while loop when iti=0. data comes from random
+! RANDOM ICS FOR AN OCEAN SIMULATION
 
   USE pars
   USE inputs
@@ -54,8 +53,8 @@ SUBROUTINE randoc
       ENDDO
     ENDDO
   ENDDO
-  
-  !INITIALIZE RANDOM NUMBER GENERATION
+
+  ! INITIALIZE RANDOM NUMBER GENERATION
   CALL random_seed(size=n)
   ALLOCATE(seed(n))
   CALL system_clock(s)
@@ -63,19 +62,19 @@ SUBROUTINE randoc
 
   CALL random_seed(put=seed)
 
-  !SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE (flow that is divergence free is incompressible and the net flux is 0)
+  ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
   idum = -1
   DO iz=izs,ize
     IF (iz<=8) THEN
 
-      !AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
+      ! AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
       ampv = 0.01
       ampt = 0.01
 
-      !SIMPLE RANDOM FIELD SCALED BETWEEN 0 AND 1
+      ! SIMPLE RANDOM FIELD SCALED BETWEEN 0 AND 1
       DO iy=iys,iye
         DO ix=1,nnx
-          CALL random_number(psi(ix,iy)) !generates a random real number [0, 1) and saves is to psi(ix,iy) 
+          CALL random_number(psi(ix,iy))
         ENDDO
       ENDDO
 
@@ -107,12 +106,12 @@ SUBROUTINE randoc
           u(ix,iy,iz) = u(ix,iy,iz) - psiy(ix,iy,izs)*facv
           v(ix,iy,iz) = v(ix,iy,iz) + psix(ix,iy)*facv
           t(ix,iy,1,iz) = t(ix,iy,1,iz) + psi(ix,iy)*ampt
-          e(ix,iy,iz) = 0.0001 !only putting energy is the top grid cells 
+          e(ix,iy,iz) = 0.0001
         ENDDO
       ENDDO
     ENDIF
 
-    !CHECK DIVERGENCE OF INITIAL FIELD
+    ! CHECK DIVERGENCE OF INITIAL FIELD
     DO iy=iys,iye
       DO ix=1,nnx
         uxx(ix,iy) = u(ix,iy,iz)
@@ -145,7 +144,7 @@ SUBROUTINE randoc
 
   RETURN
 
-!FORMAT
+! FORMAT
 600   FORMAT('facv = ',e15.8,' max psiy = ',e15.8)
 6000  FORMAT(' check of divergence for initial state',/,' iz ',5x,' divergence')
 6100  FORMAT(i5,e15.6)

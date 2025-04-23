@@ -17,7 +17,7 @@ c
          if(i .ne. myid) then
             call mpi_sendrecv(work(1,myid),nsend,mpi_real8,i,1,
      +               work(1,i),nsend,mpi_real8,i,1,
-     +           mpi_comm_world,istatus,ierr) !The send-receive operations combine in one call the sending of a message to one destination and the receiving of another message, from another process
+     +           mpi_comm_world,istatus,ierr)
          endif
       enddo
       do i=iss,ise

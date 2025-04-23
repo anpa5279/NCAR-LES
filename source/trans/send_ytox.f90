@@ -1,5 +1,5 @@
 SUBROUTINE send_ytox(g,gt,ny,ixs,ixe,iys,iye,izs,ize)
-!GRAB CORRECT CHUNK OF ARRAY TO BE SENT
+! GRAB CORRECT CHUNK OF ARRAY TO BE SENT
 
   REAL :: g(ny,ixs:ixe,izs:ize), gt(iys:iye,ixs:ixe,izs:ize)
 

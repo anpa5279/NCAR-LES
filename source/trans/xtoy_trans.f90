@@ -1,7 +1,6 @@
 SUBROUTINE xtoy_trans(f,g,nx,ny,ixs,ixe,ix_s,ix_e,iys,iye,iy_s,iy_e,iz1,    &
   iz2,myid,ncpu_s,np)
-!called in deriv/yd_mpi and fft/fft2d_mpi
-!TRANSPOSE ARRAY F(NX,IYS:IYE,IZ1:IZ2) --> G(NY,IXS:IXE,IZ1:IZ2)
+! TRANSPOSE ARRAY F(NX,IYS:IYE,IZ1:IZ2) --> G(NY,IXS:IXE,IZ1:IZ2)
 
   INCLUDE 'mpif.h'
 
@@ -13,7 +12,7 @@ SUBROUTINE xtoy_trans(f,g,nx,ny,ixs,ixe,ix_s,ix_e,iys,iye,iy_s,iy_e,iz1,    &
   jk = (iye - iys + 1)*(iz2 - iz1 + 1)
   ik = (ixe - ixs + 1)*(iz2 - iz1 + 1)
 
-  !GET CPUS ON SLAB FOR MYID
+  ! GET CPUS ON SLAB FOR MYID
   islab = myid/ncpu_s
   iss   = islab*ncpu_s
   ise   = iss + ncpu_s - 1

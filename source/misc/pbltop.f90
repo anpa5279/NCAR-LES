@@ -1,18 +1,17 @@
 SUBROUTINE pbltop(itop)
-  !only called in les_mpi
-!---------- get estimate of pbl top
-!           method = 0, min of wt flux
-!                       (good for buoyancy cases)
-!           method = 1, uw flux less than critical value
-!                       (good for ekman cases)
-!           method = 2, running t average exceeds criterion
-!                       (good for neutral cases with capping
-!                        inversions)
-!           method = 3, MAXimum gradient in temperature field
-!                       (good for finding local zi see jas paper)
-!                       with minimum search height (sr. setup)
-!------------ IF method USEs average statistics THEN only root
-!             process need find zi
+! ---------- get estimate of pbl top
+!            method = 0, min of wt flux
+!                        (good for buoyancy cases)
+!            method = 1, uw flux less than critical value
+!                        (good for ekman cases)
+!            method = 2, running t average exceeds criterion
+!                        (good for neutral cases with capping
+!                         inversions)
+!            method = 3, MAXimum gradient in temperature field
+!                        (good for finding local zi see jas paper)
+!                        with minimum search height (sr. setup)
+! ------------ IF method USEs average statistics THEN only root
+!              process need find zi
 
   USE pars
   USE fields
@@ -74,10 +73,10 @@ SUBROUTINE pbltop(itop)
       ENDDO
     ENDDO
 
-  !USE GRADIENT METHOD, EVERY PROCESS COMPUTES
+  ! USE GRADIENT METHOD, EVERY PROCESS COMPUTES
   ELSEIF(method == 3) THEN
 
-    !SIMILAR TO ZEROING IN STAT ARRAY IN SR. MEAN_STAT
+    ! SIMILAR TO ZEROING IN STAT ARRAY IN SR. MEAN_STAT
     DO iy=1,nny
       DO ix=1,nnx
         gradloc(1,ix,iy) = 0.0
@@ -85,7 +84,7 @@ SUBROUTINE pbltop(itop)
       ENDDO
     ENDDO
 
-    !NOW ALL Z IN THIS PROCESS
+    ! NOW ALL Z IN THIS PROCESS
     IF(iz_min <= ize) THEN
       DO iz=MAX(izs,iz_min),ize
         izp1 = iz + 1
@@ -101,12 +100,12 @@ SUBROUTINE pbltop(itop)
       ENDDO
     ENDIF
 
-    !ALTERNATE VERSION USING ALREADY DEFINED FUNCTION IN MPI
-    !PASSES 2 REAL8 VARIABLES
+    ! ALTERNATE VERSION USING ALREADY DEFINED FUNCTION IN MPI
+    ! PASSES 2 REAL8 VARIABLES
     CALL mpi_reduce(gradloc,gradmax,nnx*nny,mpi_2DOuble_precision,          &
           mpi_maxloc,i_root,mpi_comm_world,ierror)
 
-    !GET AVERAGE ON ROOT PROCESSES
+    ! GET AVERAGE ON ROOT PROCESSES
     IF(l_root) THEN
       zi_avg = 0.0
       DO iy=1,nny
@@ -118,7 +117,7 @@ SUBROUTINE pbltop(itop)
     ENDIF
   ENDIF
 
-  !SEND AVERAGE ZI EVERYWHERE
+  ! SEND AVERAGE ZI EVERYWHERE
   CALL mpi_bcast(zi,1,mpi_real8,i_root,mpi_comm_world,ierr)
 
   DO iz=1,nnz
@@ -127,7 +126,7 @@ SUBROUTINE pbltop(itop)
 
   RETURN
 
-!FORMAT
+! FORMAT
 7001  FORMAT(' 7001 in pbltop myid = ',i4,' zi = ',e15.6,' itop = ',i3)
 
 END SUBROUTINE
