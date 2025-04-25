@@ -14,10 +14,10 @@ c
 c
 c ---- open file
 c
-      open(nvelc,err=9992,file=path_sav_c,form='unformatted',
-     +                status='unknown')
-      write(nvelc,err=9992) c_c, c_hurr, c_s, case
-      close(nvelc)
+c      open(nvelc,err=9992,file=path_sav_c,form='unformatted',
+c     +                status='unknown')
+c      write(nvelc,err=9992) c_c, c_hurr, c_s, case
+c      close(nvelc)
 c
         inquire(file=path_sav_c,exist=there)
         if(.not.there) then
