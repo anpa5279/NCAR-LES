@@ -122,9 +122,9 @@ PROGRAM les_mpi
       CALL save_v(it)
     ENDIF
 
-    IF(istage == 3) THEN
-      IF(msave .AND. l_root) CALL save_c(it)
-    ENDIF
+    !IF(istage == 3) THEN
+    !  IF(msave .AND. l_root) CALL save_c(it)
+    !ENDIF
 
     IF(micut) THEN
       CALL dealias
