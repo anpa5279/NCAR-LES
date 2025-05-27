@@ -40,21 +40,5 @@ SUBROUTINE strang1(it)
       ENDDO
     ENDDO
   ENDDO
-
-  !taking averages
-  Pavg=0.0
-  Zavg=0.0
-  Navg=0.0
-
-  DO iz=izs,ize
-    DO ix=1,nnx
-      DO iy=iys,iye
-        Pavg= Pavg+ t(ix,iy,6,iz)/(nnx**2)
-        Zavg= Zavg+ t(ix,iy,7,iz)/(nnx**2)
-        Navg= Navg+ t(ix,iy,8,iz)/(nnx**2)
-        
-      ENDDO
-    ENDDO
-  ENDDO
   RETURN
 END SUBROUTINE

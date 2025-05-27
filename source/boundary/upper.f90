@@ -86,7 +86,7 @@ SUBROUTINE upper
     xmeanp = xmeanp*fnxy
     DO iy=iys,iye
       DO ix=1,nnx
-        pbc2(ix,iy,1) = pbc2(ix,iy,1) - xmeanp
+        pbc2(ix,iy,1) = pbc2(ix,iy,1) - xmeanp !this is a part of the radiation BC
       ENDDO
     ENDDO
   ENDIF
