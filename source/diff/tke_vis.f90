@@ -88,7 +88,7 @@ subroutine tke_vis(istep)
       uxymm = u_mn(iz)
       uxymp = u_mn(izp1)
       vxymm = v_mn(iz)
-      vxymp = v_mn(izp1)
+      vxymp = v_mn(izp1) !horizontal average 
     ENDIF
 
     DO iy=iys,iye
