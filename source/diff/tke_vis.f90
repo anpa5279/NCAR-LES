@@ -16,28 +16,46 @@ subroutine tke_vis(istep)
   REAL alk(nnx,iys:iye,izs-1:ize+1)
 
   ! GET LENGTH SCALES AND EDDY VISCOSITY
-  IF(i_dear == 0) THEN
-    CALL dear_vis(alk)
-  ELSE
-    CALL schu_vis(alk)
-  ENDIF
-
   ! IF SPECIAL 2 PART SURFACE LAYER MODEL IS ON
   ! GET 'MEAN' VISCOSITY
-  DO iz=izs-1,ize
-    izm1         = iz - 1
-    izp1         = iz + 1
-    vis_mean(iz) = 0.0
-    IF(ivis == 1 .AND. iz <= nmatch) THEN
-      IF(iz <= 1) THEN
-        vis_mean(iz) = xksurf
-      ELSE
-        stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
-              ABS(dzu_i(izp1))
-        vis_mean(iz) = xksurf*viscon*stravg
+  IF(i_dear == 0) THEN
+    CALL dear_vis(alk)
+    DO iz=izs-1,ize
+      izm1         = iz - 1
+      izp1         = iz + 1
+      vis_mean(iz) = 0.0
+      IF(ivis == 1 .AND. iz <= nmatch) THEN
+        IF(iz <= 1) THEN
+          vis_mean(iz) = xksurf
+        ELSE
+          stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
+                ABS(dzu_i(izp1))
+          vis_mean(iz) = xksurf*viscon*stravg
+        ENDIF
       ENDIF
-    ENDIF
-  ENDDO
+    ENDDO
+  ELSEIF (i_dear == 1) THEN
+    CALL schu_vis(alk)
+    DO iz=izs-1,ize
+      izm1         = iz - 1
+      izp1         = iz + 1
+      vis_mean(iz) = 0.0
+      IF(ivis == 1 .AND. iz <= nmatch) THEN
+        IF(iz <= 1) THEN
+          vis_mean(iz) = xksurf
+        ELSE
+          stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
+                ABS(dzu_i(izp1))
+          vis_mean(iz) = xksurf*viscon*stravg
+        ENDIF
+      ENDIF
+    ENDDO
+  ELSE 
+    CALL smag_vis(alk)
+    DO iz=izs-1,ize
+      vis_mean(iz) = 0.0
+    ENDDO
+  ENDIF
 
   ! UPDATE RHS OF SGS E FROM X AND Z PIECES
   ! CUBE OF SIZE (NNX, IYZ, IYE, IZS:IZE)

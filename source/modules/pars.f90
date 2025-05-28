@@ -62,6 +62,9 @@ MODULE pars
 !
 !      nscl  .ge. 1   number of scalars to be followed set in parameter statements
 !                     change entries in sr. init, and sr. suft for surface bc's
+!      i_dear = 0; deardorff model
+!             = 1; schumann model
+!             = 2; smagorinsky model
 
 
   INTEGER, PARAMETER ::                                                     &
