@@ -85,22 +85,11 @@ module tracerbc
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
       do iscl = 2,nscl !skipping temperature
-         bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
-         if (it.eq.1) then
-            if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals); 
-            if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
-         endif
-         bnds = 0; vals = 0; points = 0;
+        bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
+        if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals); 
+        if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
+        bnds = 0; vals = 0; points = 0;
       enddo
-
-      if(flg_debug == 1) then
-          open(13, file='tracerbc.txt',access='append')
-          write(13,'(A)') '------------------------'
-          write(13,'(A,i3)') 'RUNNING FOR IT= ',it
-          write(13,'(A,f9.6)') 'Z for 5m above H', z(izi)+5.0
-          write(13,'(A,f9.6)') 'Z for 5m below H', z(izi)-5.0
-          close(13)
-      end if
 
     end subroutine
 

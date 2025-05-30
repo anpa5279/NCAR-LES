@@ -6,13 +6,11 @@ SUBROUTINE smag_vis(alk)
   USE con_data
   USE con_stats
 
-  REAL :: d_grid(izs-1:ize+1)
   REAL :: sij2(nnx,iys:iye,izs-1:ize+1)
 
-  DO iz=izs,MIN(ize,nmatch)
+  DO iz=izs-1,ize+1
     izp1 = iz + 1
     izm1 = iz - 1
-    d_grid(iz) = (ABS(dx*dy*dzw(iz)))**(1./3.)
     ! GET FLUCTUATING STRAINS
     DO j=iys,iye
       DO i=1,nnx
@@ -24,7 +22,7 @@ SUBROUTINE smag_vis(alk)
         s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
         s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
         sij2(i,j,iz) = s11 + s22 + s33 + 2 * s12 + 2 * s13 + 2 * s23
-        vis_m(i,j,iz)  = (csmag*d_grid(iz))**2 * SQRT(2 * sij2(i, j, iz))
+        vis_m(i,j,iz)  = (csmag*dsl_z(iz))**2 * SQRT(2 * sij2(i, j, iz))
         vis_s(i,j,iz)  = vis_m(i,j,iz)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
       ENDDO

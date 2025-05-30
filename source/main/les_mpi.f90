@@ -56,6 +56,9 @@ PROGRAM les_mpi
   tzero = time
   CALL get_dt(it,iti)
 
+  ! IC Tracers
+  CALL applytracerbc(it)
+
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
 
@@ -86,7 +89,6 @@ PROGRAM les_mpi
       CALL upper
     ENDIF
 
-    CALL applytracerbc(it)
     CALL bcast_pbc
     CALL get_means(istage)
 
