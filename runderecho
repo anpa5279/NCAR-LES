@@ -5,10 +5,6 @@
 ### jobn: The name of the output file in data directory
 ### pnum: Project number for charging/allocation purposes
 ### rnam: The name of the run
-### rtyp: The queue to submit
-### tihh: Time to run (hours)
-### timm: Time to run (minutes)
-### nnds: Number of nodes to run on
 ### rund: Name of the run directory where data are placed
 ### runo: Standard output filename
 ### dirm: Location of the submit script and output directory
@@ -18,11 +14,6 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 rnam=derecho_testrun
-rtyp=main
-jpri=economy
-tihh=8
-timm=0
-nnds=1
 runo=logfile.out
 rund=test
 csrc=source
@@ -97,11 +88,11 @@ echo ''
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
-#PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -l walltime=08:00:00
+#PBS -l select=1:ncpus=1:mpiprocs=1
 #PBS -A $pnum
-#PBS -q $rtyp
-#PBS -l job_priority=$jpri
+#PBS -q main
+#PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 
