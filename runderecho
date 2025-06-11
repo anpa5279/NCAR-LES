@@ -59,7 +59,7 @@ echo '--------------------------------------'
 echo '      Compile Program      '
 echo '--------------------------------------'
 
-module purge
+module --force purge
 module load ncarenv/23.06
 module load intel
 module load openmpi/main
@@ -96,7 +96,7 @@ cat > EXEC_STEP << EXEC
 #PBS -o exec.out
 #PBS -e exec.err
 
-module purge
+module --force purge
 module load ncarenv/23.06
 module load intel/2023.0.0
 module load openmpi/main
