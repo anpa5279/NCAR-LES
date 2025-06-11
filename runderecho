@@ -75,6 +75,7 @@ echo '---> Compile Complete'
 # COPY EXECUTABLE TO MAIN DIRECTORY
 cd ../
 cp code/lesmpi .
+chmod +x lesmpi
 echo 4 > mach.file
 echo '---> Executable Made and Copied'
 echo '---> Complete Program Compile for' $rund
