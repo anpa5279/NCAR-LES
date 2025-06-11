@@ -19,17 +19,16 @@ module reaction
   ! tau          : The timescale to be used.
 
   ! flg_debug    : Write a debug file
-! PARAMETER in fortran means that the value remains fixed throughout the code
   integer, parameter :: flg_debug = 0
 
 contains
 
   ! REACT_SRC: calculate the scalar reaction source term for a given scalar
   !            and point. This is called in rhs_scl for each scalar.
-  function react_src(ix,iy,iscl,iz) !react_src must be defined
+  function react_src(ix,iy,iscl,iz)
     ! ix, iy, iscl, iz (in): location of interest
-    real, dimension(nscl-1) :: react_src !dimension= defines this as an array
-    integer, intent(in) :: ix, iy, iscl, iz !last time iscl is used in the code
+    real, dimension(nscl-1) :: react_src
+    integer, intent(in) :: ix, iy, iscl, iz
 
     integer :: zzi, i
     real, dimension(0:nscl-2) :: co2, co2tmp
@@ -140,7 +139,7 @@ contains
     enddo
 
     ! calculate F_n for initial y
-    F_n = dydt(t_rkc, y_n, temper) !Derivative evaluated at current state for chemical reactions to occur
+    F_n = dydt(t_rkc, y_n, temper)
 
     ! load initial estimate for eigenvector
     if(work(2) < UROUND) then
@@ -272,7 +271,7 @@ contains
 
   end function rkc_driver
 
-  real function rkc_spec_rad(t_rkc, hmax, yLocal, F, v, Fv, temper) !rkc_spec_rad must be defined
+  real function rkc_spec_rad(t_rkc, hmax, yLocal, F, v, Fv, temper)
     ! Function to estimate spectral radius.
     !
     ! t_rkc    the time.

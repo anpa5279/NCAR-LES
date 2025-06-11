@@ -34,6 +34,7 @@ PROGRAM les_mpi
   CALL setcon
   CALL set_paths
   istop = 1
+
   ! SCRATCH RUN
   IF (iti==0)  THEN
     igrdr = 2
@@ -54,8 +55,6 @@ PROGRAM les_mpi
   ! TIME LOOP
   tzero = time
   CALL get_dt(it,iti)
-  ! IC Tracers
-  CALL applytracerbc(it)
 
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
@@ -87,11 +86,12 @@ PROGRAM les_mpi
       CALL upper
     ENDIF
 
+    CALL applytracerbc(it)
     CALL bcast_pbc
     CALL get_means(istage)
 
     IF(ivis == 1) THEN
-      CALL iso(it) !only if using new viscosity model 
+      CALL iso(it)
       CALL surfvis(it)
     ENDIF
 
@@ -145,7 +145,7 @@ PROGRAM les_mpi
     8999 CONTINUE
     CALL get_max
     CALL get_dt(it,iti)
-  END DO !end of while loop
+  END DO
 
   te_mpi = mpi_wtime()
 

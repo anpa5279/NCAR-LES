@@ -155,7 +155,7 @@ SUBROUTINE setup(it)
   t_factor = 7200.0
 
   ! FOR PRINT OUT TO GET MORE DIGITS
-  t_ref = 273.15 !+ iTsurf
+  t_ref = 290.16
 
   ! DO NOT LOOK FOR ZI BELOW ZI_MIN
   zi_min = -5.0

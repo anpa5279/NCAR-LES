@@ -19,7 +19,7 @@ SUBROUTINE set_sav(it,istart)
   dt    = dt_new
   dtg   = dt
   mnout = (MOD(it_counter,imean)==0) .OR. (it==1)
-  mtape = (MOD(it_counter,itape)==0) .OR. (it==1)
+  mtape = (MOD(it_counter,itape)==0)
   micut = (MOD(it_counter,itcut)==0)
   mviz  = (MOD(it_counter,i_viz)==0)
 

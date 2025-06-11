@@ -63,11 +63,8 @@ c
      +              txym(iz,7),iz=iz_strt,iz_end)
  5100 format(//,' IZ',5x,' SCALAR-1 MEAN',8x,'2-MEAN',10x,
      +          '3-MEAN',10x, '4-MEAN', 10x, '5-MEAN',10x,
-     +          '6-MEAN',10x 
+     +          '6-MEAN',10x
      +       ,/,(1x,i4,6(3x,e13.6)))
-      write(lu,5200) (iz,txym(iz,8),txym(iz,9),iz=iz_strt,iz_end)
- 5200 format(//,' IZ',5x,' SCALAR-7 MEAN',8x,'8-MEAN',10x
-     +       ,/,(1x,i4,2(3x,e13.6)))
 
 
       return

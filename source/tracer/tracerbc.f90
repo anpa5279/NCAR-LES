@@ -49,62 +49,58 @@ module tracerbc
             np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
 
             !! passive tracers
-            iscl = 2; !carbonate dioxide
+            iscl = 2;
             ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
             asflux(iscl) = 1;   airval(iscl) = 8.56056;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 3; !bicarboante
+            iscl = 3;
             ictype(iscl) = 1;   val(iscl) = c2;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 4; !carbonate
+            iscl = 4;
             ictype(iscl) = 1;   val(iscl) = c3;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 5; !boric acid
+            iscl = 5;
             ictype(iscl) = 1;   val(iscl) = c4;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 6; !tetrahydroborate
+            iscl = 6;
             ictype(iscl) = 1;   val(iscl) = c5;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 7; !hydrogen ion
+            iscl = 7;
             ictype(iscl) = 1;   val(iscl) = c6; tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 8; !hydroxyl
+            iscl = 8;
             ictype(iscl) = 1;   val(iscl) = c7;     tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
-!=================NPZD========================
-            !            iscl = 9; !p
-            !            ictype(iscl) = 1;   val(iscl) = c8;  tau(iscl)      = 1;
-            !            asflux(iscl) = 0;   airval(iscl) = 0;
-            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            !            iscl = 10; !z
-            !            ictype(iscl) = 1;   val(iscl) = c9; tau(iscl)      = 1;
-            !            asflux(iscl) = 0;   airval(iscl) = 0;
-            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
-
-            !            iscl = 11; !n
-            !            ictype(iscl) = 1;   val(iscl) = c10;     tau(iscl)      = 1;
-            !            asflux(iscl) = 0;   airval(iscl) = 0;
-            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
-
-      do iscl = 2,nscl !skipping temperature
-        bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
-        if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals); 
-        if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
-        bnds = 0; vals = 0; points = 0;
+      do iscl = 2,nscl
+         bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
+         if (it.eq.1) then
+            if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
+            if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
+         endif
+         bnds = 0; vals = 0; points = 0;
       enddo
+
+      if(flg_debug == 1) then
+          open(13, file='tracerbc.txt',access='append')
+          write(13,'(A)') '------------------------'
+          write(13,'(A,i3)') 'RUNNING FOR IT= ',it
+          write(13,'(A,f9.6)') 'Z for 5m above H', z(izi)+5.0
+          write(13,'(A,f9.6)') 'Z for 5m below H', z(izi)-5.0
+          close(13)
+      end if
 
     end subroutine
 
