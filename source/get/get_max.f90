@@ -37,7 +37,7 @@ SUBROUTINE get_max
     v_xy   = v_xy*dy_i
     wsav   = w_xy
     w_xy   = w_xy/ABS(dzw(iz))
-    vis_xy = 3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2
+    vis_xy = 3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2 !3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2 !this should be smag
 
     u_temp = AMAX1(u_xy,u_temp)
     v_temp = AMAX1(v_xy,v_temp)
@@ -52,6 +52,12 @@ SUBROUTINE get_max
   u_send(4) = wsav
   u_send(5) = e_temp
   u_send(6) = vis_temp
+  print*, "utemp", u_temp
+  print*, "vtemp", v_temp
+  print*, "wtemp", w_temp
+  print*, "wsav", wsav
+  print*, "etemp", e_temp
+  print*, "vis_temp", vis_temp
 
   CALL mpi_allreduce(u_send,u_recv,6,mpi_real8,mpi_max,mpi_comm_world,ierror)
 

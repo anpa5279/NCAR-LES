@@ -92,7 +92,7 @@ PROGRAM les_mpi
     CALL get_means(istage)
 
     IF(ivis == 1) THEN
-      CALL iso(it)
+      CALL iso(it) !only if using new viscosity model 
       CALL surfvis(it)
     ENDIF
 
