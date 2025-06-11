@@ -44,7 +44,8 @@ SUBROUTINE comp1(istep,it)
   ENDDO
 
   ! GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
-  CALL tke_vis(istep) CALL rhs_uvw(istep)
+  CALL tke_vis(istep) 
+  CALL rhs_uvw(istep)
 
   ! EVALUATE RHS OF SCALAR EQUATIONS=
   DO l=1,nscl

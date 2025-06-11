@@ -50,7 +50,7 @@ subroutine tke_vis(istep)
         ENDIF
       ENDIF
     ENDDO
-  ELSE 
+  ELSEIF (i_dear == 2) THEN 
     CALL smag_vis(alk)
     DO iz=izs-1,ize
       vis_mean(iz) = 0.0
