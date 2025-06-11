@@ -51,6 +51,7 @@ subroutine tke_vis(istep)
       ENDIF
     ENDDO
   ELSEIF (i_dear == 2) THEN 
+    print*, "smagorinsky"
     CALL smag_vis(alk)
     DO iz=izs-1,ize
       vis_mean(iz) = 0.0
