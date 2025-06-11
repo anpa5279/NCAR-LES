@@ -75,7 +75,6 @@ echo '---> Compile Complete'
 # COPY EXECUTABLE TO MAIN DIRECTORY
 cd ../
 cp code/lesmpi .
-chmod +x lesmpi
 echo 4 > mach.file
 echo '---> Executable Made and Copied'
 echo '---> Complete Program Compile for' $rund
@@ -90,10 +89,10 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=08:00:00
-#PBS -l select=1:ncpus=1:mpiprocs=1
+#PBS -l select=1:ncpus=32:mpiprocs=32
 #PBS -A $pnum
 #PBS -q main
-#PBS -l job_priority=premium
+#PBS -l job_priority=regular
 #PBS -o exec.out
 #PBS -e exec.err
 
