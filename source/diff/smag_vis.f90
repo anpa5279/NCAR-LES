@@ -19,7 +19,7 @@ SUBROUTINE smag_vis(alk)
         alk(i,j,iz) = dslk
       END DO
     END DO
-    ! GET FLUCTUATING STRAINS
+    ! GET STRAINS and compute viscosity
     DO j=iys,iye
       DO i=1,nnx
         s11 = (ux(i,j,iz))**2
@@ -35,7 +35,7 @@ SUBROUTINE smag_vis(alk)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
       ENDDO
     ENDDO
-
+    print*, "iz", iz, "vis_m", vis_m(1,1,iz), "vis_s", vis_s(1,1,iz), "vis_sv", vis_sv(1,1,iz), "dslk", dslk, "sij2", sij2(1,1,iz)
     ! SPECIAL CASE FOR IZ = 1
     IF(iz==1 .AND. ibcl == 0) THEN
       DO iy=iys,iye

@@ -84,20 +84,20 @@ module tracerbc
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 !=================NPZD========================
-            iscl = 9; !p
-            ictype(iscl) = 1;   val(iscl) = c8;  tau(iscl)      = 1;
-            asflux(iscl) = 0;   airval(iscl) = 0;
-            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            !            iscl = 9; !p
+            !            ictype(iscl) = 1;   val(iscl) = c8;  tau(iscl)      = 1;
+            !            asflux(iscl) = 0;   airval(iscl) = 0;
+            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 10; !z
-            ictype(iscl) = 1;   val(iscl) = c9; tau(iscl)      = 1;
-            asflux(iscl) = 0;   airval(iscl) = 0;
-            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            !            iscl = 10; !z
+            !            ictype(iscl) = 1;   val(iscl) = c9; tau(iscl)      = 1;
+            !            asflux(iscl) = 0;   airval(iscl) = 0;
+            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 11; !n
-            ictype(iscl) = 1;   val(iscl) = c10;     tau(iscl)      = 1;
-            asflux(iscl) = 0;   airval(iscl) = 0;
-            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
+            !            iscl = 11; !n
+            !            ictype(iscl) = 1;   val(iscl) = c10;     tau(iscl)      = 1;
+            !            asflux(iscl) = 0;   airval(iscl) = 0;
+            !            np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
       do iscl = 2,nscl !skipping temperature
         bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);

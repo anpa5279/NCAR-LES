@@ -15,9 +15,9 @@ MODULE inputs
                       c5  =  1.18909e02,             & ! tetrahydroborate
                       c6  =  6.30928e-03,           & ! hydrogen ion
                       c7  =  9.60492,             & ! hydroxyl
-                      c8  =  2.5,             & !phytoplankton
-                      c9  =  1.5,           & ! zooplankton
-                      c10  =  4.0,             & ! nutrients
+                      !c8  =  2.5,             & !phytoplankton
+                      !c9  =  1.5,           & ! zooplankton
+                      !c10  =  4.0,             & ! nutrients
                       ustokes = 5.75,                       &
                       Rgas = 0.0083143
 

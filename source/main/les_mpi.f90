@@ -54,11 +54,8 @@ PROGRAM les_mpi
   ! TIME LOOP
   tzero = time
   CALL get_dt(it,iti)
-
-  print*, "out of get_dt"
   ! IC Tracers
   CALL applytracerbc(it)
-  print*, "out of applytracerbc"
 
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
