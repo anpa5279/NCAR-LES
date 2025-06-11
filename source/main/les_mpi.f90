@@ -34,7 +34,6 @@ PROGRAM les_mpi
   CALL setcon
   CALL set_paths
   istop = 1
-  
   ! SCRATCH RUN
   IF (iti==0)  THEN
     igrdr = 2
@@ -124,9 +123,9 @@ PROGRAM les_mpi
       CALL save_v(it)
     ENDIF
 
-    !IF(istage == 3) THEN
-    !  IF(msave .AND. l_root) CALL save_c(it)
-    !ENDIF
+    IF(istage == 3) THEN
+      IF(msave .AND. l_root) CALL save_c(it)
+    ENDIF
 
     IF(micut) THEN
       CALL dealias
@@ -148,7 +147,6 @@ PROGRAM les_mpi
     CALL get_max
     CALL get_dt(it,iti)
   END DO !end of while loop
-  close(10)
 
   te_mpi = mpi_wtime()
 

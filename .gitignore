@@ -4,4 +4,7 @@ test/
 **/*.o
 **/*.so
 **/*.dSYM
+**/lesmpi
 **/Makefile
+test/
+.DS_Store

@@ -1,4 +1,4 @@
- module reaction
+module reaction
   use fields, only: t
   use inputs
   use con_data, only: time,dt
@@ -22,7 +22,7 @@
 ! PARAMETER in fortran means that the value remains fixed throughout the code
   integer, parameter :: flg_debug = 0
 
-contains !creates an interface for the functions and can check that any calls made to the subroutine are formally correct
+contains
 
   ! REACT_SRC: calculate the scalar reaction source term for a given scalar
   !            and point. This is called in rhs_scl for each scalar.
@@ -32,7 +32,7 @@ contains !creates an interface for the functions and can check that any calls ma
     integer, intent(in) :: ix, iy, iscl, iz !last time iscl is used in the code
 
     integer :: zzi, i
-    real, dimension(0:nscl-2) :: co2, co2tmp !dimension= defines this as an array, array indices are 0:nscl-2
+    real, dimension(0:nscl-2) :: co2, co2tmp
     real :: dtst, temper, K1star, K2star, Kwater, Kboron, Rgas, salt
     real :: h, t_rkc, t_next, t_end, task
     integer :: steps
@@ -64,7 +64,7 @@ contains !creates an interface for the functions and can check that any calls ma
     if(chem0d == 1) then
       temper = iTsurf
     else
-      temper = t(ix,iy,1,iz) !looking at the first chemical's temperature from boundary condition
+      temper = t(ix,iy,1,iz)
     end if
 
     co2tmp = intDriver(t_rkc, t_end, co2, temper)
@@ -79,10 +79,10 @@ contains !creates an interface for the functions and can check that any calls ma
 
   end function react_src
 
-  function intDriver(t_rkc, t_end, yGlobal, temper) !intDriver must be defined
+  function intDriver(t_rkc, t_end, yGlobal, temper)
     real, intent(in) :: t_rkc
     real, intent(in) :: t_end, temper
-    real, intent(in), dimension(0:nscl-2) :: yGlobal !dimension= defines this as an array
+    real, intent(in), dimension(0:nscl-2) :: yGlobal
     real, dimension(0:nscl-2) :: intDriver
     real, dimension(0:nscl-2) :: yLocal, yLocal2
     real, dimension(0:4+nscl-1) :: workLocal
@@ -103,7 +103,7 @@ contains !creates an interface for the functions and can check that any calls ma
 
   end function intDriver
 
-  function rkc_driver(t_rkc2, t_end, work, yLocal, temper) !rkc_driver must be defined
+  function rkc_driver(t_rkc2, t_end, work, yLocal, temper)
     ! Driver function for RKC integrator.
     !
     ! t_tkc    the starting time.
@@ -127,11 +127,11 @@ contains !creates an interface for the functions and can check that any calls ma
     rel_tol = 1.0e-6
     abs_tol = 1.0e-10
     UROUND  = 2.22e-16
-    m_max   = nint(sqrt(rel_tol / (10.0 * UROUND))) !finding nearest integer
+    m_max   = nint(sqrt(rel_tol / (10.0 * UROUND)))
     hmax    = abs(t_end - t_rkc)
     hmin    = 10.0 * UROUND * max(abs(t_rkc), hmax)
 
-    if(m_max < 2)then !when would this ever occur
+    if(m_max < 2)then
        m_max = 2
     endif
 
@@ -358,7 +358,7 @@ contains !creates an interface for the functions and can check that any calls ma
 
   end function rkc_spec_rad
 
-  function rkc_step(t_rkc, h, y_0, F_0, s, temper) !rkc_step must be defined
+  function rkc_step(t_rkc, h, y_0, F_0, s, temper)
     ! Function to take a single RKC integration step
     !
     ! t_rkc    the starting time.
@@ -451,7 +451,7 @@ contains !creates an interface for the functions and can check that any calls ma
 
   end function rkc_step
 
-  function dydt(t_rkc, y, temper) !dydt must be defined
+  function dydt(t_rkc, y, temper)
     real, intent(in),  dimension(0:nscl-2) :: y
     real, dimension(0:nscl-2) :: dydt, dy
     real, dimension(nscl-1) :: c
@@ -467,7 +467,7 @@ contains !creates an interface for the functions and can check that any calls ma
     do i = 0,nscl-2
        c(i+1) = y(i)
     enddo
-    !K. Smith 2018 Table 2 used DoE, 1994 for these constants below
+
     K1s = exp(-2307.1266/temper + 2.83655 - 1.5529413*log(temper) + &
          (-4.0484/temper - 0.20760841)*(salt**0.5) + 0.08468345*salt - &
          0.00654208*(salt**1.5) + log(1.0-0.001005*salt))*(1.0e6)
@@ -484,7 +484,7 @@ contains !creates an interface for the functions and can check that any calls ma
          0.053105*(salt**0.5)*temper)*(1.0e6) !(Dickson, 1990)
     Rgas = 0.0083143
 
-    a1 = exp(1246.98-6.19*(10.0**4)/temper - 183.0*log(temper)) !K. Smith 2018
+    a1 = exp(1246.98-6.19*(10.0**4)/temper - 183.0*log(temper))
     a2 = (4.7e7)*exp(-23.3/(Rgas*temper))/(1.0e6)
     a3 = (5.0e10)/(1.0e6)
     a4 = (6.0e9)/(1.0e6)
