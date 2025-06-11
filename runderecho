@@ -102,6 +102,7 @@ module load ncarenv/23.06
 module load intel/2023.0.0
 module load openmpi/main
 
+chmod +x lesmpi
 mpirun ./lesmpi > $runo
 EXEC
 
