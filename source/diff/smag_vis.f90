@@ -47,7 +47,7 @@ SUBROUTINE smag_vis(alk)
         s13 = (uzmn + wx(ix,iy,iz))**2
         s23 = (vzmn + wy(ix,iy,iz))**2
 
-        sij2(ix,iy) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
+        sij2(ix,iy, iz) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
         !eddy viscosity
         vis_m(i,j,iz)  = (csmag*dslk)**2 * SQRT(2 * sij2(i, j, iz))
         
