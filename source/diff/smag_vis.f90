@@ -18,6 +18,9 @@ SUBROUTINE smag_vis(alk)
         alk(i,j,iz) = dslk
       END DO
     END DO
+
+    weit   = dzw(iz)/(dzw(iz) + dzw(izp1))
+    weit1  = 1.0 - weit
     !horizontal average of fluctuations
     !ufluct_vfluct_mn = 0.0
     !vfluct_Tfluct_mn = 0.0
@@ -32,14 +35,19 @@ SUBROUTINE smag_vis(alk)
     ! GET STRAINS and compute viscosity
     DO j=iys,iye
       DO i=1,nnx
-        s11 = (ux(i,j,iz))**2
-        s22 = (vy(i,j,iz))**2
-        wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(izp1)
-        s33 =  (wzp)**2
-        s12 =  (0.5 * (uy(i,j,iz) + vx(i,j,iz)))**2
-        s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
-        s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
-        sij2(i,j,iz) = s11 + s22 + s33 + 2 * s12 + 2 * s13 + 2 * s23
+        s11 = weit1*ux(ix,iy,iz)**2 + weit*ux(ix,iy,izp1)**2
+        s22 = weit1*vy(ix,iy,iz)**2 + weit*vy(ix,iy,izp1)**2
+        wz  = (w(ix,iy,iz)-w(ix,iy,izm1))*dzw_i(iz)
+        wzp = (w(ix,iy,izp1)-w(ix,iy,iz))*dzw_i(izp1)
+        s33 = weit*wzp**2 + weit1*wz**2
+        s12 = weit1*(uy(ix,iy,iz) + vx(ix,iy,iz))**2 + weit*(uy(ix,iy,izp1) &
+              + vx(ix,iy,izp1))**2
+        uzmn=(u(ix,iy,izp1)-u(ix,iy,iz))*dzu_i(izp1)
+        vzmn=(v(ix,iy,izp1)-v(ix,iy,iz))*dzu_i(izp1)
+        s13 = (uzmn + wx(ix,iy,iz))**2
+        s23 = (vzmn + wy(ix,iy,iz))**2
+
+        sij2(ix,iy) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
         !eddy viscosity
         vis_m(i,j,iz)  = (csmag*dslk)**2 * SQRT(2 * sij2(i, j, iz))
         
