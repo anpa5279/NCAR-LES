@@ -93,7 +93,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=1:ncpus=32:mpiprocs=32
 #PBS -A $pnum
 #PBS -q main
-#PBS -l job_priority=regular
+#PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 
