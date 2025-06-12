@@ -18,6 +18,17 @@ SUBROUTINE smag_vis(alk)
         alk(i,j,iz) = dslk
       END DO
     END DO
+    !horizontal average of fluctuations
+    !ufluct_vfluct_mn = 0.0
+    !vfluct_Tfluct_mn = 0.0
+    !DO j=iys,iye
+    !  DO i=1,nnx
+    !    ufluct_vfluct_mn = ufluct_vfluct_mn + (u(i,j,izp1) - u_mn(iz)) * (v(i,j,izp1) - v_mn(iz))
+    !    vfluct_Tfluct_mn = vfluct_Tfluct_mn + (v(i,j,izp1) - v_mn(iz)) * (t(i,j,izp1) - t_mn(iz))
+    !  END DO
+    !ENDDO
+    !ufluct_vfluct_mn = ufluct_vfluct_mn*fnxy
+    !vfluct_Tfluct_mn = vfluct_Tfluct_mn*fnxy
     ! GET STRAINS and compute viscosity
     DO j=iys,iye
       DO i=1,nnx
@@ -29,12 +40,17 @@ SUBROUTINE smag_vis(alk)
         s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
         s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
         sij2(i,j,iz) = s11 + s22 + s33 + 2 * s12 + 2 * s13 + 2 * s23
+        !eddy viscosity
         vis_m(i,j,iz)  = (csmag*dslk)**2 * SQRT(2 * sij2(i, j, iz))
-        vis_s(i,j,iz)  = vis_m(i,j,iz)
+        
+        !eddy diffusivity
+        !dudy_mean = (u_mn(izp1)-u_mn(iz)) / dy
+        !dTdy_mean = (t_mn(izp1)-t_mn(iz)) / dy
+        vis_s(i,j,iz)  = vis_m(i,j,iz) !* ufluct_vfluct_mn * dTdy_mean / (vfluct_Tfluct_mn * dudy_mean)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
       ENDDO
     ENDDO
-    print*, "iz", iz, "dzw_i(izp1)", dzw_i(izp1)
+    print*, "iz", iz, "dzw_i(izp1)", dzw_i(izp1), "dzu_i(izp1)", dzu_i(izp1)
     print*, "vis_m", vis_m(1,1,iz), "vis_s", vis_s(1,1,iz), "vis_sv", vis_sv(1,1,iz), "dslk", dslk, "sij2", sij2(1,1,iz)
     ! SPECIAL CASE FOR IZ = 1
     IF(iz==1 .AND. ibcl == 0) THEN
