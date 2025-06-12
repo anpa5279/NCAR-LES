@@ -106,7 +106,7 @@ SUBROUTINE pbltop(itop)
           mpi_maxloc,i_root,mpi_comm_world,ierror)
 
     ! GET AVERAGE ON ROOT PROCESSES
-    IF(l_root) THEN
+    IF(l_root) THEN!lroot is looking for rank 0
       zi_avg = 0.0
       DO iy=1,nny
         DO ix=1,nnx

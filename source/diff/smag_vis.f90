@@ -38,19 +38,19 @@ SUBROUTINE smag_vis
     ! GET STRAINS and compute viscosity
     DO j=iys,iye
       DO i=1,nnx
-        s11 = weit1*ux(ix,iy,iz)**2 + weit*ux(ix,iy,izp1)**2
-        s22 = weit1*vy(ix,iy,iz)**2 + weit*vy(ix,iy,izp1)**2
-        wz  = (w(ix,iy,iz)-w(ix,iy,izm1))*dzw_i(iz)
-        wzp = (w(ix,iy,izp1)-w(ix,iy,iz))*dzw_i(izp1)
+        s11 = weit1*ux(i,j,iz)**2 + weit*ux(i,j,izp1)**2
+        s22 = weit1*vy(i,j,iz)**2 + weit*vy(i,j,izp1)**2
+        wz  = (w(i,j,iz)-w(i,j,izm1))*dzw_i(iz)
+        wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(izp1)
         s33 = weit*wzp**2 + weit1*wz**2
-        s12 = weit1*(uy(ix,iy,iz) + vx(ix,iy,iz))**2 + weit*(uy(ix,iy,izp1) &
-              + vx(ix,iy,izp1))**2
-        uzmn=(u(ix,iy,izp1)-u(ix,iy,iz))*dzu_i(izp1)
-        vzmn=(v(ix,iy,izp1)-v(ix,iy,iz))*dzu_i(izp1)
-        s13 = (uzmn + wx(ix,iy,iz))**2
-        s23 = (vzmn + wy(ix,iy,iz))**2
+        s12 = weit1*(uy(i,j,iz) + vx(i,j,iz))**2 + weit*(uy(i,j,izp1) &
+              + vx(i,j,izp1))**2
+        uzmn=(u(i,j,izp1)-u(i,j,iz))*dzu_i(izp1)
+        vzmn=(v(i,j,izp1)-v(i,j,iz))*dzu_i(izp1)
+        s13 = (uzmn + wx(i,j,iz))**2
+        s23 = (vzmn + wy(i,j,iz))**2
 
-        sij2(ix,iy, iz) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
+        sij2(i,j, iz) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
         !eddy viscosity
         vis_m(i,j,iz)  = (csmag*dslk)**2 * SQRT(2 * sij2(i, j, iz))
         
@@ -67,9 +67,9 @@ SUBROUTINE smag_vis
     IF(iz==1 .AND. ibcl == 0) THEN
       DO iy=iys,iye
         DO ix=1,nnx
-          vis_m(ix,iy,iz-1)  = vis_m(ix,iy,iz)
-          vis_s(ix,iy,iz-1)  = vis_s(ix,iy,iz)
-          vis_sv(ix,iy,iz-1) = vis_sv(ix,iy,iz)
+          vis_m(i,j,iz-1)  = vis_m(i,j,iz)
+          vis_s(i,j,iz-1)  = vis_s(i,j,iz)
+          vis_sv(i,j,iz-1) = vis_sv(i,j,iz)
         ENDDO
       ENDDO
     ENDIF
