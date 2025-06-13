@@ -59,14 +59,15 @@ SUBROUTINE smag_vis
         vis_sv(i, j, iz) = vis_s(i, j, iz)
       ENDDO
     ENDDO
-    print*, "in smag_vis"
-    print*, "iz", iz, "csmag", csmag "dzw_i(iz+1)", dzw_i(iz+1), "dzu_i(iz+1)", dzu_i(iz+1)
-    print*, "weit", weit, "weit1", weit1, "dslk", dslk
-    print*, "ux", ux(1,1,iz), "uy", uy(1,1,iz), "vx", vx(1,1,iz), "vy", vy(1,1,iz), &
-           "wz", wz, "wzp", wzp, "wx", wx(1,1,iz), "wy", wy(1,1,iz)
-    print*, "s11", s11, "s22", s22, "s33", s33, "s12", s12, "s13", s13, "s23", s23, "sij2", sij2(1,1,iz)
-    print*, "vis_m", vis_m(1,1,iz), "vis_s", vis_s(1,1,iz)
-    print*, ""
+    !print*, "in smag_vis"
+    !print*, "iz", iz, "csmag", csmag, "dzw_i(iz+1)", dzw_i(iz+1), "dzu_i(iz+1)", dzu_i(iz+1)
+    !print*, "weit", weit, "weit1", weit1, "dslk", dslk
+    !print*, "ux", ux(1,1,iz), "uy", uy(1,1,iz), "vx", vx(1,1,iz), "vy", vy(1,1,iz), &
+    !       "wz", wz, "wzp", wzp, "wx", wx(1,1,iz), "wy", wy(1,1,iz)
+    !print*, "s11", s11, "s22", s22, "s33", s33, "s12", s12, "s13", s13, "s23", s23, "sij2", sij2(1,1,iz)
+    !print*, "vis_m", vis_m(1,1,iz), "vis_s", vis_s(1,1,iz)
+    !print*, ""
+
     ! SPECIAL CASE FOR IZ = 1
     IF(iz==1 .AND. ibcl == 0) THEN
       DO j=iys,iye
