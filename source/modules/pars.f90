@@ -138,7 +138,7 @@ MODULE pars
 !----------------------------------------------------------------------
   REAL ::                                                                &
           fug, khen, bet_ost, kbub, u_tau, wa, wh
-END MODULE
 !----------------------NPZ parameters that are called in the code----------------
   REAL ::                                                                &
           k_ext=0.1 
+END MODULE
