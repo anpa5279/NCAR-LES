@@ -71,6 +71,7 @@ PROGRAM les_mpi
 
     ! 3 STAGE RUNGE-KUTTA TIME STEPPING
     print*, "stepping in RK3"
+    call flush(6)
     DO 8999 istage=1,3
     dtzeta = dt*zetas(istage)
     dtgama = dt*gama(istage)
@@ -111,7 +112,7 @@ PROGRAM les_mpi
 
     CALL comp1(istage,it)
     print*, "comp1 done"
-
+    call flush(6)
     ! SOLVE FOR PRESSURE
     CALL comp_p
 
