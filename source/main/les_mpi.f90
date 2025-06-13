@@ -56,6 +56,9 @@ PROGRAM les_mpi
   tzero = time
   CALL get_dt(it,iti)
 
+  !initializing tracers
+  CALL applytracerbc(it)
+
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
 
@@ -86,12 +89,11 @@ PROGRAM les_mpi
       CALL upper
     ENDIF
 
-    CALL applytracerbc(it)
     CALL bcast_pbc
     CALL get_means(istage)
 
     IF(ivis == 1) THEN
-      CALL iso(it)
+      CALL iso(it) !only if using new viscosity model 
       CALL surfvis(it)
     ENDIF
 

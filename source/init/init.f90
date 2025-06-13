@@ -69,8 +69,8 @@ SUBROUTINE init
   divgls  = 0.
   zo      = 0.0001
   zi      = -ihb
-  xl      = 160.0
-  yl      = 160.0
+  xl      = 320.0
+  yl      = 320.0
   zl      = -96.0
   izi     = NINT((zi/zl)*nnz)
 
@@ -197,7 +197,6 @@ SUBROUTINE init
             ',  CDBTM=',e12.4,',  UG = ',e12.4)
 80    FORMAT(///,' ***** SCRATCH RUN ***** ',//)
 4040  FORMAT(' zl = ',e15.6,' nnz = ',i5,' dzg = ',e15.6)
-4043  FORMAT(' znest = ',e15.6,' nnz = ',i5,' dzg = ',e15.6)
 8002  FORMAT(' zwstrt = ',e12.4)
 8003  FORMAT(' iz ',5x,' zw',5x,' zu ',5x,/,(i3,2e12.4))
 

@@ -37,7 +37,7 @@ SUBROUTINE get_max
     v_xy   = v_xy*dy_i
     wsav   = w_xy
     w_xy   = w_xy/ABS(dzw(iz))
-    vis_xy = 3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2
+    vis_xy = 3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2 !3.0*ck*dsl_z(iz)*SQRT(e_xy)/AMIN1(dx,dy,dzw(iz))**2 !this should be smag
 
     u_temp = AMAX1(u_xy,u_temp)
     v_temp = AMAX1(v_xy,v_temp)

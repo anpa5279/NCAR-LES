@@ -1,5 +1,6 @@
 SUBROUTINE ztox_trans(g,f,nx,nz,ixs,ixe,ix_s,ix_e,iys,iye,izs,ize,iz_s,   &
   iz_e,myid,ncpu_s,numprocs)
+! only called in solve/pressure
 ! TRANSPOSE ARRAY G(0:NZ+1,IYS:IYE,IXS:IXE) --> F(NX,IYS:IYE,IZS-1:IZE+1)
 
   INCLUDE 'mpif.h'

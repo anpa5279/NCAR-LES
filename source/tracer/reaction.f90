@@ -18,9 +18,6 @@ module reaction
   ! rpartner     : An array dictating what tracers are coupled to each other
   ! tau          : The timescale to be used.
 
-  ! flg_debug    : Write a debug file
-  integer, parameter :: flg_debug = 0
-
 contains
 
   ! REACT_SRC: calculate the scalar reaction source term for a given scalar

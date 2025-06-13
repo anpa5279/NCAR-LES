@@ -14,6 +14,7 @@ SUBROUTINE smag_vis
   integer :: i, j, iz
 
   DO iz=izs-1,ize+1
+    vis_mean(iz) = 0.0
     dslk  = dsl_z(iz)
     IF(iz .gt. 0) dslk  = AMIN1(dsl_z(iz),vk*ABS(z(iz))/csmag)
 

@@ -12,11 +12,11 @@ MODULE pars
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: iti=0, itmax=100000, imean=1, ihst=01, itape=100,        &
+  INTEGER, PARAMETER :: iti=0, itmax=200000, imean=1, ihst=01, itape=5000,        &
   itstr=1, it_his=120000, i_viz=120000
 
   INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars and vars
-  INTEGER, PARAMETER :: nxg1  = 64, nyg1  = 64, nzg1  = 64 !size of problem
+  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
    maxnx2 = maxnx + 2, maxny2 = maxny + 2
@@ -62,7 +62,9 @@ MODULE pars
 !
 !      nscl  .ge. 1   number of scalars to be followed set in parameter statements
 !                     change entries in sr. init, and sr. suft for surface bc's
-
+!      i_dear = 0; deardorff model
+!             = 1; schumann model
+!             = 2; smagorinsky model
 
   INTEGER, PARAMETER ::                                                     &
           ismlt=0, ifree=0, isfc=0, iradup=0, iupwnd=1, ibuoy=1, itcut=1,   &
@@ -137,3 +139,6 @@ MODULE pars
   REAL ::                                                                &
           fug, khen, bet_ost, kbub, u_tau, wa, wh
 END MODULE
+!----------------------NPZ parameters that are called in the code----------------
+  REAL ::                                                                &
+          k_ext=0.1 

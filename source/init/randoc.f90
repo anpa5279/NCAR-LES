@@ -45,11 +45,11 @@ SUBROUTINE randoc
     DO iy=iys,iye
       DO ix=1,nnx
         w(ix,iy,iz)    = 0.0
-        r1(ix,iy,iz)   = 0.0
-        r2(ix,iy,iz)   = 0.0
-        r3(ix,iy,iz)   = 0.0
-        r4(ix,iy,1,iz) = 0.0
-        r5(ix,iy,iz)   = 0.0
+        r1(ix,iy,iz)   = 0.0 !dudt
+        r2(ix,iy,iz)   = 0.0 !dvdt
+        r3(ix,iy,iz)   = 0.0 !dwdt
+        r4(ix,iy,1,iz) = 0.0 !dcdt
+        r5(ix,iy,iz)   = 0.0 !dedt
       ENDDO
     ENDDO
   ENDDO
