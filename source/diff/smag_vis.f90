@@ -8,7 +8,7 @@ SUBROUTINE smag_vis
 
   implicit none
 
-  REAL :: sij2(nnx,iys:iye,izs-1:ize+1)
+  REAL :: sij2
   REAL :: alk(nnx, iys:iye, izs-1:ize+1)
   real :: dslk, s11, s22, s33, s12, s13, s23, wz, wzp, weit, weit1, uzmn, vzmn
   integer :: i, j, iz
@@ -48,9 +48,9 @@ SUBROUTINE smag_vis
         s13 = (uzmn + wx(i, j, iz))**2
         s23 = (vzmn + wy(i, j, iz))**2
 
-        sij2(i, j, iz) = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
+        sij2 = (s11 + s22 + s33) + 0.5 * (s13 + s23 + s12)
         !eddy viscosity
-        vis_m(i, j, iz)  = (csmag*dslk)**2 * SQRT(2 * sij2(i, j, iz))
+        vis_m(i, j, iz)  = (csmag*dslk)**2 * SQRT(2 * sij2)
 
         !eddy diffusivity
         !dudy_mean = (u_mn(iz+1)-u_mn(iz)) / dy
@@ -62,10 +62,10 @@ SUBROUTINE smag_vis
     print *, "in smag_vis"
     print *, "iz", iz, "csmag", csmag, "dzw_i(iz+1)", dzw_i(iz+1), "dzu_i(iz+1)", dzu_i(iz+1)
     print *, "weit", weit, "weit1", weit1, "dslk", dslk
-    print *, "ux", ux(1,1,iz), "uy", uy(1,1,iz), "vx", vx(1,1,iz), "vy", vy(1,1,iz), &
-           "wz", wz, "wzp", wzp, "wx", wx(1,1,iz), "wy", wy(1,1,iz)
-    print *, "s11", s11, "s22", s22, "s33", s33, "s12", s12, "s13", s13, "s23", s23, "sij2", sij2(1,1,iz)
-    print *, "vis_m", vis_m(1,1,iz), "vis_s", vis_s(1,1,iz)
+    print *, "ux", ux(nnx, iys,iz), "uy", uy(nnx, iys,iz), "vx", vx(nnx, iys,iz), "vy", vy(nnx, iys,iz), &
+           "wz", wz, "wzp", wzp, "wx", wx(nnx, iys,iz), "wy", wy(nnx, iys,iz)
+    print *, "s11", s11, "s22", s22, "s33", s33, "s12", s12, "s13", s13, "s23", s23, "sij2", sij2
+    print *, "vis_m", vis_m(nnx, iys,iz), "vis_s", vis_s(nnx, iys,iz)
     print *, ""
 
     ! SPECIAL CASE FOR IZ = 1
