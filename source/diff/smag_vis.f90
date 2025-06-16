@@ -22,17 +22,6 @@ SUBROUTINE smag_vis
 
     weit   = dzw(iz)/(dzw(iz) + dzw(iz+1))
     weit1  = 1.0 - weit
-    !horizontal average of fluctuations
-    !ufluct_vfluct_mn = 0.0
-    !vfluct_Tfluct_mn = 0.0
-    !DO j=iys,iye
-    !  DO i=1,nnx
-    !    ufluct_vfluct_mn = ufluct_vfluct_mn + (u(i, j, iz+1) - u_mn(iz)) * (v(i, j, iz+1) - v_mn(iz))
-    !    vfluct_Tfluct_mn = vfluct_Tfluct_mn + (v(i, j, iz+1) - v_mn(iz)) * (t(i, j, iz+1) - t_mn(iz))
-    !  END DO
-    !ENDDO
-    !ufluct_vfluct_mn = ufluct_vfluct_mn*fnxy
-    !vfluct_Tfluct_mn = vfluct_Tfluct_mn*fnxy
     ! GET STRAINS and compute viscosity
     DO j=iys,iye
       DO i=1,nnx
@@ -53,9 +42,7 @@ SUBROUTINE smag_vis
         vis_m(i, j, iz)  = (csmag*dslk)**2 * SQRT(2 * sij2)
 
         !eddy diffusivity
-        !dudy_mean = (u_mn(iz+1)-u_mn(iz)) / dy
-        !dTdy_mean = (t_mn(iz+1)-t_mn(iz)) / dy
-        vis_s(i, j, iz)  = vis_m(i, j, iz) !* ufluct_vfluct_mn * dTdy_mean / (vfluct_Tfluct_mn * dudy_mean)
+        vis_s(i, j, iz)  = 3 * vis_m(i, j, iz) 
         vis_sv(i, j, iz) = vis_s(i, j, iz)
       ENDDO
     ENDDO
