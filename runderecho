@@ -13,7 +13,7 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 runo=logfile.out
-rund=smag-testing 
+rund=smag-testing-no-print
 csrc=source
 
 
@@ -64,10 +64,10 @@ module load openmpi/main
 echo '---> Modules Load Complete'
 
 # PRE-COMPILE
-mpif90 -r8 -132 -g -O0 -traceback -fpe-all=0 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
+mpif90 -r8 -132 -g -O2 -traceback -fpe-all=0 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
 echo '---> Precompile Complete'
 # COMPILE
-mpif90 -r8 -132 -g -O0 -traceback -fpe-all=0 -o lesmpi *.f *.f90 -limf -lm
+mpif90 -r8 -132 -g -O2 -traceback -fpe-all=0 -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY

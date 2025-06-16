@@ -59,14 +59,6 @@ SUBROUTINE smag_vis
         vis_sv(i, j, iz) = vis_s(i, j, iz)
       ENDDO
     ENDDO
-    print *, "in smag_vis"
-    print *, "iz", iz, "csmag", csmag, "dzw_i(iz+1)", dzw_i(iz+1), "dzu_i(iz+1)", dzu_i(iz+1)
-    print *, "weit", weit, "weit1", weit1, "dslk", dslk
-    print *, "ux", ux(nnx, iys,iz), "uy", uy(nnx, iys,iz), "vx", vx(nnx, iys,iz), "vy", vy(nnx, iys,iz), &
-           "wz", wz, "wzp", wzp, "wx", wx(nnx, iys,iz), "wy", wy(nnx, iys,iz)
-    print *, "s11", s11, "s22", s22, "s33", s33, "s12", s12, "s13", s13, "s23", s23, "sij2", sij2
-    print *, "vis_m", vis_m(nnx, iys,iz), "vis_s", vis_s(nnx, iys,iz)
-    print *, ""
 
     ! SPECIAL CASE FOR IZ = 1
     IF(iz==1 .AND. ibcl == 0) THEN
