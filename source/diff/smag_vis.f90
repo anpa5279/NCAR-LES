@@ -13,7 +13,7 @@ SUBROUTINE smag_vis
   real :: dslk, s11, s22, s33, s12, s13, s23, wz, wzp, weit, weit1, uzmn, vzmn
   integer :: i, j, iz
 
-  DO iz=izs-1,ize+1
+  DO iz=izs,ize
     vis_mean(iz) = 0.0
     dslk  = dsl_z(iz)
     IF(iz .gt. 0) dslk  = AMIN1(dsl_z(iz),vk*ABS(z(iz))/csmag)
