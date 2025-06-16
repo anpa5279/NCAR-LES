@@ -100,7 +100,7 @@ module tracerbc
 
       do iscl = 2,nscl !skipping temperature 
          bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
-         if (it.eq.1) then
+         if (it.eq.0) then
             if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
             if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
          endif
