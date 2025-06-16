@@ -58,8 +58,8 @@ PROGRAM les_mpi
 
   !initializing tracers
   CALL applytracerbc(it)
-  CALL get_output_filenames
-  CALL save_v(it)
+  !CALL get_output_filenames
+  !CALL save_v(it)
 
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
