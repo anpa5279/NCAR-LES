@@ -67,7 +67,7 @@ echo '---> Modules Load Complete'
 mpif90 -r8 -132 -g -O0 -traceback -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
 echo '---> Precompile Complete'
 # COMPILE
-mpif90 -r8 -132 -g -O0 -traceback  -o lesmpi *.f *.f90 -limf -lm
+mpif90 -r8 -132 -g -O0 -traceback -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY
