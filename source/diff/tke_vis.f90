@@ -53,7 +53,6 @@ subroutine tke_vis(istep)
   ELSEIF (i_dear == 2) THEN
     CALL smag_vis
   ENDIF
-  print*, "vismean", vis_mean(izs-1:ize)
   ! UPDATE RHS OF SGS E FROM X AND Z PIECES
   ! CUBE OF SIZE (NNX, IYZ, IYE, IZS:IZE)
   DO iz=izs,ize
