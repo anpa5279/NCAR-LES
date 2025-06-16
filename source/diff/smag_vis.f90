@@ -38,7 +38,7 @@ SUBROUTINE smag_vis
       DO i=1,nnx
         s11 = weit1*ux(i, j, iz)**2 + weit*ux(i, j, iz+1)**2
         s22 = weit1*vy(i, j, iz)**2 + weit*vy(i, j, iz+1)**2
-        wz  = (w(i, j, iz)-w(i, j, iz-1))*dzw_i(iz)
+        wz = (w(i, j, iz)-w(i, j, iz-1))*dzw_i(iz)
         wzp = (w(i, j, iz+1)-w(i, j, iz))*dzw_i(iz+1)
         s33 = weit*wzp**2 + weit1*wz**2
         s12 = weit1*(uy(i, j, iz) + vx(i, j, iz))**2 + weit*(uy(i, j, iz+1) &
