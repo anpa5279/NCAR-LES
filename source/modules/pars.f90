@@ -16,12 +16,7 @@ MODULE pars
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
   INTEGER, PARAMETER :: nscl
-  if (flg_reaction==1) then 
-        nscl = 8 !cc = 8, NPZ = 4
-  else
-        nscl = 1 !temperature only
-  endif
-  INTEGER, PARAMETER :: nvar = (4+nscl) !number of scalars and vars
+  INTEGER, PARAMETER :: nvar !number of scalars and vars
   INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &

@@ -35,6 +35,12 @@ PROGRAM les_mpi
   CALL set_paths
   istop = 1
 
+  IF (flg_reaction==1) then 
+        nscl = 8 !cc = 8, NPZ = 4
+  ELSE
+        nscl = 1 !temperature only
+  ENDIF
+  INTEGER, PARAMETER :: nvar = (4+nscl) !number of 
   ! SCRATCH RUN
   IF (iti==0)  THEN
     igrdr = 2
