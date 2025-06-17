@@ -13,7 +13,7 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 runo=logfile.out
-rund=deardorff-chem-test
+rund=perturb-chem-smag
 csrc=source
 
 

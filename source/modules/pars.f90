@@ -15,7 +15,13 @@ MODULE pars
   INTEGER, PARAMETER :: iti=0, itmax=200000, imean=1, ihst=01, itape=5000
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
-  INTEGER, PARAMETER :: nscl = 8, nvar = (4+nscl) !number of scalars and vars
+  INTEGER, PARAMETER :: nscl
+  if (flg_reaction==1) then 
+        nscl = 8 !cc = 8, NPZ = 4
+  else
+        nscl = 1 !temperature only
+  endif
+  INTEGER, PARAMETER :: nvar = (4+nscl) !number of scalars and vars
   INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
@@ -69,7 +75,7 @@ MODULE pars
   INTEGER, PARAMETER ::                                                     &
           ismlt=0, ifree=0, isfc=0, iradup=0, iupwnd=1, ibuoy=1, itcut=1,   &
           method=3, idebug=0, iz_space=0, ivis0=0, ifix_dt=0, new_vis=-1,   &
-          i_dear = 0
+          i_dear = 2
   INTEGER, PARAMETER :: j_recl=4 !record length in "bytes" for history file
   INTEGER, PARAMETER :: k8=8 !kind parameter for integers in mpi_io routines
 
