@@ -50,8 +50,6 @@ subroutine tke_vis(istep)
         ENDIF
       ENDIF
     ENDDO
-  ELSEIF (i_dear == 2) THEN
-    CALL smag_vis
   ENDIF
   ! UPDATE RHS OF SGS E FROM X AND Z PIECES
   ! CUBE OF SIZE (NNX, IYZ, IYE, IZS:IZE)

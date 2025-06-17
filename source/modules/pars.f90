@@ -8,14 +8,14 @@ MODULE pars
 
   INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
   INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau
-  INTEGER, PARAMETER :: flg_reaction = 0  ! 3.1536e8 reaction model on or off
+  INTEGER, PARAMETER :: flg_reaction = 1  ! 3.1536e8 reaction model on or off
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
   INTEGER, PARAMETER :: iti=0, itmax=200000, imean=1, ihst=01, itape=5000
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
-  INTEGER, PARAMETER :: nscl = 8, nvar = (4+nscl) !number of scalars and vars
+  INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars and vars
   INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
@@ -69,7 +69,7 @@ MODULE pars
   INTEGER, PARAMETER ::                                                     &
           ismlt=0, ifree=0, isfc=0, iradup=0, iupwnd=1, ibuoy=1, itcut=1,   &
           method=3, idebug=0, iz_space=0, ivis0=0, ifix_dt=0, new_vis=-1,   &
-          i_dear = 2
+          i_dear = 0
   INTEGER, PARAMETER :: j_recl=4 !record length in "bytes" for history file
   INTEGER, PARAMETER :: k8=8 !kind parameter for integers in mpi_io routines
 
