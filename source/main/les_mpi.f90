@@ -40,7 +40,7 @@ PROGRAM les_mpi
   ELSE
         nscl = 1 !temperature only
   ENDIF
-  INTEGER, PARAMETER :: nvar = (4+nscl) !number of 
+  nvar = (4+nscl) !number of 
   ! SCRATCH RUN
   IF (iti==0)  THEN
     igrdr = 2
