@@ -8,7 +8,7 @@ MODULE pars
 
   INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
   INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau
-  INTEGER, PARAMETER :: flg_reaction = 1  ! 3.1536e8 reaction model on or off
+  INTEGER, PARAMETER :: flg_reaction = 0  ! 3.1536e8 reaction model on or off
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
