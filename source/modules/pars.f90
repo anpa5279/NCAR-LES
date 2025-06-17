@@ -15,8 +15,8 @@ MODULE pars
   INTEGER, PARAMETER :: iti=0, itmax=200000, imean=1, ihst=01, itape=5000
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
-  INTEGER :: nscl = 1
-  INTEGER :: nvar = (4+nscl)!number of scalars and vars
+  INTEGER :: nscl
+  INTEGER :: nvar!number of scalars and vars
   INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
   INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
