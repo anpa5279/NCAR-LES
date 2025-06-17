@@ -25,7 +25,7 @@ PROGRAM les_mpi
   ts_mpi = mpi_wtime()
 
   ! SET NUMBER OF X-Y SLAB CPUS
-  ncpu_s   = 8 
+  ncpu_s   = 4
   itn      = 0
   case_inp = '30L'
 
