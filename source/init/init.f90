@@ -72,7 +72,7 @@ SUBROUTINE init
   xl      = 320.0
   yl      = 320.0
   zl      = -96.0
-  izi     = NINT((zi/zl)*nnz)
+  izi     = NINT((zi/zl)*nnz) !index for initial mixed layer depth
 
   ! IF STRETCHED GRID SPECIFY LOCATION OF FIRST POINT
   zw1 = -0.5

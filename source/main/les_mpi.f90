@@ -96,7 +96,7 @@ PROGRAM les_mpi
 
     IF(ivis == 1) THEN
       CALL iso(it) !only if using new viscosity model 
-      CALL surfvis(it)
+      CALL surfvis(it) !only if using new viscosity model
     ENDIF
 
     IF(istage == 1)THEN
