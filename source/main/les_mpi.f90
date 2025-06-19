@@ -22,8 +22,6 @@ PROGRAM les_mpi
   l_debug = .FALSE.
   IF(idebug == 1) l_debug = .TRUE.
 
-  ts_mpi = mpi_wtime()
-
   ! SET NUMBER OF X-Y SLAB CPUS
   ncpu_s   = 8
   itn      = 0
@@ -61,6 +59,7 @@ PROGRAM les_mpi
   CALL get_output_filenames
   CALL save_v(it)
 
+  ts_mpi = mpi_wtime()
   DO WHILE(it<itmax)
     CALL set_sav(it,iti)
 
@@ -153,7 +152,9 @@ PROGRAM les_mpi
   te_mpi = mpi_wtime()
 
   WRITE(6,9997) (te_mpi - ts_mpi)
-
+  print *, ts_mpi
+  print *, te_mpi
+  print *, 'Total time = ', te_mpi - ts_mpi
   CONTINUE
   CALL mpi_finalize(ierr)
 
