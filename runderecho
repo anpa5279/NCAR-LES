@@ -13,7 +13,7 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 runo=logfile.out
-rund=ncarles-scaling144
+rund=ncarles-scaling32
 csrc=source
 
 
@@ -86,7 +86,7 @@ echo ''
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
-#PBS -l walltime=10:30:00
+#PBS -l walltime=02:30:00
 #PBS -l select=1:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q main
