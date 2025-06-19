@@ -13,7 +13,7 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 runo=logfile.out
-rund=ncarles-scaling128
+rund=ncarles-scaling160
 csrc=source
 
 
