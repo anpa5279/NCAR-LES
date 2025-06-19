@@ -12,13 +12,13 @@ MODULE pars
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: iti=0, itmax=200000, imean=1, ihst=01, itape=5000
+  INTEGER, PARAMETER :: iti=0, itmax=10000, imean=1, ihst=01, itape=2000
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
   INTEGER, PARAMETER :: nscl = 1
   INTEGER, PARAMETER :: nvar = (4+nscl)!number of scalars and vars
-  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 160 !size of problem
-  INTEGER, PARAMETER :: maxnx = 256, maxny = 256, maxnz = 256 !max size
+  INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 128 !size of problem
+  INTEGER, PARAMETER :: maxnx = nxg1 + 8, maxny = nyg1 + 8, maxnz = nzg1 + 8 !max size
   INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2,             &
    maxnx2 = maxnx + 2, maxny2 = maxny + 2
 
