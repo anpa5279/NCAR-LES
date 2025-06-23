@@ -13,7 +13,7 @@ user=apauls
 jobn=ncarles_test
 pnum=UCUB0166
 runo=logfile.out
-rund=strongscaling-n6
+rund=strongscaling-n7
 csrc=source
 
 
@@ -87,7 +87,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=05:00:00
-#PBS -l select=6:ncpus=128:mpiprocs=128
+#PBS -l select=7:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q main
 #PBS -l job_priority=economy
