@@ -12,7 +12,7 @@ MODULE pars
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: iti=0, itmax=10000, imean=1, ihst=01, itape=2000
+  INTEGER, PARAMETER :: iti=0, itmax=4000, imean=1, ihst=01, itape=2000
   INTEGER, PARAMETER :: itstr=1, it_his=itmax + 2, i_viz=itmax + 2
 
   INTEGER, PARAMETER :: nscl = 1
