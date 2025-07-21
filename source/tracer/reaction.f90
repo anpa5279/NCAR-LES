@@ -85,7 +85,7 @@ contains !creates an interface for the functions and can check that any calls ma
     real, intent(in), dimension(0:nscl-2) :: yGlobal !dimension= defines this as an array
     real, dimension(0:nscl-2) :: intDriver
     real, dimension(0:nscl-2) :: yLocal, yLocal2
-    real, dimension(0:4+nscl-1) :: workLocal
+    real, dimension(0:4+nscl-1) :: workLocal !holds jacobian variables needed for rkc_driver
     integer i
 
     workLocal(:) = 0.0
@@ -109,14 +109,15 @@ contains !creates an interface for the functions and can check that any calls ma
     ! t_tkc    the starting time.
     ! t_end    the desired end time.
     ! task     0 to take a single integration step, 1 to integrate to tEnd.
-    ! work     Real work array, size 3.
-    ! yLocal   Dependent variable array, integrated values replace initial conditions.
+    ! work     Real work array
+    ! yLocal   Dependent variable array, integrated values replace initial conditions. the tracers. 
+    ! temper   Temperature
 
     real, intent(in) :: t_rkc2
     real, intent(in) :: t_end, temper
-    real, intent(inout), dimension(0:nscl-2) :: yLocal
+    real, intent(inout), dimension(0:nscl-2) :: yLocal !note nscl is the number of scalars with temperature include. this is an array for the reactive scalars
     real, dimension(0:nscl-2) :: rkc_driver
-    real, intent(inout), dimension(0:4+nscl-1) :: work
+    real, intent(inout), dimension(0:4+nscl-1) :: work ! error, previous time step, current time step, stored time step, spectral radius, 7 reactive tracers
     real, dimension(0:nscl-2) :: y_n, F_n, temp_arr, temp_arr2
     integer nstep, m_max, i, m
     real abs_tol, rel_tol, UROUND, hmax, hmin, err, est
@@ -154,7 +155,6 @@ contains !creates an interface for the functions and can check that any calls ma
 
        ! estimate Jacobian spectral radius
        ! only if 25 steps passed
-       ! spec_rad = work(4)
        temp_arr(:)  = 0.0
        temp_arr2(:) = 0.0
        err          = 0.0
@@ -272,7 +272,7 @@ contains !creates an interface for the functions and can check that any calls ma
 
   end function rkc_driver
 
-  real function rkc_spec_rad(t_rkc, hmax, yLocal, F, v, Fv, temper) !rkc_spec_rad must be defined
+  real function rkc_spec_rad(t_rkc, hmax, yLocal, F, v, Fv, temper) !ex: rkc_spec_rad(t_rkc, hmax, y_n, F_n, work(4), temp_arr2, temper)
     ! Function to estimate spectral radius.
     !
     ! t_rkc    the time.
