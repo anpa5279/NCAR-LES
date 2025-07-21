@@ -17,6 +17,8 @@ rnam=derecho_testrun
 runo=logfile.out
 rund=test
 csrc=source
+nnds=1
+nprocs=64
 
 
 echo '--------------------------------------'
@@ -89,7 +91,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=08:00:00
-#PBS -l select=1:ncpus=1:mpiprocs=1
+#PBS -l select=$nnds:ncpus=$nprocs:mpiprocs=$nprocs
 #PBS -A $pnum
 #PBS -q main
 #PBS -l job_priority=economy
