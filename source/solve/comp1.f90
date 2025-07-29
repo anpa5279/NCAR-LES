@@ -45,12 +45,12 @@ SUBROUTINE comp1(istep,it)
 
   ! GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
   IF (i_dear == 2) THEN 
-    CALL smag_vis
+    CALL smag_vis(istep)
     DO iz=izs-1,ize
       vis_mean(iz) = 0.0
     ENDDO
   ELSE 
-    CALL tke_vis(istep) !CALL smag_vis(istep) !, replace this with a call to classic smagorinsky function. store is vis_m and vis_s
+    CALL tke_vis(istep)
   ENDIF
   CALL rhs_uvw(istep)
 
