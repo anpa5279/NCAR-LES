@@ -24,7 +24,7 @@ SUBROUTINE smag_vis(istep)
         s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
         s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
         sij2(i,j,iz) = s11 + s22 + s33 + 2 * s12 + 2 * s13 + 2 * s23
-        vis_m(i,j,iz)  = (csmag)**2 (d_grid(iz))**2 * SQRT(2 * sij2(i, j, iz))
+        vis_m(i,j,iz)  = (csmag)**2 * (d_grid(iz))**2 * SQRT(2 * sij2(i, j, iz))
         vis_s(i,j,iz)  = vis_m(i,j,iz)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
       ENDDO
