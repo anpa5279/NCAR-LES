@@ -7,6 +7,7 @@ SUBROUTINE smag_vis(alk)
   USE con_stats
 
   REAL :: sij2(nnx,iys:iye,izs-1:ize+1)
+  REAL :: alk(nnx,iys:iye,izs-1:ize+1)
 
   DO iz=izs-1,ize+1
     izp1 = iz + 1

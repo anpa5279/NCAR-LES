@@ -18,7 +18,7 @@ runo=logfile.out
 rund=$jobn
 csrc=source
 nnds=1
-nprocs=64
+nprocs=128
 
 
 echo '--------------------------------------'
