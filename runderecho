@@ -75,6 +75,7 @@ mpif90 -r8 -132 -O2 -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY
+chmod +x lesmpi
 cd ../
 cp code/lesmpi .
 echo 4 > mach.file
