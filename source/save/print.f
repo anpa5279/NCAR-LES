@@ -58,15 +58,16 @@ c
          write(lu,4700) (iz,dfac(iz),iz=iz_strt,iz_end)
  4700    format(//,'   IZ',5x,'  DFAC',/,(1x,i4,3x,e15.6))
       endif
-      write(lu,5100) (iz,txym(iz,2),txym(iz,3),
+      if (flg_reaction .eq. 1) then
+         write(lu,5100) (iz,txym(iz,2),txym(iz,3),
      +              txym(iz,4),txym(iz,5),txym(iz,6),
      +              txym(iz,7),iz=iz_strt,iz_end)
- 5100 format(//,' IZ',5x,' SCALAR-1 MEAN',8x,'2-MEAN',10x,
+ 5100   format(//,' IZ',5x,' SCALAR-1 MEAN',8x,'2-MEAN',10x,
      +          '3-MEAN',10x, '4-MEAN', 10x, '5-MEAN',10x,
      +          '6-MEAN',10x 
      +       ,/,(1x,i4,6(3x,e13.6)))
-      write(lu,5200) (iz,txym(iz,8),txym(iz,9),txym(iz,10),txym(iz,11),txym(iz,12),iz=iz_strt,iz_end)
- 5200 format(//,' IZ',5x,' SCALAR-7 MEAN',8x,'8-MEAN',10x,
+         write(lu,5200) (iz,txym(iz,8),txym(iz,9),txym(iz,10),txym(iz,11),txym(iz,12),iz=iz_strt,iz_end)
+ 5200    format(//,' IZ',5x,' SCALAR-7 MEAN',8x,'8-MEAN',10x,
      +          '9-MEAN',10x, '10-MEAN', 10x, '11-MEAN', 10x
      +       ,/,(1x,i4,5(3x,e13.6)))
 

@@ -11,7 +11,7 @@
 ### csrc: Directory containing code source
 
 user=apauls
-jobn=testing_smag
+jobn=testing_smag-cor
 pnum=UCUB0166
 rnam=derecho_testrun
 runo=logfile.out
