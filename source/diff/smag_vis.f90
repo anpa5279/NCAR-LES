@@ -13,9 +13,9 @@ SUBROUTINE smag_vis(istep)
     izp1 = iz + 1
     izm1 = iz - 1
     d_grid(iz) = (ABS(dx*dy*dzw(iz)))**(1./3.)
-    ! GET FLUCTUATING STRAINS
     DO j=iys,iye
       DO i=1,nnx
+        !strain rate tensor terms squared
         s11 = (ux(i,j,iz))**2
         s22 = (vy(i,j,iz))**2
         wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(izp1)
