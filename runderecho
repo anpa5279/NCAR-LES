@@ -11,7 +11,7 @@
 ### csrc: Directory containing code source
 
 user=apauls
-jobn=testing_smag-density
+jobn=smag-u_f-default-bc
 pnum=UCUB0166
 rnam=derecho_testrun
 runo=logfile.out
