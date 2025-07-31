@@ -118,8 +118,8 @@ SUBROUTINE setup(it)
   ELSE
 
     ! JUST ESTIMATE DSL FOR AVERAGE SPACING
-    dx32 = dx!*3./2.
-    dy32 = dy!*3./2.
+    dx32 = dx*3./2.
+    dy32 = dy*3./2.
 
     dsl_max = (ABS(dx32*dy32*dzw(0)))**(1./3.)
     DO iz=0,nnzp1
