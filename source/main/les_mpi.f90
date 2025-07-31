@@ -79,13 +79,13 @@ PROGRAM les_mpi
     CALL get_derv
 
     ! NEW EDDY VISCOSITY, AND BCS
-    IF(iss == 0 .AND. ifree == 0) THEN
+    IF(iss == 0 .AND. ifree == 0) THEN !surface BC
       CALL lower(it)
     ELSEIF(ifree == 1) THEN
       CALL lower_free(it)
     ENDIF
 
-    IF(ise == numprocs-1) THEN
+    IF(ise == numprocs-1) THEN !bottom BC
       CALL upper
     ENDIF
 
