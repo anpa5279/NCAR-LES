@@ -11,14 +11,13 @@ SUBROUTINE smag_vis(istep)
 
   DO iz=izs-1,ize+1
     izp1 = iz + 1
-    izm1 = iz - 1
     d_grid(iz) = (ABS(dx*dy*dzw(iz)))**(1./3.)
     DO j=iys,iye
       DO i=1,nnx
         !strain rate tensor terms squared
         s11 = (ux(i,j,iz))**2
         s22 = (vy(i,j,iz))**2
-        wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(izp1)
+        wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(iz)
         s33 =  (wzp)**2
         s12 =  (0.5 * (uy(i,j,iz) + vx(i,j,iz)))**2
         s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
