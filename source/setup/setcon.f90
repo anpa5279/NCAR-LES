@@ -24,7 +24,7 @@ SUBROUTINE setcon
   ! SET CONSTANTS IN EDDY VISCOSITY MODEL
   ck       = 0.1
   ceps     = 0.93
-  csmag    = ck !SQRT(ck*SQRT(ck/ceps))
+  csmag    = SQRT(ck*SQRT(ck/ceps))
   stab_c   = 0.76
 
   ! SET STABILITY CONSTANT
