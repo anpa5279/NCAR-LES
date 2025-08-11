@@ -7,12 +7,12 @@ MODULE pars
 ! nys=ny/nslab=256/6=24
 
   INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
-  INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau
+  INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau. do not change, not working.
   INTEGER, PARAMETER :: flg_reaction = 0  ! 3.1536e8 reaction model on or off
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
-  INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: iti=0, itmax=100000, imean=1, ihst=01, itape=2400,        &
+  INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity. does nothing
+  INTEGER, PARAMETER :: iti=0, itmax=45600, imean=1, ihst=01, itape=2400,        &
   itstr=1, it_his=120000, i_viz=120000
 
   INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars and vars
