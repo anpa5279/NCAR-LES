@@ -44,14 +44,15 @@ SUBROUTINE comp1(istep,it)
   ENDDO
 
   ! GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
-  IF (i_dear == 2) THEN 
-    CALL smag_vis(istep)
-    DO iz=izs-1,ize
-      vis_mean(iz) = 0.0
-    ENDDO
-  ELSE 
-    CALL tke_vis(istep)
-  ENDIF
+  !IF (i_dear == 2) THEN 
+  !  CALL smag_vis(istep)
+  !  DO iz=izs-1,ize
+  !    vis_mean(iz) = 0.0
+  !  ENDDO
+  !ELSE 
+  !  CALL tke_vis(istep)
+  !ENDIF
+  CALL tke_vis(istep)
   CALL rhs_uvw(istep)
 
   ! EVALUATE RHS OF SCALAR EQUATIONS=
