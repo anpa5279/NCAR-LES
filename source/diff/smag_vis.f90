@@ -9,7 +9,7 @@ SUBROUTINE smag_vis(istep)
   REAL :: d_grid(izs-1:ize+1)
   REAL :: sij2(nnx,iys:iye,izs-1:ize+1)
 
-  DO iz=izs-1,ize+1
+  DO iz=izs,MIN(ize,nmatch)
     izm1   = iz - 1
     izp1 = iz + 1
     weit   = dzw(iz)/(dzw(iz) + dzw(izp1))
