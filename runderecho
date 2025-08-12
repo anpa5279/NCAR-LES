@@ -11,7 +11,7 @@
 ### csrc: Directory containing code source
 
 user=apauls
-jobn=smag-revised-pt8
+jobn=smag-revised-pt9
 pnum=UCUB0166
 rnam=derecho_testrun
 runo=logfile.out
@@ -91,7 +91,7 @@ echo ''
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
-#PBS -l walltime=08:00:00
+#PBS -l walltime=03:00:00
 #PBS -l select=$nnds:ncpus=$nprocs:mpiprocs=$nprocs
 #PBS -A $pnum
 #PBS -q main

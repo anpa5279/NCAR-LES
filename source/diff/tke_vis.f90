@@ -50,9 +50,6 @@ subroutine tke_vis(istep)
         ENDIF
       ENDIF
     ENDDO
-  ELSE
-    CALL smag_vis(istep)
-    vis_mean(iz) = 0.0
   ENDIF
 
   ! UPDATE RHS OF SGS E FROM X AND Z PIECES
