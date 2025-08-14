@@ -51,8 +51,8 @@ SUBROUTINE setup(it)
   ! WAVENUMBERS, INTRODUCE A NORMALIZED SET OF WAVENUMBERS TO ELIMINATE
   ! COMPUTATION IN DERIVATIVES XDERIV AND YDERIV
   DO i=1,nnx
-    xkn(i) = FLOAT(i-1)*pi2/xl
-    IF(i>ncx)xkn(i) = -FLOAT(nnx-i+1)*pi2/xl
+    xkn(i) = FLOAT(i-1)*two_pi/xl
+    IF(i>ncx)xkn(i) = -FLOAT(nnx-i+1)*two_pi/xl
   ENDDO
 
   fn = 1.0/FLOAT(nnx)
@@ -61,8 +61,8 @@ SUBROUTINE setup(it)
   ENDDO
 
   DO i=1,nny
-    ykn(i) = FLOAT(i-1)*pi2/yl
-    IF(i>ncy)ykn(i) = -FLOAT(nny-i+1)*pi2/yl
+    ykn(i) = FLOAT(i-1)*two_pi/yl
+    IF(i>ncy)ykn(i) = -FLOAT(nny-i+1)*two_pi/yl
   ENDDO
 
   fn = 1.0/FLOAT(nny)

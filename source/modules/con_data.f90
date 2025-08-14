@@ -8,7 +8,7 @@ MODULE con_data
   TYPE con_d
     SEQUENCE
     REAL ::                                                                 &
-            zo, vk, vkin, vk74, vk74in, grav, gcp, fcor, fcor_h, zi, pi2,   &
+            zo, vk, vkin, vk74, vk74in, grav, gcp, fcor, fcor_h, zi, two_pi,   &
             batagk, t00, batag, vgcont, ugcont, cdbtm, dtdzf(nscl), dtjump, &
             ugal, divgls, z1, utausv, xl, yl, zl, dx, dy, dz, dt, fnxy,     &
             dzdz, dsl, c23, dtgama, dtzeta, xkmax, time, zody, zody74,      &
@@ -19,7 +19,7 @@ MODULE con_data
 
   TYPE(con_d), TARGET :: c_c
     REAL, POINTER ::                                                        &
-            zo, vk, vkin, vk74, vk74in, grav, gcp, fcor, fcor_h, zi, pi2,   &
+            zo, vk, vkin, vk74, vk74in, grav, gcp, fcor, fcor_h, zi, two_pi,   &
             batagk, t00, batag, vgcont, ugcont, cdbtm, dtdzf(:), dtjump,    &
             ugal, divgls, z1, utausv, xl, yl, zl, dx, dy, dz, dt, fnxy,     &
             dzdz, dsl, c23, dtgama, dtzeta, xkmax, time, zody, zody74,      &
@@ -44,7 +44,7 @@ MODULE con_data
     fcor   => c_c%fcor
     fcor_h => c_c%fcor_h
     zi     => c_c%zi
-    pi2    => c_c%pi2
+    two_pi    => c_c%two_pi
     batagk => c_c%batagk
     t00    => c_c%t00
     batag  => c_c%batag

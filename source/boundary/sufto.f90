@@ -59,6 +59,7 @@ SUBROUTINE sufto(it)
 
   ! INPUT SURFACE WIND STRESS (TAU = 0.0184N/M^2)
   utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w)
+  !print *, 'utau = ', utau
 
   ! SAVE OLD TAU
   utausv = utau
@@ -107,7 +108,7 @@ SUBROUTINE sufto(it)
     ! EXAMPLES OF TWO OTHER SCALARS
     ! NOTE ROUNDOFF PROBLEM IN ANGLES ARE CLOSE TO MULTIPLES OF PI
     utau2 = utau*utau
-    au13m = utau2
+    au13m = utau2 !momemtum flux
     au23m = 0.0
     aut3m(1)= wtsfc(1)
   ENDIF

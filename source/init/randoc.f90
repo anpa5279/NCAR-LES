@@ -97,7 +97,7 @@ SUBROUTINE randoc
         ENDDO
       ENDDO
 
-      facv = 0.1!ampv/vmaxx
+      facv = ampv/vmaxx
 
       WRITE(6,600) facv, MAXVAL(psiy)
 
