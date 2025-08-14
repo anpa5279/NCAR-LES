@@ -9,7 +9,7 @@ SUBROUTINE init
   pi     = 4.0*ATAN(1.0)
   two_pi    = 2.0*pi
   d_to_r = two_pi/360.0
-  grav   = 9.81
+  gravity   = 9.81
   bfac   = 1.0
 
   IF(ibuoy==0) bfac = 0.
@@ -21,8 +21,8 @@ SUBROUTINE init
   t00b    = 5000.0
   cp_a    = 1.0057e03
   cp_w    = 4.20e03
-  gcp     = grav/cp_w
-  batag   = bfac*grav/t00b
+  gcp     = gravity/cp_w
+  batag   = bfac*gravity/t00b
 
   ! SPECIFY STOKES DRIFT PARAMETERS
   cpou10  = 0.6
@@ -81,13 +81,13 @@ SUBROUTINE init
   ann      = 0.00615
   bnn      = 1.0
   f2w      = 0.13
-  f_p      = f2w*grav/u_10
+  f_p      = f2w*gravity/u_10
   npm      = 4
   sigma_p  = two_pi*f_p
 
   ! RATIO OF K_1/K_P (PHILLIPS AND DONELAN)
-  r_kp     = grav*(f2w*two_pi/u_10)**2
-  r_k1     = r_fac*grav/(cd_10*u_10*u_10)
+  r_kp     = gravity*(f2w*two_pi/u_10)**2
+  r_k1     = r_fac*gravity/(cd_10*u_10*u_10)
   rk_ratio = r_k1/r_kp !this does nothing to the code
 
   time  = 0.0

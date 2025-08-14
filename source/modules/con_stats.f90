@@ -27,7 +27,7 @@ MODULE con_stats
             ug(maxnz), vg(maxnz), wls(maxnz),uls(maxnx)
     REAL ::                                                                 &
             udrift,vdrift,cpou10,turb_la, stokesw,stokesa, stokess,         &
-            stokes(maxnz1),f2w,ann,grav,sigma_p,bnn,z_pt
+            stokes(maxnz1),f2w,ann,gravity,sigma_p,bnn,z_pt
     REAL ::                                                                 &
             dtg, dslg, dzg
   END TYPE
@@ -48,7 +48,7 @@ MODULE con_stats
             ug(:), vg(:), wls(:), uls(:)
     REAL, POINTER ::                                                        &
             udrift, vdrift, cpou10, turb_la, stokesw, stokesa, stokess,     &
-            stokes(:),f2w,ann,grav,sigma_p,bnn,z_pt
+            stokes(:),f2w,ann,gravity,sigma_p,bnn,z_pt
     REAL, POINTER ::                                                        &
             dtg, dslg, dzg
 
