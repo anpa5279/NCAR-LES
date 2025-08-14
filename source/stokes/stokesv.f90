@@ -15,7 +15,7 @@ SUBROUTINE stokesv
   CALL speed2stress(u_10,v_10,cd_10,tau_x,tau_y)
 
   speedval = SQRT(u_10**2 + v_10**2)
-  f_p     = f2w*gravity/speedval
+  f_p     = f2w*grav/speedval
   sigma_p = two_pi*f_p
 
   ! SET PARAMETERS THOUGH NOT USED HERE
