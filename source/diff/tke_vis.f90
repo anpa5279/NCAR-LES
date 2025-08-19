@@ -19,26 +19,47 @@ subroutine tke_vis(istep)
   !GET LENGTH SCALES AND EDDY VISCOSITY
   IF(i_dear == 0) THEN !(i_dear=0 means deardorff, if /=0, then Schumann)
     CALL dear_vis(alk)
-  ELSE
+    !IF SPECIAL 2 PART SURFACE LAYER MODEL IS ON
+    !GET 'MEAN' VISCOSITY
+    DO iz=izs-1,ize
+      izm1         = iz - 1
+      izp1         = iz + 1
+      vis_mean(iz) = 0.0
+      IF(ivis == 1 .AND. iz <= nmatch) THEN !ivis0 == 1 (new eddy viscosity model), then ivis=1
+        IF(iz <= 1) THEN !if bottom boundary
+          vis_mean(iz) = xksurf !xksurf defined in boundary/surfvis
+        ELSE !it is not the bottom boundary 
+          stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
+                ABS(dzu_i(izp1))
+          vis_mean(iz) = xksurf*viscon*stravg
+        ENDIF
+      ENDIF
+    ENDDO
+  ELSEIF (i_dear == 1) THEN
     CALL schu_vis(alk)
+    !IF SPECIAL 2 PART SURFACE LAYER MODEL IS ON
+    !GET 'MEAN' VISCOSITY
+    DO iz=izs-1,ize
+      izm1         = iz - 1
+      izp1         = iz + 1
+      vis_mean(iz) = 0.0
+      IF(ivis == 1 .AND. iz <= nmatch) THEN !ivis0 == 1 (new eddy viscosity model), then ivis=1
+        IF(iz <= 1) THEN !if bottom boundary
+          vis_mean(iz) = xksurf !xksurf defined in boundary/surfvis
+        ELSE !it is not the bottom boundary 
+          stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
+                ABS(dzu_i(izp1))
+          vis_mean(iz) = xksurf*viscon*stravg
+        ENDIF
+      ENDIF
+    ENDDO
+  ELSEIF (i_dear == 2) THEN
+    CALL smag_vis(alk)
+    DO iz=izs-1,ize
+      vis_mean(iz) = 0.0
+    ENDDO
   ENDIF
 
-  !IF SPECIAL 2 PART SURFACE LAYER MODEL IS ON
-  !GET 'MEAN' VISCOSITY
-  DO iz=izs-1,ize
-    izm1         = iz - 1
-    izp1         = iz + 1
-    vis_mean(iz) = 0.0
-    IF(ivis == 1 .AND. iz <= nmatch) THEN !ivis0 == 1 (new eddy viscosity model), then ivis=1
-      IF(iz <= 1) THEN !if bottom boundary
-        vis_mean(iz) = xksurf !xksurf defined in boundary/surfvis
-      ELSE !it is not the bottom boundary 
-        stravg = SQRT((u_mn(izp1)-u_mn(iz))**2 + (v_mn(izp1)-v_mn(iz))**2)* &
-              ABS(dzu_i(izp1))
-        vis_mean(iz) = xksurf*viscon*stravg
-      ENDIF
-    ENDIF
-  ENDDO
 
   !UPDATE RHS OF SGS E FROM X AND Z PIECES
   !CUBE OF SIZE (NNX, IYZ, IYE, IZS:IZE)
