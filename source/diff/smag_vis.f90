@@ -18,11 +18,11 @@ SUBROUTINE smag_vis(istep)
     DO j=iys,iye
       DO i=1,nnx
         !strain rate tensor terms squared. strain rate tens: sij= 1/2*(u_<i,j> + u_<j,i>) 
-        s11 = weit1*ux(ix,iy,iz)**2 + weit*ux(ix,iy,izp1)**2
-        s22 = weit1*vy(ix,iy,iz)**2 + weit*vy(ix,iy,izp1)**2
+        s11 = (weit1*ux(ix,iy,iz)+ weit*ux(ix,iy,izp1))**2
+        s22 = (weit1*vy(ix,iy,iz)+ weit*vy(ix,iy,izp1))**2
         wz  = (w(ix,iy,iz)-w(ix,iy,izm1))*dzw_i(iz)
         wzp = (w(ix,iy,izp1)-w(ix,iy,iz))*dzw_i(izp1)
-        s33 = weit*wzp**2 + weit1*wz**2
+        s33 = (weit*wzp + weit1*wz)**2
         s12 =  (0.5 * (weit1*(uy(i,j,iz) + vx(i,j,iz)) + weit*(uy(i,j,izp1) + vx(i,j,izp1))))**2
         s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
         s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2

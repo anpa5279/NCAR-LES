@@ -17,7 +17,7 @@ subroutine tke_vis(istep)
   REAL alk(nnx,iys:iye,izs-1:ize+1)
 
   !GET LENGTH SCALES AND EDDY VISCOSITY
-  IF(i_dear == 0) THEN !(i_dear=0 means deardorff, if /=0, then Schumann)
+  IF(i_dear == 0) THEN !(i_dear=0 means deardorff, if =1, then Schumann)
     CALL dear_vis(alk)
   ELSE
     CALL schu_vis(alk)
