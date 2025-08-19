@@ -1,4 +1,4 @@
-SUBROUTINE smag_vis(alk)
+SUBROUTINE smag_vis(istep)
 ! GET DEARDORFF STABILITY CORRECTED LENGTH SCALES, POSSIBLE NEW VIS MODEL
 
   USE pars
@@ -8,7 +8,6 @@ SUBROUTINE smag_vis(alk)
 
   REAL :: d_grid(izs-1:ize+1)
   REAL :: sij2(nnx,iys:iye,izs-1:ize+1)
-  REAL :: alk(nnx,iys:iye,izs-1:ize+1)
 
   DO iz=izs,MIN(ize,nmatch)
     izm1   = iz - 1
@@ -31,7 +30,7 @@ SUBROUTINE smag_vis(alk)
         vis_m(i,j,iz)  = (csmag)**2 * (d_grid(iz))**2 * SQRT(2 * sij2(i, j, iz))
         vis_s(i,j,iz)  = vis_m(i,j,iz)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
-        alk(ix, iy, iz) = 1.0 !because you cannot divide by 0
+        r5(ix,iy,iz) = 0.0
       ENDDO
     ENDDO
   ENDDO

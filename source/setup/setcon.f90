@@ -19,7 +19,7 @@ SUBROUTINE setcon
 
   ! SET MIN VALUE OF E
   smal_e = 0.0
-  smal_e = 1.0e-12
+  !smal_e = 1.0e-12
 
   ! SET CONSTANTS IN EDDY VISCOSITY MODEL
   ck       = 0.1
