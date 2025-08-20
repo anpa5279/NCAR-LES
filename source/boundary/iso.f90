@@ -36,7 +36,7 @@ SUBROUTINE iso(it)
     ! GET FLUCTUATING STRAINS
     DO j=iys,iye
       DO i=1,nnx
-        s11 = weit1*ux(i,j,iz)**2 + weit*ux(i,j,izp1)**2
+        s11 = weit1*ux(i,j,iz)**2 + weit*ux(i,j,izp1)**2 !any x and y derivatives have an average of 0
         s22 = weit1*vy(i,j,iz)**2 + weit*vy(i,j,izp1)**2
         wz  = (w(i,j,iz)-w(i,j,izm1))*dzw_i(iz)
         wzp = (w(i,j,izp1)-w(i,j,iz))*dzw_i(izp1)
