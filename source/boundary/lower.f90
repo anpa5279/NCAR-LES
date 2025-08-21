@@ -18,8 +18,8 @@ SUBROUTINE lower(it)
 
   DO iy=iys,iye
     DO ix=1,nnx
-      ebc(ix,iy,2)  = AMAX1(e(ix,iy,iz),sml_eg)
-      wbc(ix,iy,2)  = 0.0
+      ebc(ix,iy,2)  = 0.0!AMAX1(e(ix,iy,iz),sml_eg)
+      wbc(ix,iy,2)  = w(ix,iy,iz)
       pbc(ix,iy,2)  = 0.0
       pbc2(ix,iy,2) = 0.0
     ENDDO
@@ -76,8 +76,8 @@ SUBROUTINE lower(it)
     DO ix=1,nnx
       dudz     = 2.*(u(ix,iy,iz) + ugal)*dz_i
       dvdz     = 2.*v(ix,iy,iz)*dz_i
-      ubc(ix,iy,2) = u(ix,iy,iz) - dudz*dzu(iz)
-      vbc(ix,iy,2) = v(ix,iy,iz) - dvdz*dzu(iz)
+      ubc(ix,iy,2) = tau13m(ix,iy)!u(ix,iy,iz) - dudz*dzu(iz)
+      vbc(ix,iy,2) = v(ix,iy,iz) !v(ix,iy,iz) - dvdz*dzu(iz)
     ENDDO
   ENDDO
 

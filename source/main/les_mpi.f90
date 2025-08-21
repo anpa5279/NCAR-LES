@@ -91,7 +91,7 @@ PROGRAM les_mpi
     CALL bcast_pbc
     CALL get_means(istage)
 
-    IF(ivis == 1) THEN !does not apply to old eddy viscosity model
+    IF(ivis == 1) THEN !deardorff viscosity model
       CALL iso(it)
       CALL surfvis(it)
     ENDIF
