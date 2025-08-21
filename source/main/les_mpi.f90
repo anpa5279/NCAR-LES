@@ -63,7 +63,7 @@ PROGRAM les_mpi
     CALL set_sav(it,iti)
 
     ! UPDATE POSITION OF VORTEX
-    IF(it >= new_vis .AND. ivis0 == 1) THEN
+    IF(it >= new_vis .AND. ivis0 == 1) THEN !currently ivis0 = 0
       ivis = 1
     ELSE
       ivis = 0
@@ -92,7 +92,7 @@ PROGRAM les_mpi
     CALL bcast_pbc
     CALL get_means(istage)
 
-    IF(ivis == 1) THEN
+    IF(ivis == 1) THEN !does not apply to old eddy viscosity model
       CALL iso(it)
       CALL surfvis(it)
     ENDIF

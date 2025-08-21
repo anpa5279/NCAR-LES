@@ -59,7 +59,6 @@ SUBROUTINE sufto(it)
 
   ! INPUT SURFACE WIND STRESS (TAU = 0.0184N/M^2)
   utau = sqrt(rho_a*(8.5e-4)*ws10*ws10/rho_w)
-  !print *, 'utau = ', utau
 
   ! SAVE OLD TAU
   utausv = utau
