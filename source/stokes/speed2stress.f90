@@ -7,7 +7,8 @@ SUBROUTINE speed2stress(u_10,v_10,cd_10,tau_x,tau_y)
   IF(flg_lat /= 1) THEN
     u_10 = ustokes
   ELSE
-    !u_10 = SQRT(taux_est/(cd_fac*(DTANH((SQRT(taux_est/(1.3e-3)) - 25.0)/5.0)*0.5 - DTANH(-25.0/5.0)*0.5 + 1.2)*0.001))
+  !  u_10 = SQRT(taux_est/(cd_fac*(DTANH((SQRT(taux_est/(1.3e-3)) - 25.0)/5.0)*0.5 - DTANH(-25.0/5.0)*0.5 + 1.2)*0.001))
+  !u_10 = SQRT(taux_est/(cd_fac*(DTANH((SQRT(taux_est/(1.3e-3)) - 25.0)/5.0)*0.5 - DTANH(-25.0/5.0)*0.5 + 1.2)*0.001))
   ENDIF
 
     v_10 = 0.0

@@ -16,7 +16,7 @@ SUBROUTINE stokesv
 
   speedval = SQRT(u_10**2 + v_10**2)
   f_p     = f2w*grav/speedval
-  sigma_p = two_pi*f_p
+  sigma_p = pi2*f_p
 
   ! SET PARAMETERS THOUGH NOT USED HERE
   stokesw = 0.0

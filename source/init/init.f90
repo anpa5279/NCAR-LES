@@ -7,8 +7,8 @@ SUBROUTINE init
   USE con_stats
 
   pi     = 4.0*ATAN(1.0)
-  two_pi    = 2.0*pi
-  d_to_r = two_pi/360.0
+  pi2    = 2.0*pi
+  d_to_r = pi2/360.0
   grav   = 9.81
   bfac   = 1.0
 
@@ -29,7 +29,7 @@ SUBROUTINE init
   turb_la = 0.3
   rlat    = 30
 
-  fcor    = 2.0*two_pi*SIN(rlat*d_to_r)/(24.0*3600.0)!1.e-4!
+  fcor    = 2.0*pi2*SIN(rlat*d_to_r)/(24.0*3600.0)!1.e-4!
   fcor_h  = 0.0
   ugcont  = 0.0
   vgcont  = 0.
@@ -83,12 +83,13 @@ SUBROUTINE init
   f2w      = 0.13
   f_p      = f2w*grav/u_10
   npm      = 4
-  sigma_p  = two_pi*f_p
+  sigma_p  = pi2*f_p
+  grav_w   = grav
 
   ! RATIO OF K_1/K_P (PHILLIPS AND DONELAN)
-  r_kp     = grav*(f2w*two_pi/u_10)**2
+  r_kp     = grav*(f2w*pi2/u_10)**2
   r_k1     = r_fac*grav/(cd_10*u_10*u_10)
-  rk_ratio = r_k1/r_kp !this does nothing to the code
+  rk_ratio = r_k1/r_kp
 
   time  = 0.0
 
