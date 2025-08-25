@@ -11,7 +11,7 @@
 ### csrc: Directory containing code source
 
 user=apauls
-jobn=smag-revised-pt20
+jobn=smag-revised-pt21
 pnum=UCUB0166
 rnam=derecho_testrun
 runo=logfile.out
@@ -95,7 +95,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=$nnds:ncpus=$nprocs:mpiprocs=$nprocs
 #PBS -A $pnum
 #PBS -q main
-#PBS -l job_priority=premium
+#PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 
