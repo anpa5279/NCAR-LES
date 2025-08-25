@@ -23,10 +23,16 @@ SUBROUTINE smag_vis(istep)
         wz  = (w(ix,iy,iz)-w(ix,iy,izm1))*dzw_i(iz)
         wzp = (w(ix,iy,izp1)-w(ix,iy,iz))*dzw_i(izp1)
         s33 = (weit*wzp + weit1*wz)**2
-        s12 =  (0.5 * (weit1*(uy(i,j,iz) + vx(i,j,iz)) + weit*(uy(i,j,izp1) + vx(i,j,izp1))))**2
-        s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
-        s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
-        sij2(i,j,iz) = s11 + s22 + s33 + 2.0 * s12 + 2.0 * s13 + 2.0 * s23
+        s12 = weit1*(uy(ix,iy,iz) + vx(ix,iy,iz))**2 + weit*(uy(ix,iy,izp1) &
+              + vx(ix,iy,izp1))**2
+        uzmn=(u(ix,iy,izp1)-u(ix,iy,iz))*dzu_i(izp1)
+        vzmn=(v(ix,iy,izp1)-v(ix,iy,iz))*dzu_i(izp1)
+        s13 = (uzmn + wx(ix,iy,iz))**2
+        s23 = (vzmn + wy(ix,iy,iz))**2
+        !s12 =  (0.5 * (weit1*(uy(i,j,iz) + vx(i,j,iz)) + weit*(uy(i,j,izp1) + vx(i,j,izp1))))**2
+        !s13 =  (0.5 * ((((u(i,j,izp1) - u(i,j,iz)) * dzu_i(izp1) + wx(i,j,iz)))))**2
+        !s23 =  (0.5 * ((v(i,j,izp1) - v(i,j,iz)) * dzu_i(izp1) + wy(i,j,iz)))**2
+        sij2(i,j,iz) = 2.0*(s11 + s22 + s33) + s13 + s23 + s12!s11 + s22 + s33 + 2.0 * s12 + 2.0 * s13 + 2.0 * s23
         vis_m(i,j,iz)  = (csmag)**2 * (d_grid(iz))**2 * SQRT(2.0 * sij2(i, j, iz))
         vis_s(i,j,iz)  = vis_m(i,j,iz)
         vis_sv(i,j,iz) = vis_s(i,j,iz)
