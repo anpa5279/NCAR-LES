@@ -1,48 +1,30 @@
-# MODIFY THESE AS YOU NEED/LIKE ----------------------------------------------------------
-SRC_DIR := ../code
-MPI := mpif90
-# note the use of = and not := here, allows deferring definitions of COMMON etc. to later
-FFLAGS = $(COMMON) $(OPT1) # choose DBG1/DBG2/DBG3 or OPT2/OPT3.
+# MODIFY THESE AS YOU NEED/LIKE
 
-# These flags are specific to Intel fortran ----------------------------------------------------
-# I like verbose flags in a makefile, because why not when you aren't typing them out yourself?
-# For Intel Fortran:
-# -r8 => -real-size 64, clearly this makes all "real" variables double-precision by default
-# -132 => -extend-source 132, this lets all fixed-format *.f files have 132-character lines (default is 72)
-COMMON := -xCORE-AVX512 -real-size 64 -extend-source 132 -fpic  # AVX512 setting highly recommended for Frontera and Stampede3
-LIBS := -limf -lm
+# add -xCORE-AVX512 for Frontera, -march=core-avx2 for Derecho
+COMMON := -real-size 64 -fpic -march=core-avx2 -module ./build
+FFLAGS := $(COMMON) -extend-source 132
+F90FLAGS := $(COMMON)
 
-DBG1 := -g1 -debug all -traceback -O2  # O2 placed after g1 and debug, otherwise they override O2 to O0
-DBG2 := -O0 -g2 -debug all -traceback -prec-div -fpe-all=0 -warn all,noshape -check all,noarg_temp_created -fp-model=strict  # -g2 == -g
-DBG3 := -O0 -g3 -debug all -traceback -prec-div -fpe-all=0 -warn all,noshape -check all -fp-model=strict,source
+LDFLAGS := -limf -lm # add any other needed files
 
-# Intel fortran option -O1 optimizes for small executable size, not faster performance, unlike gfortran
-OPT1 := -O2 -fp-model=precise -fprotect-parens
-OPT2 := -O2 -fprotect-parens
-OPT3 := -O3 -ipo # -qopt-zmm-usage=high may help or hurt if added here
-OPT4 := -O3 -no-prec-div -ipo # -qopt-zmm-usage=high may help or hurt if added here
-# Other stuff: it's possible settings like -heap-arrays, and -mcmodel=medium could help performance and/or avoid runtime memory errors.
+# USE THESE FOR ACTUAL DEBUGGING
+SYNTAX := -syntax-only -warn all,errors -diag-error-limit=5
+DBG1 := -g2 -debug all -traceback -O2  # O2 placed after g1 and debug, otherwise they override O2 to O0
+DBG2 := -g2 -debug all -traceback -fpe-all=0 -warn nounused -check all,noarg_temp_created -fp-model=strict  # -g2 == -g
+DBG3 := -g3 -debug all -traceback -prec-div -fprotect-parens -fpe-all=0 -warn nounused -check all -fp-model=strict,source
 
-# ----------------------------------------------------------------------------------------
-SRCS := $(shell find $(SRC_DIR) -name '*.f' -or -name '*.f90')
-INC_DIRS := $(shell find $(SRC_DIR) -type d)
-vpath %.f90 $(INC_DIRS)  # necessary to compile the modules without explicitly specifying their directories
+# USE THESE FOR CODE PROFILING
+# -- Very unoptimized floating-point operations.
+#    Every way in which you can force intel to do math slower is turned on
+OPT1 := -g -O2 -fp-model=strict,source -fprotect-parens -prec-div
+# -- "Normal" floating-point operations
+OPT2 := -g -O2
+# -- Very optimized FLOPs, any way in which you can trade accuracy for speed is turned on.
+OPT3 := -g -O2 -fp-model=fast -fast-transcendentals -fma -no-prec-div -nostandard-realloc-lhs
 
-MOD_SRCS := inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90
-MODS := $(MOD_SRCS:.f90=.mod)
-
-.PHONY : clean realclean modules
-
-# The final make step. Call with just `make` or explicitly as `make lespmi`.
-lesmpi : $(MODS) 
-	$(MPI) $(FFLAGS) $(SRCS) -o $@ $(LDFLAGS)
-
-# make step for module files
-%.mod : %.f90
-	$(MPI) $(FFLAGS) -c $<
-
-realclean:
-	rm -rf *.o *.mod lesmpi
-
-clean: 
-	rm -rf lesmpi
+# USE THESE FOR MAXIMUM COMPILER OPTIMIZATION
+# -- Once O3 and ipo are turned on, I don't think you can use -g anymore.
+OPT4 := -O3 -ipo # -qopt-zmm-usage=high may help or hurt if added here
+OPT5 := -O3 -ipo -fast-transcendentals -no-prec-div -nostandard-realloc-lhs # -fimf-precision=high or link to MKL!
+# Other stuff: it's possible settings like -qopt-zmm-usage=high, and
+# -mcmodel=medium could help performance and/or avoid runtime memory errors.

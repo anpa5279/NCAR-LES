@@ -1,7 +1,7 @@
 module fftwk
 
-  IMPLICIT NONE
+    IMPLICIT NONE
 
-  REAL, ALLOCATABLE :: trigx(:,:), trigc(:)
+    REAL, ALLOCATABLE :: trigx(:, :), trigc(:)
 
 END MODULE

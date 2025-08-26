@@ -1,15 +1,15 @@
-SUBROUTINE get_zi(gradmax,gradout,len,itype)
+SUBROUTINE get_zi(gradmax, gradout, len, itype)
 
-  USE pars
+    USE pars
 
-  REAL :: gradmax(*), gradout(*)
+    REAL :: gradmax(*), gradout(*)
 
-  DO i=1,len,2
-    IF(gradmax(i) > gradout(i)) THEN
-      gradout(i)   = gradmax(i)
-      gradout(i+1) = gradmax(i+1)
-    ENDIF
-  ENDDO
+    DO i = 1, len, 2
+        IF (gradmax(i) > gradout(i)) THEN
+            gradout(i) = gradmax(i)
+            gradout(i + 1) = gradmax(i + 1)
+        END IF
+    END DO
 
-  RETURN
+    RETURN
 END SUBROUTINE

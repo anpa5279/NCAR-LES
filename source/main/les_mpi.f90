@@ -1,163 +1,163 @@
 PROGRAM les_mpi
 
-  USE pars
-  USE fields
-  USE con_data
-  USE con_stats
-  USE tracerbc, ONLY: applytracerbc
+    USE pars
+    USE fields
+    USE con_data
+    USE con_stats
+    USE tracerbc, ONLY: applytracerbc
 
-  INCLUDE 'mpif.h'
+    INCLUDE 'mpif.h'
 
-  ! INITIALIZE MPI, GET MYID, NUMPROCS
-  ! TEST IF ON ROOT PROCESS
+    ! INITIALIZE MPI, GET MYID, NUMPROCS
+    ! TEST IF ON ROOT PROCESS
 
-  CALL mpi_init(ierr)
-  CALL mpi_comm_rank(mpi_comm_world,myid,ierr)
-  CALL mpi_comm_size(mpi_comm_world,numprocs,ierr)
+    CALL mpi_init(ierr)
+    CALL mpi_comm_rank(mpi_comm_world, myid, ierr)
+    CALL mpi_comm_size(mpi_comm_world, numprocs, ierr)
 
-  i_root = 0
-  l_root = .FALSE.
-  IF(myid == i_root) l_root = .TRUE.
+    i_root = 0
+    l_root = .FALSE.
+    IF (myid == i_root) l_root = .TRUE.
 
-  l_debug = .FALSE.
-  IF(idebug == 1) l_debug = .TRUE.
+    l_debug = .FALSE.
+    IF (idebug == 1) l_debug = .TRUE.
 
-  ts_mpi = mpi_wtime()
+    ts_mpi = mpi_wtime()
 
-  ! SET NUMBER OF X-Y SLAB CPUS
-  ncpu_s   = 8
-  itn      = 0
-  case_inp = '30L'
+    ! SET NUMBER OF X-Y SLAB CPUS
+    ncpu_s = 8
+    itn = 0
+    case_inp = '30L'
 
-  CALL get_units
-  CALL gridd
-  CALL setcon
-  CALL set_paths
-  istop = 1
-  ! SCRATCH RUN
-  IF (iti==0)  THEN
-    igrdr = 2
-    case = case_inp
-    CALL init
-    CALL setup(it)
+    CALL get_units
+    CALL gridd
+    CALL setcon
+    CALL set_paths
+    istop = 1
+    ! SCRATCH RUN
+    IF (iti == 0) THEN
+        igrdr = 2
+        case = case_inp
+        CALL init
+        CALL setup(it)
 
-    ! CHOOSE ROUTINE FOR GETTING INITIAL GUESS
-    CALL randoc
-    CALL get_max
-  ELSE
-    igrdr = 3
-    CALL restart
-    CALL get_max
-    CALL setup(it)
-  ENDIF
-
-  ! TIME LOOP
-  tzero = time
-  CALL get_dt(it,iti)
-
-  ! IC Tracers
-  CALL applytracerbc(it)
-
-  DO WHILE(it<itmax)
-    CALL set_sav(it,iti)
-
-    ! UPDATE POSITION OF VORTEX
-    IF(it >= new_vis .AND. ivis0 == 1) THEN !currently ivis0 = 0
-      ivis = 1
+        ! CHOOSE ROUTINE FOR GETTING INITIAL GUESS
+        CALL randoc
+        CALL get_max
     ELSE
-      ivis = 0
-    ENDIF
+        igrdr = 3
+        CALL restart
+        CALL get_max
+        CALL setup(it)
+    END IF
 
-    ! 3 STAGE RUNGE-KUTTA TIME STEPPING
-    DO 8999 istage=1,3
-    dtzeta = dt*zetas(istage)
-    dtgama = dt*gama(istage)
+    ! TIME LOOP
+    tzero = time
+    CALL get_dt(it, iti)
 
-    ! COMPUTE DERIVATIVES OF (U,V,W)
-    CALL exchange
-    CALL get_derv
+    ! IC Tracers
+    CALL applytracerbc(it)
 
-    ! NEW EDDY VISCOSITY, AND BCS
-    IF(iss == 0 .AND. ifree == 0) THEN !surface BC
-      CALL lower(it)
-    ELSEIF(ifree == 1) THEN
-      CALL lower_free(it)
-    ENDIF
+    DO WHILE (it < itmax)
+        CALL set_sav(it, iti)
 
-    IF(ise == numprocs-1) THEN !bottom BC
-      CALL upper
-    ENDIF
+        ! UPDATE POSITION OF VORTEX
+        IF (it >= new_vis .AND. ivis0 == 1) THEN !currently ivis0 = 0
+            ivis = 1
+        ELSE
+            ivis = 0
+        END IF
 
-    CALL bcast_pbc
-    CALL get_means(istage)
+        ! 3 STAGE RUNGE-KUTTA TIME STEPPING
+        DO 8999 istage = 1, 3
+            dtzeta = dt * zetas(istage)
+            dtgama = dt * gama(istage)
 
-    IF(ivis == 1) THEN !deardorff viscosity model
-      CALL iso(it)
-      CALL surfvis(it)
-    ENDIF
+            ! COMPUTE DERIVATIVES OF (U,V,W)
+            CALL exchange
+            CALL get_derv
 
-    IF(istage == 1)THEN
-      CALL xy_stats
-      CALL tke_budget
-      CALL pbltop(itop)
-    ENDIF
+            ! NEW EDDY VISCOSITY, AND BCS
+            IF (iss == 0 .AND. ifree == 0) THEN !surface BC
+                CALL lower(it)
+            ELSEIF (ifree == 1) THEN
+                CALL lower_free(it)
+            END IF
 
-    ! GET RHS FOR ALL EQUATIONS
-    IF(istage==1 .AND. flg_reaction==1)THEN
-      CALL strang1(it)
-    ENDIF
+            IF (ise == numprocs - 1) THEN !bottom BC
+                CALL upper
+            END IF
 
-    CALL comp1(istage,it)
+            CALL bcast_pbc
+            CALL get_means(istage)
 
-    ! SOLVE FOR PRESSURE
-    CALL comp_p
+            IF (ivis == 1) THEN !deardorff viscosity model
+                CALL iso(it)
+                CALL surfvis(it)
+            END IF
 
-    ! ADD PRESSURE GRADIENT AND DEALIAS
-    CALL comp2
+            IF (istage == 1) THEN
+                CALL xy_stats
+                CALL tke_budget
+                CALL pbltop(itop)
+            END IF
 
-    IF(istage==3 .AND. flg_reaction==1)THEN
-      CALL strang1(it)
-    ENDIF
+            ! GET RHS FOR ALL EQUATIONS
+            IF (istage == 1 .AND. flg_reaction == 1) THEN
+                CALL strang1(it)
+            END IF
 
-    IF(msave .AND. istage == 3) THEN
-      CALL save_v(it)
-    ENDIF
+            CALL comp1(istage, it)
 
-    !IF(istage == 3) THEN
-    !  IF(msave .AND. l_root) CALL save_c(it)
-    !ENDIF
+            ! SOLVE FOR PRESSURE
+            CALL comp_p
 
-    IF(micut) THEN
-      CALL dealias
-    ENDIF
+            ! ADD PRESSURE GRADIENT AND DEALIAS
+            CALL comp2
 
-    IF(mnout .AND. istage == 1)  THEN
-      IF(l_debug) THEN
-        CALL print(nprt,it,izs,ize)
-      ENDIF
-      IF(l_root) CALL print(6,it,1,nnz)
-    ENDIF
+            IF (istage == 3 .AND. flg_reaction == 1) THEN
+                CALL strang1(it)
+            END IF
 
-    IF(l_root) THEN
-      IF(mhis  .AND. istage == 1)  CALL write_his(itop)
-      IF(mhis  .AND. istage == 1 .AND. mtape) CALL close_his
-    ENDIF
+            IF (msave .AND. istage == 3) THEN
+                CALL save_v(it)
+            END IF
 
-    8999 CONTINUE
-    CALL get_max
-    CALL get_dt(it,iti)
-  END DO !end of while loop
-  close(10)
+            !IF(istage == 3) THEN
+            !  IF(msave .AND. l_root) CALL save_c(it)
+            !ENDIF
 
-  te_mpi = mpi_wtime()
+            IF (micut) THEN
+                CALL dealias
+            END IF
 
-  WRITE(6,9997) (te_mpi - ts_mpi)
+            IF (mnout .AND. istage == 1) THEN
+                IF (l_debug) THEN
+                    CALL print(nprt, it, izs, ize)
+                END IF
+                IF (l_root) CALL print(6, it, 1, nnz)
+            END IF
 
-  CONTINUE
-  CALL mpi_finalize(ierr)
+            IF (l_root) THEN
+                IF (mhis .AND. istage == 1) CALL write_his(itop)
+                IF (mhis .AND. istage == 1 .AND. mtape) CALL close_his
+            END IF
+
+8999        CONTINUE
+            CALL get_max
+            CALL get_dt(it, iti)
+        END DO !end of while loop
+        close (10)
+
+        te_mpi = mpi_wtime()
+
+        WRITE (6, 9997) (te_mpi - ts_mpi)
+
+        CONTINUE
+        CALL mpi_finalize(ierr)
 
 ! FORMAT
-9997  FORMAT(' Job Execution Time = ',e15.6)
+9997    FORMAT(' Job Execution Time = ', e15.6)
 
-  STOP
-END PROGRAM
+        STOP
+        END PROGRAM
