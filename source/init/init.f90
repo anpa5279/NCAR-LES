@@ -81,7 +81,7 @@ SUBROUTINE init
     ann = 0.00615
     bnn = 1.0
     f2w = 0.13
-    f_p = f2w * grav / u_10
+    f_p = f2w * grav / ustokes
     npm = 4
     sigma_p = pi2 * f_p
     grav_w = grav
