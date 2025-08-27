@@ -25,5 +25,5 @@ OPT3 := -O2 -G2 -h scalar3,vector3,fp4 # fma on at fp1 or higher
 
 # USE THESE FOR MAXIMUM COMPILER OPTIMIZATION
 # -- Once O3 and ipo are turned on, I don't think you can use -g anymore.
-OPT4 := -O3 -eo
+OPT4 := -O3
 OPT5 := -O3 -h aggress,scalar3,vector3,cache3,fp4

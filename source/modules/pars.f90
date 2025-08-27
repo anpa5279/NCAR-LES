@@ -8,8 +8,8 @@ MODULE pars
     INTEGER, PARAMETER :: chem0d = 0
     INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
     INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity. does nothing
-    INTEGER, PARAMETER :: iti = 0, itmax = 1000, imean = 1, ihst = 1, itape = 500, &
-                          itstr = 1, it_his = 0, i_viz = 120000
+    INTEGER, PARAMETER :: iti = 0, itmax = 1000, imean = 1, ihst = -1, itape = 500, &
+                          itstr = 1, it_his = 500, i_viz = 120000
 
     INTEGER, PARAMETER :: nscl = 1, nvar = (4 + nscl) !number of scalars and vars
     INTEGER, PARAMETER :: nxg1 = 128, nyg1 = 128, nzg1 = 128 !size of problem
