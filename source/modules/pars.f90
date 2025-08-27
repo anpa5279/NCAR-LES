@@ -2,18 +2,14 @@ MODULE pars
 
     IMPLICIT NONE
 
-! PARAMETERS ARE DESCRIBED IN PARAMS.pdf
-! nslab=nproc/ncpu_s=256/24=6
-! nys=ny/nslab=256/6=24
-
     INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
     INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau. do not change, not working.
     INTEGER, PARAMETER :: flg_reaction = 0  ! reaction model on or off
     INTEGER, PARAMETER :: chem0d = 0
     INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
     INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity. does nothing
-    INTEGER, PARAMETER :: iti = 0, itmax = 24000, imean = 1, ihst = 01, itape = 2400, &
-                          itstr = 1, it_his = 120000, i_viz = 120000
+    INTEGER, PARAMETER :: iti = 0, itmax = 1000, imean = 1, ihst = 1, itape = 500, &
+                          itstr = 1, it_his = 0, i_viz = 120000
 
     INTEGER, PARAMETER :: nscl = 1, nvar = (4 + nscl) !number of scalars and vars
     INTEGER, PARAMETER :: nxg1 = 128, nyg1 = 128, nzg1 = 128 !size of problem
@@ -137,4 +133,5 @@ MODULE pars
 !----------------------------------------------------------------------
     REAL :: &
         fug, khen, bet_ost, kbub, u_tau, wa, wh
+
 END MODULE

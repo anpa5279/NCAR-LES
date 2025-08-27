@@ -4,8 +4,8 @@ COMPILER := gnu
 FC := mpif90
 SRCDIR := source
 BUILDDIR := build
-RUNDIR := test
-EXECUTABLE := $(RUNDIR)/lesmpi.exe
+BINDIR := bin
+EXECUTABLE := $(BINDIR)/lesmpi.exe
 
 # ----------------------------------------------------------------------------------------
 # DON'T TOUCH THESE
@@ -81,7 +81,7 @@ realclean: clean
 
 # Rule to link all .mod and .o object binaries into a single program
 $(EXECUTABLE): $(MOD_OBJS) $(F_OBJS) $(F90_OBJS)
-	@mkdir -p $(RUNDIR)
+	@mkdir -p $(BINDIR)
 	$(FC) $(OPTIONS) $(BUILDDIR)/*.o -o $@ $(LDFLAGS)
 
 # Rule to compile module .f90 files into .mod files
