@@ -1,4 +1,5 @@
-test/
+**/test/
+**/bin/
 **/build/
 **/*.mod
 **/*.o

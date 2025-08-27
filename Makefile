@@ -41,7 +41,7 @@ include $(mkfile)
 # Rule for just checking syntax bugs, same kind of info as if vscode were linting your code for you
 .PHONY: syntax
 syntax: OPTIONS=$(SYNTAX)
-syntax: $(MOD_OBJS) $(F_OBJS) $(F90_OBJS)
+syntax: $(MOD_OBJS) $(F90_OBJS)
 
 .PHONY: debug
 debug: OPTIONS=$(DBG1)
@@ -82,11 +82,11 @@ realclean: clean
 # Rule to link all .mod and .o object binaries into a single program
 $(EXECUTABLE): $(MOD_OBJS) $(F_OBJS) $(F90_OBJS)
 	@mkdir -p $(BINDIR)
-	$(FC) $(OPTIONS) $(BUILDDIR)/*.o -o $@ $(LDFLAGS)
+	$(FC) $(F90FLAGS) $(OPTIONS) $(BUILDDIR)/*.o -o $@ $(LDFLAGS)
 
 # Rule to compile module .f90 files into .mod files
 $(BUILDDIR)/%.mod: %.f90
-	$(FC) $(F90FLAGS) -c $< -o $(BUILDDIR)/$*.o
+	$(FC) $(F90FLAGS) $(OPTIONS) -c $< -o $(BUILDDIR)/$*.o
 
 # Rule to compile .f files into .o object binaries
 $(BUILDDIR)/%.o: %.f

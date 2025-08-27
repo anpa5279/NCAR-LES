@@ -14,14 +14,14 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 
 ################################################################################
 ### EDIT AT WILL FOR EACH RUN
-compiler=cray           # options are [cray, intel, gnu]
-compile_mode=debug      # options useful on HPC are [debug, profile, fast]
+compiler=cray          # options are [cray, intel, gnu]
+compile_mode=fast   # options useful on HPC are [debug, profile, fast]
 project=classic_smag    # creates sub-directory within NCAR-LES folders
-job_name=debug_zero_vel # should be something unique at least for today
+job_name=cray_test        # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
 outfile=logfile.out
-ntasks=64 # total tasks wanted
+ntasks=32 # total tasks wanted
 
 # git_remote=origin       # fancier git stuff coming in a future update
 # git_branch=classic_smag # fancier git stuff coming in a future update
@@ -46,7 +46,8 @@ else
 fi
 
 echo '---> Compiling...'
-make COMPILER=$compiler FC=mpif90 $compile_mode
+make clean
+make COMPILER=$compiler $compile_mode
 cp bin/lesmpi.exe $RUN_DIR
 
 echo '---> Creating lab notebook entry...'
@@ -54,23 +55,24 @@ mkdir -p $NOTES
 cp bin/lesmpi.exe $NOTES/
 cp $this_script $NOTES/
 echo '------------------------------------------' >> ${NOTES}/version_info
-echo '                 git show                 ' >> ${NOTES}/version_info
+echo '              last git commit             ' >> ${NOTES}/version_info
 echo '------------------------------------------' >> ${NOTES}/version_info
-git show >> ${NOTES}/version_info
+git show -q >> ${NOTES}/version_info
 echo '------------------------------------------' >> ${NOTES}/version_info
-echo '                git status                ' >> ${NOTES}/version_info
+echo '             current git status           ' >> ${NOTES}/version_info
 echo '------------------------------------------' >> ${NOTES}/version_info
 git status >> ${NOTES}/version_info
 
 #######################################################################
 echo '---> Making EXEC_STEP'
 cd $RUN_DIR
+pwd
 
 # EXECUTE SCRIPT
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $job_name
-#PBS -l walltime=00:15:00
+#PBS -l walltime=00:05:00
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
 #PBS -q main
@@ -88,15 +90,13 @@ fi
 
 cp \${PBS_NODEFILE} $NOTES/
 
-mpiexec -n $ntasks -ppn $ncpus ./lesmpi.exe > $outfile
+mpiexec -n $ntasks ./lesmpi.exe > $outfile
 wait
 
 cp exec.out exec.err $outfile $NOTES/
 
 EXEC
 cp EXEC_STEP $NOTES/
-
-exit # stopping here to test the new runscript
 
 echo '---> Running' $RUN_DIR
 qsub < EXEC_STEP

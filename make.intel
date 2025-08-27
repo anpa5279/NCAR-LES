@@ -1,14 +1,14 @@
 # MODIFY THESE AS YOU NEED/LIKE
 
 # add -xCORE-AVX512 for Frontera, -march=core-avx2 for Derecho
-COMMON := -real-size 64 -fpic -march=core-avx2 -module ./build
+COMMON := -real-size 64 -fpic -march=core-avx2 -module ./build -diag-disable=10448
 FFLAGS := $(COMMON) -extend-source 132
 F90FLAGS := $(COMMON)
 
 LDFLAGS := -limf -lm # add any other needed files
 
 # USE THESE FOR ACTUAL DEBUGGING
-SYNTAX := -syntax-only -warn all -diag-error-limit=5
+SYNTAX := -warn -syntax-only
 
 DBG1 := -g2 -debug all -traceback -O2  # O2 placed after g1 and debug, otherwise they override O2 to O0
 DBG2 := -g2 -debug all -traceback -fpe-all=0 -warn nounused -check all,noarg_temp_created -fp-model=strict  # -g2 == -g
