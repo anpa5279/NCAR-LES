@@ -14,8 +14,9 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 
 ################################################################################
 ### EDIT AT WILL FOR EACH RUN
+compiler=cray           # options are [cray, intel, gnu]
 compile_mode=debug      # options useful on HPC are [debug, profile, fast]
-project=classic_smag         # creates sub-directory within NCAR-LES folders
+project=classic_smag    # creates sub-directory within NCAR-LES folders
 job_name=debug_zero_vel # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
@@ -35,11 +36,17 @@ echo '---> Creating directory...'
 # rm -rf $RUN_DIR
 mkdir -p ${RUN_DIR}/data
 
-echo '---> Loading modules...'
-module swap intel cce
+echo '---> Loading modules of specified compiler...'
+if [[ "$compiler" == "cray" ]]; then
+    module load cce
+elif [[ "$compiler" == "gnu" ]]; then
+    module load gnu
+else
+    module load intel
+fi
 
 echo '---> Compiling...'
-make COMPILER=cray FC=mpif90 $compile_mode
+make COMPILER=$compiler FC=mpif90 $compile_mode
 cp bin/lesmpi.exe $RUN_DIR
 
 echo '---> Creating lab notebook entry...'
@@ -71,20 +78,25 @@ cat > EXEC_STEP << EXEC
 #PBS -o exec.out
 #PBS -e exec.err
 
-module swap intel cce
-
-export PALS_NRANKS=$ntasks
-export PALS_PPN=$ncpus
+if [[ "$compiler" == "cray" ]]; then
+    module load cce
+elif [[ "$compiler" == "gnu" ]]; then
+    module load gnu
+else
+    module load intel
+fi
 
 cp \${PBS_NODEFILE} $NOTES/
 
-mpiexec ./lesmpi.exe > $outfile
+mpiexec -n $ntasks -ppn $ncpus ./lesmpi.exe > $outfile
 wait
 
 cp exec.out exec.err $outfile $NOTES/
 
 EXEC
 cp EXEC_STEP $NOTES/
+
+exit # stopping here to test the new runscript
 
 echo '---> Running' $RUN_DIR
 qsub < EXEC_STEP
