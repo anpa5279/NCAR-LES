@@ -77,7 +77,7 @@ SUBROUTINE lower(it)
             dudz = 2.*(u(ix, iy, iz) + ugal) * dz_i
             dvdz = 2.*v(ix, iy, iz) * dz_i
             ubc(ix, iy, 2) = tau13m(ix,iy)! I want to try the gradient u(ix, iy, iz) - dudz * dzu(iz) !
-            vbc(ix, iy, 2) = v(ix,iy,iz) ! I want to try the gradient v(ix, iy, iz) - dvdz * dzu(iz) !
+            vbc(ix, iy, 2) = v(ix,iy,iz) ! I want to try the gradient v(ix, iy, iz) - dvdz * dzu(iz) !G
         END DO
     END DO
 
