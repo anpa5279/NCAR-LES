@@ -86,11 +86,6 @@ SUBROUTINE init
     sigma_p = pi2 * f_p
     grav_w = grav
 
-    ! RATIO OF K_1/K_P (PHILLIPS AND DONELAN)
-    r_kp = grav * (f2w * pi2 / ustokes)**2
-    r_k1 = r_fac * grav / (cd_10 * ustokes * ustokes)
-    rk_ratio = r_k1 / r_kp
-
     time = 0.0
 
     ! OUTERMOST COARSE GRID INDICES ARE BOUNDS OF GRID
