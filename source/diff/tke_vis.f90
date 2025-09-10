@@ -28,7 +28,7 @@ subroutine tke_vis(istep)
         izm1 = iz - 1
         izp1 = iz + 1
         vis_mean(iz) = 0.0
-        IF (ivis == 1 .AND. iz <= nmatch) THEN
+        IF (ivis == 1 .AND. iz <= nmatch) THEN !not looking at this when using smag sgs model
             IF (iz <= 1) THEN
                 vis_mean(iz) = xksurf
             ELSE
