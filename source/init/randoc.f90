@@ -74,7 +74,7 @@ SUBROUTINE randoc
             ! SIMPLE RANDOM FIELD SCALED BETWEEN 0 AND 1
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    CALL random_number(psi(ix, iy))
+                    CALL random_number(psi(ix, iy)) !using seed info
                 END DO
             END DO
 
