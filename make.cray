@@ -4,13 +4,12 @@ COMMON := -s default64 -f PIC -ef -J ./build
 FFLAGS := $(COMMON) -N 132
 F90FLAGS := $(COMMON)
 
-FFLAGS := -s default64 -f PIC -ef -J ./build
 LDFLAGS := # I don't think anything is necessary here
 
 # USE THESE FOR ACTUAL DEBUGGING
 SYNTAX := -dB -rl -R bcdsp -m2 # -dB = no binary, no optimization. -m2 output Errors, Warnings, and Cautions
 
-DBG1 := -O2 -G1
+DBG1 := -O1 -G1 -m4
 DBG2 := -O1 -G1 -Ktrap=fp -rl -R bcdsp -h fp1,scalar1,vector1,add_paren
 DBG3 := -O0 -G0 -Ktrap=fp -rl -R bcdsp -m2 -h add_paren # -O0 implies fp0, scalar0, vector0, etc.
 
@@ -19,11 +18,11 @@ DBG3 := -O0 -G0 -Ktrap=fp -rl -R bcdsp -m2 -h add_paren # -O0 implies fp0, scala
 #    Every way in which you can force Cray to do math slower is turned on
 OPT1 := -O0 -G0 -h add_paren # -O0 implies fp0, scalar0, vector0, etc.
 # -- "Normal" floating-point operations
-OPT2 := -O2 -G2
+OPT2 := -O2 -G2 -m4
 # -- Very optimized FLOPs, any way in which you can trade accuracy for speed is turned on.
 OPT3 := -O2 -G2 -h scalar3,vector3,fp4 # fma on at fp1 or higher
 
 # USE THESE FOR MAXIMUM COMPILER OPTIMIZATION
 # -- Once O3 and ipo are turned on, I don't think you can use -g anymore.
-OPT4 := -O3
+OPT4 := -O3 -m4
 OPT5 := -O3 -h aggress,scalar3,vector3,cache3,fp4
