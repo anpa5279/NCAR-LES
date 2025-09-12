@@ -40,7 +40,7 @@ SUBROUTINE smag_vis(istep)
                 s23 = (0.5 * (vzp + wy(i, j, iz)))**2
 
                 sij2(i, j, iz) = s11 + s22 + s33 + 2.0 * (s12 + s13 + s23)
-                vis_m(i, j, iz) = (csmag * d_grid)**2 * SQRT(2.0 * sij2)
+                vis_m(i, j, iz) = (csmag * d_grid)**2 * SQRT(2.0 * sij2(i, j, iz))
                 vis_s(i, j, iz) = 3.0 * vis_m(i, j, iz) ! 1 + 2 * (alk/dslk) = 3 for non-stability-corrected length scales
                 vis_sv(i, j, iz) = vis_s(i, j, iz)
                 r5(i, j, iz) = 0.0
