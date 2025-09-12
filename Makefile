@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------------------
 # EDIT THESE
-COMPILER := gnu
+COMPILER := intel
 FC := mpif90
 SRCDIR := source
 BUILDDIR := build
