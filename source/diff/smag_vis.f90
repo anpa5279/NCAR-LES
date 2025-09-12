@@ -46,7 +46,7 @@ SUBROUTINE smag_vis(istep)
                 r5(i, j, iz) = 0.0
             END DO
         END DO
-        !WRITE (nprt, 2345) (iz, sij2, vis_m(nnx/2, nny/2, iz), iz=izs, ize)
+        WRITE (nprt, 2345) (iz, sij2, vis_m(nnx/2, nny/2, iz), iz=izs, ize)
     END DO
 
 2345 FORMAT (I5, A, A)
