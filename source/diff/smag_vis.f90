@@ -7,7 +7,7 @@ SUBROUTINE smag_vis(istep)
     USE con_data
     USE con_stats
 
-    REAL :: d_grid, sij2, wz, uzp, vzp, wzp
+    REAL :: d_grid, wz, uzp, vzp, wzp
     INTEGER :: iz, i, j, izm1, izp1
     REAL :: sij2(nnx, iys:iye, izs:ize)
 
