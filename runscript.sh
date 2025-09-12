@@ -4,7 +4,7 @@
 ### DON'T TOUCH (EXCEPT ON RARE OCCASION AS NEEDED)
 this_script=`basename "$0"`
 today=$(date +'%Y_%m_%d')
-ncpus=128       # CPUs per node on Derecho
+ncpus=64       # CPUs per node on Derecho (default 128)
 user=$USER      # $USER is an NCAR-exported environment variable
 acct=UCUB0166
 # $HOME=/glade/u/home/$USER is an NCAR-exported environmnent variable
@@ -21,7 +21,7 @@ job_name=${compiler}_${compile_mode}  # should be something unique at least for 
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
 outfile=logfile.out
-ntasks=32 # total tasks wanted
+ntasks=32 # total tasks wanted (default 32)
 
 # git_remote=origin       # fancier git stuff coming in a future update
 # git_branch=classic_smag # fancier git stuff coming in a future update
@@ -72,11 +72,11 @@ pwd
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $job_name
-#PBS -l walltime=00:05:00
+#PBS -l walltime=06:00:00
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
-#PBS -q main
-#PBS -l job_priority=economy
+#PBS -q develop
+#####PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 

@@ -46,9 +46,9 @@ c
  4500    format(/,' STOKESS = ',e12.4,' UDRIFT = ',e12.4,
      +          ' VDRIFT = ',e12.4)
 
-      write(lu,4600) (iz,uxym(iz)+ugal,vxym(iz),uwle(iz),
+      write(lu,4600) (iz,uxym(iz)+ugal,vxym(iz),wxym(iz),
      +       uwsb(iz),vwle(iz),vwsb(iz),iz=iz_strt,iz_end)
- 4600 format(//,' IZ',5x,' UXYM + UGAL',8x,' VXYM',10x,' UWLE',10x,
+ 4600 format(//,' IZ',5x,' UXYM + UGAL',8x,' VXYM',10x,' WXYM',10x,
      +          ' UWSB',10x,' VWLE',10x,' VWSB'
      +       ,/,(1x,i4,6(3x,e13.6)))
       if(ivis .eq. 1) then

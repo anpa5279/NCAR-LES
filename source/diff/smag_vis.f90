@@ -7,9 +7,8 @@ SUBROUTINE smag_vis(istep)
     USE con_data
     USE con_stats
 
-    REAL :: d_grid, wz, uzp, vzp, wzp
+    REAL :: d_grid, wz, uzp, vzp, wzp, sij2
     INTEGER :: iz, i, j, izm1, izp1
-    REAL :: sij2(nnx, iys:iye, izs:ize)
 
     DO iz = izs - 1, ize + 1
         izm1 = iz - 1
@@ -39,16 +38,12 @@ SUBROUTINE smag_vis(istep)
                 s13 = (0.5 * (uzp + wx(i, j, iz)))**2
                 s23 = (0.5 * (vzp + wy(i, j, iz)))**2
 
-                sij2(i, j, iz) = s11 + s22 + s33 + 2.0 * (s12 + s13 + s23)
-                vis_m(i, j, iz) = (csmag * d_grid)**2 * SQRT(2.0 * sij2(i, j, iz))
+                sij2 = s11 + s22 + s33 + 2.0 * (s12 + s13 + s23)
+                vis_m(i, j, iz) = (csmag * d_grid)**2 * SQRT(2.0 * sij2)
                 vis_s(i, j, iz) = 3.0 * vis_m(i, j, iz) ! 1 + 2 * (alk/dslk) = 3 for non-stability-corrected length scales
                 vis_sv(i, j, iz) = vis_s(i, j, iz)
-                r5(i, j, iz) = 0.0
             END DO
         END DO
-        WRITE (nprt, 2345) (iz, sij2, vis_m(nnx/2, nny/2, iz), iz=izs, ize)
     END DO
-
-2345 FORMAT (I5, A, A)
     RETURN
 END SUBROUTINE
