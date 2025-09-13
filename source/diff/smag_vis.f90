@@ -9,7 +9,7 @@ SUBROUTINE smag_vis(istep)
 
     REAL :: d_grid, wz, uzp, vzp, wzp
     INTEGER :: iz, i, j, izm1, izp1
-    REAL :: sij2(nnx, iys:iye, izs:ize)
+    REAL :: sij2(nnx, iys:iye, izs-1:ize+1)
 
     DO iz = izs - 1, ize + 1
         izm1 = iz - 1
@@ -46,8 +46,9 @@ SUBROUTINE smag_vis(istep)
                 r5(i, j, iz) = 0.0
             END DO
         END DO
-        WRITE (nprt, 2345) (iz, sij2, vis_m(nnx/2, nny/2, iz), iz=izs, ize)
     END DO
+    ! This write statement does a DO loop over iz, so can't be inside the other iz DO loop.
+    ! WRITE (nprt, 2345) (iz, sij2(nnx/2, nny/2, iz), vis_m(nnx/2, nny/2, iz), iz=izs, ize)
 
 2345 FORMAT (I5, A, A)
     RETURN
