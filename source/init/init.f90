@@ -91,7 +91,6 @@ SUBROUTINE init
     ! OUTERMOST COARSE GRID INDICES ARE BOUNDS OF GRID
     izlow = 1
     izup = nnz
-    write (*, *) zl, nnz
     dz = zl / nnz
     dzg = ABS(dz)
 

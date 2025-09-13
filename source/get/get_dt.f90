@@ -8,22 +8,20 @@ SUBROUTINE get_dt(it, istart)
     DATA dt_max/30.0/
     SAVE dt_max
 
+    vel_max = umax
+    vel_max = AMAX1(vmax, vel_max)
+    vel_max = AMAX1(wmax, vel_max)
+
     ucfl = umax
     vcfl = vmax
     wcfl = wmax
-    ucflm = ucfl
-    vcflm = vcfl
-    wcflm = wcfl
-    vel_max = wcflm
-    vel_max = AMAX1(ucflm, vel_max)
-    vel_max = AMAX1(vcflm, vel_max)
 
     IF (it == istart) THEN
         vel_max = cfl / dt_max
     END IF
 
     IF (vel_max <= 0.0) THEN
-        WRITE (6, 6000) ucflm, vcflm, wcflm, vel_max, cfl
+        WRITE (6, 6000) ucfl, vcfl, wcfl, vel_max, cfl
         STOP
     END IF
 
