@@ -88,8 +88,8 @@ SUBROUTINE sufto(it)
             CALL fzol(zeta, phim, phis, psim, psis)
         END IF
 
-        udrIFt = windm + stokes(1) - stokess + utau * (zody - psim) * vkin
-        vdrIFt = 0.0
+        udrift = windm + stokes(1) - stokess + utau * (zody - psim) * vkin
+        vdrift = 0.0
         dnom = (zody - psis) * vk74in
         IF (isfc == 1) THEN
             thstar(1) = (t1xy(1) - tsfcc(1)) / dnom
