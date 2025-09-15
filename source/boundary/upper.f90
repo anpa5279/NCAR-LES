@@ -67,8 +67,8 @@ SUBROUTINE upper
                 ebc(ix, iy, 1) = 0.0
                 ubc(ix, iy, 1) = u(ix, iy, iz) + grad_ug
                 vbc(ix, iy, 1) = v(ix, iy, iz)
-                pbc2(ix, iy, 1) = 0.5 * (u(ix, iy, iz)**2 + v(ix, iy, iz)**2) + 0.25 * (w(ix, iy, izm1) &
-                                                                                        **2 + wbc(ix, iy, 1)**2)
+                pbc2(ix, iy, 1) = 0.5 * (u(ix, iy, iz)**2 + v(ix, iy, iz)**2) &
+                                + 0.25 * (w(ix, iy, izm1)**2 + wbc(ix, iy, 1)**2)
                 xmeanp = xmeanp + pbc2(ix, iy, 1)
             END DO
         END DO
