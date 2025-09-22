@@ -18,10 +18,10 @@ SUBROUTINE lower(it)
 
     DO iy = iys, iye
         DO ix = 1, nnx
-        ebc(ix,iy,2) = AMAX1(e(ix,iy,iz),sml_eg)
-        wbc(ix,iy,2) = 0.0
-        pbc(ix,iy,2) = 0.0
-        pbc2(ix,iy,2) = 0.0
+            ebc(ix,iy,2) = AMAX1(e(ix,iy,iz),sml_eg)
+            wbc(ix,iy,2) = 0.0
+            pbc(ix,iy,2) = 0.0
+            pbc2(ix,iy,2) = 0.0
         ENDDO
     ENDDO
 
@@ -74,18 +74,15 @@ SUBROUTINE lower(it)
 
     DO iy = iys, iye
         DO ix = 1, nnx
-            dudz = 2.*(u(ix, iy, iz) + ugal) * dz_i
-            dvdz = 2.*v(ix, iy, iz) * dz_i
-            ubc(ix, iy, 2) = u(ix, iy, iz) - dudz * dzu(iz)
-            vbc(ix, iy, 2) = v(ix, iy, iz) - dvdz * dzu(iz)
+            ubc(ix, iy, 2) = - u(ix, iy, iz) - 2. * ugal
+            vbc(ix, iy, 2) = - v(ix, iy, iz)
         END DO
     END DO
 
     DO iscl = 1, nscl
         DO iy = iys, iye
             DO ix = 1, nnx
-                dtdz = 2.*(t(ix, iy, iscl, iz) - tsfcc(iscl)) * dz_i
-                tbc(ix, iy, iscl, 2) = t(ix, iy, iscl, iz) - dtdz * dzu(iz)
+                tbc(ix, iy, iscl, 2) = - t(ix, iy, iscl, iz) + 2. * tsfcc(iscl)
             END DO
         END DO
     END DO

@@ -108,6 +108,7 @@ SUBROUTINE init
             z(iz) = dz * FLOAT(iz) + zwstrt
         END DO
     ELSE
+        ! just assumes z(0) = 0.0
         CALL vgrid(zw1, zi, zl, nnz, z(0), l_root, l_debug)
     END IF
 

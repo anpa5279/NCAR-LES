@@ -9,6 +9,20 @@ SUBROUTINE setup(it)
     it = iti
     it_counter = it - iti
 
+    IF (i_dear == 2) THEN
+        DO iz = izs - 1, ize
+            vis_mean(iz) = 0.0
+            ! e = r5 = 0.0 is set in RANDOC, so nothing further needed for those
+        END DO
+        IF (l_root) WRITE (*, *) "Smagorinsky model is turned on."
+
+        IF (ivis0 == 1) THEN
+            IF (l_root) WRITE (6, *) "ERROR: choice of Smagorinsky model is incompatible with ivis0 = 1"
+            CALL mpi_finalize(ierr)
+            STOP
+        END IF
+    END IF
+
     ! TURN ON NEW SGS MODEL AT A PARTICULAR STEP
     IF (it >= new_vis .AND. ivis0 == 1) THEN
         ivis = 1

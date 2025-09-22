@@ -77,7 +77,7 @@ PROGRAM les_mpi
             IF (i_dear == 2) THEN !classic smagorinsky model
                 CALL exchange_smag ! e not included, vis_m included
             ELSE
-                CALL exchange !e included 
+                CALL exchange !e included
             END IF
             CALL get_derv
 
@@ -127,9 +127,9 @@ PROGRAM les_mpi
                 CALL save_v(it)
             END IF
 
-            !IF(istage == 3) THEN
-            !  IF(msave .AND. l_root) CALL save_c(it)
-            !ENDIF
+            ! IF(istage == 3) THEN
+            !   IF(msave .AND. l_root) CALL save_c(it)
+            ! ENDIF
 
             IF (micut) THEN
                 CALL dealias

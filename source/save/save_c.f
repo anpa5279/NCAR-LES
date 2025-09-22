@@ -14,17 +14,17 @@ c
 c
 c ---- open file
 c
-c      open(nvelc,err=9992,file=path_sav_c,form='unformatted',
-c     +                status='unknown')
-c      write(nvelc,err=9992) c_c, c_hurr, c_s, case
-c      close(nvelc)
+      open(nvelc,err=9992,file=path_sav_c,form='unformatted',
+     +                status='unknown')
+      write(nvelc,err=9992) c_c, c_hurr, c_s, case
+      close(nvelc)
 c
-        inquire(file=path_sav_c,exist=there)
-        if(.not.there) then
-           write(6,8001) path_sav_c
-           call mpi_finalize(ierr)
-           stop
-        endif
+      inquire(file=path_sav_c,exist=there)
+      if(.not.there) then
+            write(6,8001) path_sav_c
+            call mpi_finalize(ierr)
+            stop
+      endif
 c -----------------------------  output ok message
       write(6,7001) path_sav_c
 c

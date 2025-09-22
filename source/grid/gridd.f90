@@ -85,8 +85,8 @@ SUBROUTINE gridd
         ALLOCATE (p(nnxp2, iys:iye, izs - 1:ize + 1), ptop(nnxp2, iys:iye, 2))
 
         ! ALLOCATE SPACE FOR VISCOSITY AND DIFFUSIVITY
-        ALLOCATE (vis_m(nnx, iys:iye, izs - 1:ize + 1), vis_s(nnx, iys:iye, izs - 1:ize + 1) &
-                  , vis_sv(nnx, iys:iye, izs - 1:ize + 1))
+        ALLOCATE (vis_m(nnx, iys:iye, izs - 1:ize + 1), vis_s(nnx, iys:iye, izs - 1:ize + 1),  &
+                  vis_sv(nnx, iys:iye, izs - 1:ize + 1))
 
         ! ALLOCATE SPACE FOR FFT TRIG FACTORS
         nq_trig = MAX(nnx, nny)

@@ -14,8 +14,10 @@ SUBROUTINE rhs_scl(istep, iscl)
     REAL :: fnt1(nnx, iys:iye, izs:ize)
     REAL :: tx(nnx, iys:iye), ty(nnx, iys:iye, izs:ize)
     REAL :: flux_u(nnx, iys:iye), flux_l(nnx, iys:iye)
-    REAL :: taut3_u(nnx, iys:iye, nscl), taut3_l(nnx, iys:iye, nscl)
+    REAL :: taut3_u(nnx, iys:iye), taut3_l(nnx, iys:iye)
     REAL :: Sc, tscal, kconst
+    integer :: ix, iy, iz, izm2, izm1, izp1, izp2
+    real :: weit, weit1, weit3, weit4, dzw2_i, dzw3_i
 
     ! SET SIGN FOR OCEAN SIMULATIONS THAT USE MONOTONE
     sgn = -1.0
@@ -34,39 +36,29 @@ SUBROUTINE rhs_scl(istep, iscl)
         weit4 = 1.0 - weit3
         dzw2_i = 1.0 / (dzw(iz) + dzw(izp1))
         dzw3_i = 2.0 * dzw2_i
-        DO iy = iys, iye
-            DO ix = 1, nnx
-                tx(ix, iy) = t(ix, iy, iscl, iz)
-            END DO
-        END DO
 
+        tx(:, :) = t(:, :, iscl, iz)
         CALL xderivp(tx(1, iys), trigx(1, 1), xk(1), nnx, iys, iye)
 
         ! COMPUTE TAU_T3 AT IZ-1
         IF (iz /= 1 .OR. ibcl /= 0) THEN
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    taut3_l(ix, iy, iscl) = -vis_sv(ix, iy, izm1) * (t(ix, iy, iscl, iz) - &
-                                                                     t(ix, iy, iscl, izm1)) * dzu_i(iz)
+                    taut3_l(ix, iy) = - vis_sv(ix, iy, izm1) &
+                                      * (t(ix, iy, iscl, iz) - t(ix, iy, iscl, izm1)) * dzu_i(iz)
                 END DO
             END DO
         ELSE
-            DO iy = iys, iye
-                DO ix = 1, nnx
-                    taut3_l(ix, iy, iscl) = taut3m(ix, iy, iscl)
-                END DO
-            END DO
+            taut3_l(:, :) = taut3m(:, :, iscl)
         END IF
 
         ! SGS TAU_T1,_T3 AND RESOLVED U*THETA SCALAR FLUXES
         ! SKEW SYMMETRIC ADVECTIVE TERM 0.5(UDT/DX + D/DX(UT))
         DO iy = iys, iye
             DO ix = 1, nnx
-                taut3_u(ix, iy, iscl) = -vis_sv(ix, iy, iz) * (t(ix, iy, iscl, izp1) - &
-                                                               t(ix, iy, iscl, iz)) * dzu_i(izp1)
-                fnt1(ix, iy, iz) = -0.5 * ((vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * &
-                                           tx(ix, iy) - upwn * t(ix, iy, iscl, iz) * (u(ix, iy, iz) + stokes(iz) * &
-                                                                                      dir_x))
+                taut3_u(ix, iy) = -vis_sv(ix, iy, iz) * (t(ix, iy, iscl, izp1) - t(ix, iy, iscl, iz)) * dzu_i(izp1)
+                fnt1(ix, iy, iz) = -0.5 * ((vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * tx(ix, iy) &
+                                            - upwn * t(ix, iy, iscl, iz) * (u(ix, iy, iz) + stokes(iz) * dir_x))
             END DO
         END DO
 
@@ -74,8 +66,7 @@ SUBROUTINE rhs_scl(istep, iscl)
 
         DO iy = iys, iye
             DO ix = 1, nnx
-                r4(ix, iy, iscl, iz) = -fnt1(ix, iy, iz) - (taut3_u(ix, iy, iscl) - &
-                                                            taut3_l(ix, iy, iscl)) * dzw_i(iz)
+                r4(ix, iy, iscl, iz) = -fnt1(ix, iy, iz) - (taut3_u(ix, iy) - taut3_l(ix, iy)) * dzw_i(iz)
             END DO
         END DO
 
@@ -86,13 +77,12 @@ SUBROUTINE rhs_scl(istep, iscl)
                 DO ix = 1, nnx
                     theta_u = weit1 * t(ix, iy, iscl, iz) + weit * t(ix, iy, iscl, izp1)
                     theta_l = weit3 * t(ix, iy, iscl, iz) + weit4 * t(ix, iy, iscl, izm1)
-                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - 0.5 * (u(ix, iy, iz) + &
-                                                                         stokes(iz) * dir_x) * tx(ix, iy) - 0.5 * (w(ix, iy, iz) * theta_u - &
-                                                                                                                   w(ix, iy, izm1) * theta_l) * dzw_i(iz)
-                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - 0.25 * (w(ix, iy, iz) * &
-                                                                          (t(ix, iy, iscl, izp1) - t(ix, iy, iscl, iz)) * dzu_i(izp1) + &
-                                                                          w(ix, iy, izm1) * (t(ix, iy, iscl, iz) - t(ix, iy, iscl, izm1)) * &
-                                                                          dzu_i(iz))
+                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) &
+                                           - 0.5 * (u(ix, iy, iz) + stokes(iz) * dir_x) * tx(ix, iy) &
+                                           - 0.5 * (w(ix, iy, iz) * theta_u - w(ix, iy, izm1) * theta_l) * dzw_i(iz)
+                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) &
+                                           - 0.25 * (w(ix, iy, iz) * (t(ix, iy, iscl, izp1) - t(ix, iy, iscl, iz)) * dzu_i(izp1) &
+                                                     + w(ix, iy, izm1) * (t(ix, iy, iscl, iz) - t(ix, iy, iscl, izm1)) * dzu_i(iz))
                 END DO
             END DO
         ELSE
@@ -110,8 +100,7 @@ SUBROUTINE rhs_scl(istep, iscl)
                             tscal = t(ix, iy, 1, iz) - 273.15d0
 
                             ! CALCULATE SCHMIDT NUMBER (WANNINKOF, 1992)
-                            Sc = 2073.1d0 - 125.62d0 * tscal + 3.6276d0 * tscal * tscal - &
-                                 0.043219d0 * tscal * tscal * tscal
+                            Sc = 2073.1d0 - 125.62d0 * tscal + 3.6276d0 * tscal**2 - 0.043219d0 * tscal**3
 
                             ! CALCULATE PISTON VELOCITY (WANNINKOF, 1992)
                             kconst = (2.77778d-6) * 0.31d0 * ws10 * ws10 * SQRT(660.0d0 / Sc)
@@ -121,10 +110,9 @@ SUBROUTINE rhs_scl(istep, iscl)
                             khen = t(ix, iy, iscl, iz) * (10**(-6)) / fug         ! (EMERSON & HAMME, 2022)
                             bet_ost = khen * Rgas * t(ix, iy, 1, iz) * (1 / 0.101325)! (EMERSON & HAMME, 2022)
                             u_tau = SQRT(1.0 * (8.5e-4) * ws10 * ws10 / 1000.0)
-                            wh = 0.0246 * ws10 * ws10; 
+                            wh = 0.0246 * ws10 * ws10;
                             wa = 4.02e-7 * (u_tau * wh / (1.46e-5))**0.96
-                            kbub = (2450.0 * wa) / (bet_ost * (1.0 + (14.0 * bet_ost * Sc**(-0.5))** &
-                                                               (-1.0 / 1.2))**1.2)                       ! (WOOLF, 1997)
+                            kbub = (2450.0 * wa) / (bet_ost * (1.0 + (14.0 * bet_ost * Sc**(-0.5))** (-1.0 / 1.2))**1.2) ! (WOOLF, 1997)
 
                             ! CALCULATE SURFACE FLUX RATE
                             IF (co2_asflux == 1) THEN
@@ -136,42 +124,28 @@ SUBROUTINE rhs_scl(istep, iscl)
                             END IF
 
                         ELSE
-                            flux_l(ix, iy) = sgn * 0.5 * w(ix, iy, izm1) * (t(ix, iy, iscl, izm1) + &
-                                                                            t(ix, iy, iscl, iz))
+                            flux_l(ix, iy) = sgn * 0.5 * w(ix, iy, izm1) * (t(ix, iy, iscl, izm1) + t(ix, iy, iscl, iz))
                         END IF
 
-                        flux_u(ix, iy) = AMAX1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, iz) + &
-                                                                           rlim(t(ix, iy, iscl, izp1), t(ix, iy, iscl, iz), &
-                                                                                t(ix, iy, iscl, izm1))) + AMIN1(sgn * w(ix, iy, iz), 0.) * &
-                                         (t(ix, iy, iscl, izp1) + rlim(t(ix, iy, iscl, iz), &
-                                                                       t(ix, iy, iscl, izp1), t(ix, iy, iscl, izp2)))
+                        flux_u(ix, iy) = AMAX1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, iz) + rlim(t(ix, iy, iscl, izp1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izm1))) &
+                                         + AMIN1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, izp1) + rlim(t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1), t(ix, iy, iscl, izp2)))
                     END DO
                 END DO
             ELSE IF (iz == nnz) THEN
                 DO iy = iys, iye
                     DO ix = 1, nnx
-                        flux_u(ix, iy) = sgn * 0.5 * w(ix, iy, iz) * (t(ix, iy, iscl, izp1) + &
-                                                                      t(ix, iy, iscl, iz))
-                        flux_l(ix, iy) = AMAX1(sgn * w(ix, iy, izm1), 0.) * &
-                                         (t(ix, iy, iscl, izm1) + rlim(t(ix, iy, iscl, iz), &
-                                                                       t(ix, iy, iscl, izm1), t(ix, iy, iscl, izm2))) + AMIN1(sgn * &
-                                                                                                                              w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, iz) + rlim( &
-                                                                                                                                                      t(ix, iy, iscl, izm1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1)))
+                        flux_u(ix, iy) = sgn * 0.5 * w(ix, iy, iz) * (t(ix, iy, iscl, izp1) + t(ix, iy, iscl, iz))
+                        flux_l(ix, iy) = AMAX1(sgn * w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, izm1) + rlim(t(ix, iy, iscl, iz), t(ix, iy, iscl, izm1), t(ix, iy, iscl, izm2))) &
+                                         + AMIN1(sgn * w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, iz) + rlim(t(ix, iy, iscl, izm1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1)))
                     END DO
                 END DO
             ELSE
                 DO iy = iys, iye
                     DO ix = 1, nnx
-                        flux_u(ix, iy) = AMAX1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, iz) + &
-                                                                           rlim(t(ix, iy, iscl, izp1), t(ix, iy, iscl, iz), &
-                                                                                t(ix, iy, iscl, izm1))) + AMIN1(sgn * w(ix, iy, iz), 0.) * &
-                                         (t(ix, iy, iscl, izp1) + rlim(t(ix, iy, iscl, iz), &
-                                                                       t(ix, iy, iscl, izp1), t(ix, iy, iscl, izp2)))
-                        flux_l(ix, iy) = AMAX1(sgn * w(ix, iy, izm1), 0.) * &
-                                         (t(ix, iy, iscl, izm1) + rlim(t(ix, iy, iscl, iz), &
-                                                                       t(ix, iy, iscl, izm1), t(ix, iy, iscl, izm2))) + AMIN1(sgn * &
-                                                                                                                              w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, iz) + rlim( &
-                                                                                                                                                      t(ix, iy, iscl, izm1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1)))
+                        flux_u(ix, iy) = AMAX1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, iz) + rlim(t(ix, iy, iscl, izp1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izm1))) &
+                                         + AMIN1(sgn * w(ix, iy, iz), 0.) * (t(ix, iy, iscl, izp1) + rlim(t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1), t(ix, iy, iscl, izp2)))
+                        flux_l(ix, iy) = AMAX1(sgn * w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, izm1) + rlim(t(ix, iy, iscl, iz), t(ix, iy, iscl, izm1), t(ix, iy, iscl, izm2))) &
+                                         + AMIN1(sgn * w(ix, iy, izm1), 0.) * (t(ix, iy, iscl, iz) + rlim(t(ix, iy, iscl, izm1), t(ix, iy, iscl, iz), t(ix, iy, iscl, izp1)))
                     END DO
                 END DO
             END IF
@@ -179,8 +153,7 @@ SUBROUTINE rhs_scl(istep, iscl)
             ! SUM VERTICAL MONOTONE FLUX
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - sgn * (flux_u(ix, iy) - &
-                                                                         flux_l(ix, iy)) * dzw_i(iz)
+                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - sgn * (flux_u(ix, iy) - flux_l(ix, iy)) * dzw_i(iz)
                 END DO
             END DO
         END IF
@@ -191,9 +164,8 @@ SUBROUTINE rhs_scl(istep, iscl)
             wtsb(iz, iscl) = 0.0
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    wtsb(iz, iscl) = wtsb(iz, iscl) + taut3_u(ix, iy, iscl)
-                    utsb(iz, iscl) = utsb(iz, iscl) - 0.5 * (vis_s(ix, iy, iz) + &
-                                                             vis_s(ix, iy, izm1)) * tx(ix, iy)
+                    wtsb(iz, iscl) = wtsb(iz, iscl) + taut3_u(ix, iy)
+                    utsb(iz, iscl) = utsb(iz, iscl) - 0.5 * (vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * tx(ix, iy)
                 END DO
             END DO
             utsb(iz, iscl) = utsb(iz, iscl) * fnxy
@@ -220,17 +192,14 @@ SUBROUTINE rhs_scl(istep, iscl)
         izm1 = iz - 1
         DO iy = iys, iye
             DO ix = 1, nnx
-                fnt1(ix, iy, iz) = -0.5 * ((vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * &
-                                           ty(ix, iy, iz) - upwn * t(ix, iy, iscl, iz) * (v(ix, iy, iz) + &
-                                                                                          stokes(iz) * dir_y))
+                fnt1(ix, iy, iz) = -0.5 * ((vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * ty(ix, iy, iz) - upwn * t(ix, iy, iscl, iz) * (v(ix, iy, iz) + stokes(iz) * dir_y))
             END DO
         END DO
 
         IF (iupwnd /= 1) THEN
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - 0.5 * (v(ix, iy, iz) + &
-                                                                         stokes(iz) * dir_y) * ty(ix, iy, iz)
+                    r4(ix, iy, iscl, iz) = r4(ix, iy, iscl, iz) - 0.5 * (v(ix, iy, iz) + stokes(iz) * dir_y) * ty(ix, iy, iz)
                 END DO
             END DO
         END IF
@@ -254,8 +223,7 @@ SUBROUTINE rhs_scl(istep, iscl)
             vtsb(iz, iscl) = 0.0
             DO iy = iys, iye
                 DO ix = 1, nnx
-                    vtsb(iz, iscl) = vtsb(iz, iscl) - 0.5 * (vis_s(ix, iy, iz) + &
-                                                             vis_s(ix, iy, izm1)) * ty(ix, iy, iz)
+                    vtsb(iz, iscl) = vtsb(iz, iscl) - 0.5 * (vis_s(ix, iy, iz) + vis_s(ix, iy, izm1)) * ty(ix, iy, iz)
                 END DO
             END DO
             vtsb(iz, iscl) = vtsb(iz, iscl) * fnxy

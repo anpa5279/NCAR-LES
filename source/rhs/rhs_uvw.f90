@@ -27,15 +27,16 @@ SUBROUTINE rhs_uvw(istep)
                 vzm = (v(ix, iy, iz) - v(ix, iy, izm1)) * dzu_i(iz)
                 uz = (u(ix, iy, izp1) - u(ix, iy, iz)) * dzu_i(izp1)
                 vz = (v(ix, iy, izp1) - v(ix, iy, iz)) * dzu_i(izp1)
-
                 u_avg = u(ix, iy, iz) * weit1 + u(ix, iy, izp1) * weit
                 v_avg = v(ix, iy, iz) * weit1 + v(ix, iy, izp1) * weit
 
                 ! ADVECTION
-                u_adv = v(ix, iy, iz) * (vx(ix, iy, iz) - uy(ix, iy, iz)) - 0.5 * (w(ix, iy, iz) &
-                                                                                   * (uz - wx(ix, iy, iz)) + w(ix, iy, izm1) * (uzm - wx(ix, iy, izm1)))
-                v_adv = -u(ix, iy, iz) * (vx(ix, iy, iz) - uy(ix, iy, iz)) + 0.5 * (w(ix, iy, iz) &
-                                                                                    * (wy(ix, iy, iz) - vz) + w(ix, iy, izm1) * (wy(ix, iy, izm1) - vzm))
+                u_adv = v(ix, iy, iz) * (vx(ix, iy, iz) - uy(ix, iy, iz)) &
+                        - 0.5 * w(ix, iy, iz) * (uz - wx(ix, iy, iz)) &
+                        - 0.5 * w(ix, iy, izm1) * (uzm - wx(ix, iy, izm1))
+                v_adv = - u(ix, iy, iz) * (vx(ix, iy, iz) - uy(ix, iy, iz)) &
+                        + 0.5 * w(ix, iy, iz) * (wy(ix, iy, iz) - vz) &
+                        + 0.5 * w(ix, iy, izm1) * (wy(ix, iy, izm1) - vzm)
                 w_adv = u_avg * (uz - wx(ix, iy, iz)) - v_avg * (wy(ix, iy, iz) - vz)
 
                 ! CORIOLIS, VERTICAL, AND HORIZONTAL COMPONENTS
@@ -61,14 +62,15 @@ SUBROUTINE rhs_uvw(istep)
         stokavg = stokes(iz) * weit1 + stokes(izp1) * weit
         DO iy = iys, iye
             DO ix = 1, nnx
-                r1(ix, iy, iz) = r1(ix, iy, iz) + stokes(iz) * dir_y * (vx(ix, iy, iz) - &
-                                                                        uy(ix, iy, iz))
-                r2(ix, iy, iz) = r2(ix, iy, iz) + stokes(iz) * dir_x * (uy(ix, iy, iz) - &
-                                                                        vx(ix, iy, iz))
+                r1(ix, iy, iz) = r1(ix, iy, iz) &
+                                 + stokes(iz) * dir_y * (vx(ix, iy, iz) - uy(ix, iy, iz))
+                r2(ix, iy, iz) = r2(ix, iy, iz) &
+                                 + stokes(iz) * dir_x * (uy(ix, iy, iz) - vx(ix, iy, iz))
                 uz = (u(ix, iy, izp1) - u(ix, iy, iz)) * dzu_i(izp1)
                 vz = (v(ix, iy, izp1) - v(ix, iy, iz)) * dzu_i(izp1)
-                r3(ix, iy, iz) = r3(ix, iy, iz) + stokavg * dir_x * (uz - wx(ix, iy, iz)) - &
-                                 stokavg * dir_y * (wy(ix, iy, iz) - vz)
+                r3(ix, iy, iz) = r3(ix, iy, iz) &
+                                 + stokavg * dir_x * (uz - wx(ix, iy, iz)) &
+                                 - stokavg * dir_y * (wy(ix, iy, iz) - vz)
             END DO
         END DO
 
@@ -78,10 +80,10 @@ SUBROUTINE rhs_uvw(istep)
                 DO ix = 1, nnx
                     uzm = (u(ix, iy, iz) - u(ix, iy, izm1)) * dzu_i(iz)
                     vzm = (v(ix, iy, iz) - v(ix, iy, izm1)) * dzu_i(iz)
-                    tau13_l(ix, iy) = -vis_m(ix, iy, izm1) * (uzm + wx(ix, iy, izm1)) - &
-                                      vis_mean(izm1) * (u_mn(iz) - u_mn(izm1)) * dzu_i(iz)
-                    tau23_l(ix, iy) = -vis_m(ix, iy, izm1) * (vzm + wy(ix, iy, izm1)) - &
-                                      vis_mean(izm1) * (v_mn(iz) - v_mn(izm1)) * dzu_i(iz)
+                    tau13_l(ix, iy) = - vis_m(ix, iy, izm1) * (uzm + wx(ix, iy, izm1)) &
+                                      - vis_mean(izm1) * (u_mn(iz) - u_mn(izm1)) * dzu_i(iz)
+                    tau23_l(ix, iy) = - vis_m(ix, iy, izm1) * (vzm + wy(ix, iy, izm1)) &
+                                      - vis_mean(izm1) * (v_mn(iz) - v_mn(izm1)) * dzu_i(iz)
                 END DO
             END DO
         ELSE
@@ -97,15 +99,15 @@ SUBROUTINE rhs_uvw(istep)
         ! TAU_11,_12,_13,_23 AT IZ
         DO iy = iys, iye
             DO ix = 1, nnx
-                fnt1(ix, iy) = -(vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) * ux(ix, iy, iz)
-                fnt2(ix, iy) = -.5 * (vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) * (uy(ix, iy, iz) &
-                                                                                  + vx(ix, iy, iz))
+                fnt1(ix, iy) = - (vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) * ux(ix, iy, iz)
+                fnt2(ix, iy) = -0.5 * (vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) &
+                                    * (uy(ix, iy, iz) + vx(ix, iy, iz))
                 uz = (u(ix, iy, izp1) - u(ix, iy, iz)) * dzu_i(izp1)
                 vz = (v(ix, iy, izp1) - v(ix, iy, iz)) * dzu_i(izp1)
-                tau13_u(ix, iy) = -vis_m(ix, iy, iz) * (uz + wx(ix, iy, iz)) - vis_mean(iz) * &
-                                  (u_mn(izp1) - u_mn(iz)) * dzu_i(izp1)
-                tau23_u(ix, iy) = -vis_m(ix, iy, iz) * (vz + wy(ix, iy, iz)) - &
-                                  vis_mean(iz) * (v_mn(izp1) - v_mn(iz)) * dzu_i(izp1)
+                tau13_u(ix, iy) = - vis_m(ix, iy, iz) * (uz + wx(ix, iy, iz)) &
+                                  - vis_mean(iz) * (u_mn(izp1) - u_mn(iz)) * dzu_i(izp1)
+                tau23_u(ix, iy) = - vis_m(ix, iy, iz) * (vz + wy(ix, iy, iz)) &
+                                  - vis_mean(iz) * (v_mn(izp1) - v_mn(iz)) * dzu_i(izp1)
                 fnt3(ix, iy) = tau13_u(ix, iy)
             END DO
         END DO
@@ -116,16 +118,16 @@ SUBROUTINE rhs_uvw(istep)
 
         DO iy = iys, iye
             DO ix = 1, nnx
-                r1(ix, iy, iz) = r1(ix, iy, iz) - fnt1(ix, iy) - (tau13_u(ix, iy) - &
-                                                                  tau13_l(ix, iy)) * dzw_i(iz)
-                r2(ix, iy, iz) = r2(ix, iy, iz) - fnt2(ix, iy) - (tau23_u(ix, iy) - &
-                                                                  tau23_l(ix, iy)) * dzw_i(iz)
-                fnt4(ix, iy) = -(vis_m(ix, iy, izm1) + vis_m(ix, iy, iz)) * (w(ix, iy, iz) - &
-                                                                             w(ix, iy, izm1)) * dzw_i(iz)
-                fnt2(ix, iy) = -(vis_m(ix, iy, izp1) + vis_m(ix, iy, iz)) * (w(ix, iy, izp1) - &
-                                                                             w(ix, iy, iz)) * dzw_i(izp1)
-                r3(ix, iy, iz) = r3(ix, iy, iz) - fnt3(ix, iy) - (fnt2(ix, iy) - &
-                                                                  fnt4(ix, iy)) * dzu_i(izp1)
+                r1(ix, iy, iz) = r1(ix, iy, iz) &
+                                 - fnt1(ix, iy) - (tau13_u(ix, iy) - tau13_l(ix, iy)) * dzw_i(iz)
+                r2(ix, iy, iz) = r2(ix, iy, iz) &
+                                 - fnt2(ix, iy) - (tau23_u(ix, iy) - tau23_l(ix, iy)) * dzw_i(iz)
+                fnt4(ix, iy) = - (vis_m(ix, iy, izm1) + vis_m(ix, iy, iz)) &
+                                 * (w(ix, iy, iz) - w(ix, iy, izm1)) * dzw_i(iz)
+                fnt2(ix, iy) = - (vis_m(ix, iy, izp1) + vis_m(ix, iy, iz)) &
+                                 * (w(ix, iy, izp1) - w(ix, iy, iz)) * dzw_i(izp1)
+                r3(ix, iy, iz) = r3(ix, iy, iz) &
+                                 - fnt3(ix, iy) - (fnt2(ix, iy) - fnt4(ix, iy)) * dzu_i(izp1)
             END DO
         END DO
 
@@ -140,10 +142,10 @@ SUBROUTINE rhs_uvw(istep)
                     uwsb(iz) = uwsb(iz) + tau13_u(ix, iy)
                     vwsb(iz) = vwsb(iz) + tau23_u(ix, iy)
                     wwsb(iz) = wwsb(iz) + fnt4(ix, iy)
-                    ufluc = (u(ix, iy, izp1) - uxym(izp1)) * weit + (u(ix, iy, iz) - &
-                                                                     uxym(iz)) * weit1
-                    vfluc = (v(ix, iy, izp1) - vxym(izp1)) * weit + (v(ix, iy, iz) - &
-                                                                     vxym(iz)) * weit1
+                    ufluc = (u(ix, iy, izp1) - uxym(izp1)) * weit &
+                            + (u(ix, iy, iz) - uxym(iz)) * weit1
+                    vfluc = (v(ix, iy, izp1) - vxym(izp1)) * weit &
+                            + (v(ix, iy, iz) - vxym(iz)) * weit1
                     tr_tau(iz) = tr_tau(iz) + tau13_u(ix, iy) * ufluc + tau23_u(ix, iy) * vfluc
                 END DO
             END DO
@@ -159,8 +161,8 @@ SUBROUTINE rhs_uvw(istep)
         izm1 = iz - 1
         DO iy = iys, iye
             DO ix = 1, nnx
-                fntd(ix, iy, iz) = -.5 * (vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) * &
-                                   (uy(ix, iy, iz) + vx(ix, iy, iz))
+                fntd(ix, iy, iz) = -0.5 * (vis_m(ix, iy, iz) + vis_m(ix, iy, izm1)) &
+                                        * (uy(ix, iy, iz) + vx(ix, iy, iz))
             END DO
         END DO
     END DO
@@ -187,8 +189,8 @@ SUBROUTINE rhs_uvw(istep)
             DO ix = 1, nnx
                 r2(ix, iy, iz) = r2(ix, iy, iz) - fntd(ix, iy, iz)
                 vz = (v(ix, iy, izp1) - v(ix, iy, iz)) * dzu_i(izp1)
-                fntd(ix, iy, iz) = -vis_m(ix, iy, iz) * (vz + wy(ix, iy, iz)) - &
-                                   vis_mean(iz) * (v_mn(izp1) - v_mn(iz)) * dzu_i(izp1)
+                fntd(ix, iy, iz) = - vis_m(ix, iy, iz) * (vz + wy(ix, iy, iz)) &
+                                   - vis_mean(iz) * (v_mn(izp1) - v_mn(iz)) * dzu_i(izp1)
             END DO
         END DO
     END DO
@@ -214,20 +216,19 @@ SUBROUTINE rhs_uvw(istep)
 
     ! MAKE SURE <R3> = 0 AND SET R3 = 0 AT TOP
     DO iz = izs, ize
-        IF (iz == nnz) THEN
-            DO iy = iys, iye
-                DO ix = 1, nnx
-                    r3(ix, iy, iz) = 0.0
-                END DO
+        DO iy = iys, iye
+            DO ix = 1, nnx
+                r3(ix, iy, iz) = r3(ix, iy, iz) - r3_sum(iz)
             END DO
-        ELSE
-            DO iy = iys, iye
-                DO ix = 1, nnx
-                    r3(ix, iy, iz) = r3(ix, iy, iz) - r3_sum(iz)
-                END DO
-            END DO
-        END IF
+        END DO
     END DO
+    IF (ize == nnz) THEN
+        DO iy = iys, iye
+            DO ix = 1, nnx
+                r3(ix, iy, ize) = 0.0
+            END DO
+        END DO
+    END IF
 
     RETURN
 END

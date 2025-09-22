@@ -1,50 +1,54 @@
-SUBROUTINE vgrid(z1, zi, zl, nnz, z, l_root, ldebug)
+SUBROUTINE vgrid(z_lo, z_ml, z_hi, nnz, z, l_root, ldebug)
 
-    REAL :: z(0:nnz + 1)
+    INTEGER :: nnz, iter
+    REAL :: z(0:nnz + 1), z_lo, z_ml, z_hi, z_ratio, nnz_i, stretch, new_stretch, test
     LOGICAL :: l_root, l_debug
 
-    ! BUILD GRID UP TO ZI FIRST
-    z_frst = z1
-    z_cntr = zl
-    n_pbl = nnz
-    z_fac1 = z_cntr / z_frst
-    z_fac2 = 1.0 / FLOAT(nnz)
-    z_fac = 1.1
-    knt = 0
-    tol = 1.0e-10
+    real, parameter :: tol = 1.0e-10
 
-    DO WHILE (test > tol)
-        knt = knt + 1
-        z_facn = (z_fac1 * (z_fac - 1.0) + 1.0)**z_fac2
-        test = ABS(1.0 - z_facn / z_fac)
-        IF (knt > 500) THEN
-            IF (l_root) WRITE (6, 9000) z_fac, z_facn, knt
+    z_ratio = z_hi / z_lo
+    nnz_i = 1.0 / FLOAT(nnz)
+    stretch = 1.1   ! initial stretch factor to try
+    iter = 0
+
+    DO
+        new_stretch = (z_ratio * (stretch - 1.0) + 1.0)**nnz_i
+        test = ABS(1.0 - new_stretch / stretch)
+
+        ! while loop exit condition
+        if (test <= tol) exit
+
+        ! while loop error condition
+        iter = iter + 1
+        IF (iter > 500) THEN
+            IF (l_root) WRITE (6, 9000) stretch, new_stretch, iter
             STOP
         END IF
-        z_fac = z_facn
     END DO
 
-    IF (l_root) WRITE (6, 9100) z_fac, z_cntr, z1, knt
+    IF (l_root) WRITE (6, 9100) stretch, z_hi, z_lo, iter
 
-    z(1) = z_frst
-    DO iz = 2, n_pbl
-        z(iz) = z_frst * (z_fac**(FLOAT(iz)) - 1.0) / (z_fac - 1.0)
-    END DO
-
-    z(nnz) = zl
     z(0) = 0.0
-    z(nnz + 1) = z(nnz) + (z(nnz) - z(nnz - 1))
+    z(1) = z_lo
 
-    IF (l_root) WRITE (6, 5300) n_pbl
+    ! this will be NaN if stretch == 1.0
+    DO iz = 2, nnz
+        z(iz) = z_lo * (stretch**iz - 1.0) / (stretch - 1.0)
+    END DO
+
+    z(nnz) = z_hi
+    z(nnz + 1) = 2.0 * z_hi - z(nnz - 1) ! z_hi + dz
+
+    IF (l_root) WRITE (6, 5300) nnz
 
     RETURN
 
 ! FORMAT
-9000 FORMAT(' Cannot find stretching factor', /, ' z_fac = ', e15.6, &
-           ' z_facn = ', e15.6, ' knt = ', i3)
+9000 FORMAT(' Cannot find stretching factor', /, ' stretch = ', e15.6, &
+           ' new_stretch = ', e15.6, ' iter = ', i3)
 9100 FORMAT(' Stretching factor = ', e15.6, /, ' Match point       = ', &
            e15.6, /, ' First z           = ', e15.6, /, ' Number of iters   = ', i4)
-5300 FORMAT(' n_pbl = ', i4)
+5300 FORMAT(' nnz = ', i4)
 5600 FORMAT(' 5600 in vgrid ', /, ' iz ', 5x, ' zw ', /, (i3, e15.6))
 
 END SUBROUTINE

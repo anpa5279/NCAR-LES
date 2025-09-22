@@ -45,15 +45,11 @@ SUBROUTINE comp1(istep, it)
 
     IF (i_dear == 2) THEN !classic smagorinsky model
         CALL smag_vis(istep)
-        DO iz = izs - 1, ize
-            vis_mean(iz) = 0.0
-        END DO
-    ELSE !all other sgs models 
+    ELSE
         CALL tke_vis(istep)
     END IF
-    CALL rhs_uvw(istep)
 
-    ! EVALUATE RHS OF SCALAR EQUATIONS=
+    CALL rhs_uvw(istep)
     DO l = 1, nscl
         CALL rhs_scl(istep, l, it)
     END DO

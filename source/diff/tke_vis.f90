@@ -99,10 +99,10 @@ subroutine tke_vis(istep)
                 r5(ix, iy, iz) = r5(ix, iy, iz) - dissp(ix, iy)
 
                 ! VERTICAL DIFFUSION
-                fnt3(ix, iy) = ((vis_m(ix, iy, izp1) + vis_m(ix, iy, iz)) * (e(ix, iy, izp1) - &
-                                                                             e(ix, iy, iz)) * dzw_i(izp1) - (vis_m(ix, iy, iz) + &
-                                                                                                             vis_m(ix, iy, izm1)) * (e(ix, iy, iz) - e(ix, iy, izm1)) * dzw_i(iz)) * &
-                               dzu_i(izp1)
+                fnt3(ix, iy) = ((vis_m(ix, iy, izp1) + vis_m(ix, iy, iz)) * (e(ix, iy, izp1) &
+                                - e(ix, iy, iz)) * dzw_i(izp1) - (vis_m(ix, iy, iz) &
+                                + vis_m(ix, iy, izm1)) * (e(ix, iy, iz) - e(ix, iy, izm1)) * dzw_i(iz)) &
+                                * dzu_i(izp1)
                 r5(ix, iy, iz) = r5(ix, iy, iz) + fnt3(ix, iy)
 
                 ! SHEAR PRODUCTION
