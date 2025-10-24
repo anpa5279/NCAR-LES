@@ -61,6 +61,12 @@ SUBROUTINE smag_vis(istep)
 
                 ! using vis_sv to store z-center viscosity values
                 vis_sv(i, j, iz) = (csmag * delta)**2 * SQRT(2.0 * sij2)
+                IF (isnan(vis_sv(i, j, iz))) THEN
+                    IF (l_root) WRITE (6, *) "wt_h=", wt_h, "wt_l=", wt_l
+                    IF (l_root) WRITE (6, *) "dzw(iz)=", dzw(iz), "dzw(izp1)=", dzw(izp1), "dzw_i(iz) = ", dzw_i(iz), "dzu_i(iz)=", dzu_i(iz)
+                    IF (l_root) WRITE (6, *) "dzw=", dzw
+                    STOP
+                END IF
             END DO
         END DO
     END DO
@@ -138,14 +144,6 @@ SUBROUTINE smag_vis(istep)
     IF (izs == 1) THEN
         u(:, :, 0) = ubc(:, :, 2)
         v(:, :, 0) = vbc(:, :, 2)
-    END IF
-
-    IF (l_root) WRITE (6, *) "NaNs appeared in smag_vis at i=",i, " j=",j, " iz=",iz
-    IF (l_root) WRITE (6, *) "wt_h=", wt_h, "wt_l=", wt_l
-    IF (l_root) WRITE (6, *) "dzw(iz)=", dzw(iz), "dzw(izp1)=", dzw(izp1), "dzw_i(iz) = ", dzw_i(iz), "dzu_i(iz)=", dzu_i(iz)
-    IF (l_root) WRITE (6, *) "dzw=", dzw
-    IF (isnan(vis_m(i, j, iz))) THEN
-        STOP
     END IF
 
     RETURN
