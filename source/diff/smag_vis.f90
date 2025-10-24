@@ -7,6 +7,8 @@ SUBROUTINE smag_vis(istep)
     USE con_stats
 
     IMPLICIT NONE
+    
+    INCLUDE 'mpif.h'
 
     REAL :: wz, uz, vz, s11, s22, s33, s12, s13, s23, sij2, delta
     REAL :: d_im, d_ip, d_i, wt_l, wt_h
