@@ -72,12 +72,14 @@ SUBROUTINE lower(it)
 
     WRITE (nprt, 2345) uwsfc, vwsfc, wtsfc(nscl), tsfcc(nscl)
 
-    DO iy = iys, iye
-        DO ix = 1, nnx
-            ubc(ix, iy, 2) = u(ix, iy, iz) !- u(ix, iy, iz) - 2. * ugal
-            vbc(ix, iy, 2) = - v(ix, iy, iz)
-        END DO
-    END DO
+    DO iy=iys,iye
+        DO ix=1,nnx
+        dudz     = 2.*(u(ix,iy,iz) + ugal)*dz_i
+        dvdz     = 2.*v(ix,iy,iz)*dz_i
+        ubc(ix,iy,2) = u(ix,iy,iz) - dudz*dzu(iz)!- u(ix, iy, iz) - 2. * ugal
+        vbc(ix,iy,2) = v(ix,iy,iz) - dvdz*dzu(iz)!- v(ix, iy, iz)
+        ENDDO
+    ENDDO
 
     DO iscl = 1, nscl
         DO iy = iys, iye
