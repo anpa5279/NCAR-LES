@@ -7,8 +7,6 @@ SUBROUTINE smag_vis(istep)
     USE con_stats
 
     IMPLICIT NONE
-    
-    INCLUDE 'mpif.h'
 
     REAL :: wz, uz, vz, s11, s22, s33, s12, s13, s23, sij2, delta
     REAL :: d_im, d_ip, d_i, wt_l, wt_h
@@ -147,7 +145,6 @@ SUBROUTINE smag_vis(istep)
     IF (l_root) WRITE (6, *) "dzw(iz)=", dzw(iz), "dzw(izp1)=", dzw(izp1), "dzw_i(iz) = ", dzw_i(iz), "dzu_i(iz)=", dzu_i(iz)
     IF (l_root) WRITE (6, *) "dzw=", dzw
     IF (isnan(vis_m(i, j, iz))) THEN
-        CALL mpi_finalize(ierr)
         STOP
     END IF
 
