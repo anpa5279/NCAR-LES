@@ -74,7 +74,7 @@ SUBROUTINE lower(it)
 
     DO iy = iys, iye
         DO ix = 1, nnx
-            ubc(ix, iy, 2) = - u(ix, iy, iz) - 2. * ugal
+            ubc(ix, iy, 2) = u(ix, iy, iz) !- u(ix, iy, iz) - 2. * ugal
             vbc(ix, iy, 2) = - v(ix, iy, iz)
         END DO
     END DO
