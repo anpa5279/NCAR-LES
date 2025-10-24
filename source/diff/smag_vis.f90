@@ -23,10 +23,10 @@ SUBROUTINE smag_vis(istep)
     ! didn't matter when using a staggered vertical grid and one-equation SGS
     ! model. I could be wrong though, and maybe that BC is correct, and I need
     ! to rethink this...
-    IF (izs == 1) THEN
-        u(:, :, 0) = u(:, :, 1)
-        v(:, :, 0) = v(:, :, 1)
-    END IF
+    !IF (izs == 1) THEN
+    !    u(:, :, 0) = u(:, :, 1)
+    !    v(:, :, 0) = v(:, :, 1)
+    !END IF
 
     ! Step 1: Compute SGS viscosity at z-center interior points
     ! -------
@@ -135,10 +135,10 @@ SUBROUTINE smag_vis(istep)
     ! I'm not willing to bet my life that there isn't something somewhere in the
     ! code that needs the u = v = 0 BC to be correct, which is why we're keeping
     ! Lower.f90 as-is and doing this thing.
-    IF (izs == 1) THEN
-        u(:, :, 0) = ubc(:, :, 2)
-        v(:, :, 0) = vbc(:, :, 2)
-    END IF
+    !IF (izs == 1) THEN
+    !    u(:, :, 0) = ubc(:, :, 2)
+    !    v(:, :, 0) = vbc(:, :, 2)
+    !END IF
 
     RETURN
 END SUBROUTINE

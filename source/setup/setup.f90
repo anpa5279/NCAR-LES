@@ -12,7 +12,6 @@ SUBROUTINE setup(it)
     IF (i_dear == 2) THEN
         DO iz = izs - 1, ize
             vis_mean(iz) = 0.0
-            ! e = r5 = 0.0 is set in RANDOC, so nothing further needed for those
         END DO
         IF (l_root) WRITE (*, *) "Smagorinsky model is turned on."
 
