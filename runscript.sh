@@ -15,9 +15,9 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 ################################################################################
 ### EDIT AT WILL FOR EACH RUN
 compiler=intel       # options are [cray, intel, gnu]
-compile_mode=profile   # options useful on HPC are [debug, profile, fast]
+compile_mode=fast   # options useful on HPC are [debug, profile, fast]
 project=classic_smag # creates sub-directory within NCAR-LES folders
-job_name=old_smag_change5 #${compiler}_${compile_mode}  # should be something unique at least for today
+job_name=${compiler}_${compile_mode}1  # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
 outfile=logfile.out
