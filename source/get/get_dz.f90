@@ -14,9 +14,13 @@ SUBROUTINE get_dz
 
     dzw(0) = dzw(1)
     dzw(nnz + 2) = dzw(nnz + 1)
+
+    IF (l_root) WRITE (6, *) "dzw=", dzw
+    
     DO iz = 0, nnz + 2
         dzw_i(iz) = 1.0 / dzw(iz)
     END DO
+
 
     ! BUILD Z GRID FOR U POINTS
     dzovr2 = dz * 0.5

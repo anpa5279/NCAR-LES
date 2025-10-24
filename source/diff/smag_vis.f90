@@ -42,7 +42,7 @@ SUBROUTINE smag_vis(istep)
                 vis_m(i, j, iz) = (csmag * d_grid)**2 * SQRT(2.0 * sij2)
                 vis_s(i, j, iz) = 3.0 * vis_m(i, j, iz) 
                 vis_sv(i, j, iz) = vis_s(i, j, iz)
-                IF (isnan(vis_m(i, j, iz))) THEN
+                IF (isnan(vis_m(i, j, iz))) THEN ! debugging, can delete later
                     IF (l_root) WRITE (6, *) "NaNs appeared in smag_vis at i=",i, " j=",j, " iz=",iz
                     IF (l_root) WRITE (6, *) "wt_h=", wt_h, "wt_l=", wt_l
                     IF (l_root) WRITE (6, *) "dzw(iz)=", dzw(iz), "dzw(izp1)=", dzw(izp1), "dzw_i(iz) = ", dzw_i(iz), "dzu_i(iz)=", dzu_i(iz)
