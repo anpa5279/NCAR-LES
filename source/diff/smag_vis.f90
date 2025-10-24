@@ -43,9 +43,10 @@ SUBROUTINE smag_vis(istep)
                 vis_s(i, j, iz) = 3.0 * vis_m(i, j, iz) 
                 vis_sv(i, j, iz) = vis_s(i, j, iz)
                 IF (isnan(vis_m(i, j, iz))) THEN
-                    IF (l_root) WRITE (6, *) "NaNs appeared in smag_vis at i=", i, " j=", j, " iz=", iz
-                    IF (l_root) WRITE (6, *) "dzw_i(iz) = ", dzw_i(iz), ", dzu_i(iz) = ", dzu_i(iz), ", s11=", s11, ", s22=", s22, ", s33=", s33, ", s23=", s23, ", s13=", s13, ", vis_m=", vis_m(i, j, iz)
-
+                    IF (l_root) WRITE (6, *) "NaNs appeared in smag_vis at i="i, " j="j, " iz="iz
+                    IF (l_root) WRITE (6, *) "dzw_i(iz) = ", dzw_i(iz), "dzu_i(iz)=", dzu_i(iz), "uz=", uz, "vz=", vz, "wz=", wz, "wzp=", wzp, "ux(i, j, iz)=", ux(i, j, iz), "ux(i, j, izp1)=", ux(i, j, izp1), "vy(i, j, iz)=", vy(i, j, iz), "vy(i, j, izp1)=", vy(i, j, izp1)
+                    IF (l_root) WRITE (6, *) "s11="s11, "s22=", s22, "s33=", s33, "s23=", s23, "s13=", s13
+                    IF (l_root) WRITE (6, *) "u(i, j, iz) = ", u(i, j, iz), "u(i, j, izm1)=", u(i, j, izm1), "v(i, j, iz)=", v(i, j, iz), "v(i, j, izm1)=", v(i, j, izm1), "w(i, j, iz)=", w(i, j, iz), "w(i, j, izm1)=", w(i, j, izm1), "w(i, j, izp1)=", w(i, j, izp1)
                     CALL mpi_finalize(ierr)
                     STOP
                 END IF
