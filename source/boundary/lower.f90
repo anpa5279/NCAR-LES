@@ -84,7 +84,8 @@ SUBROUTINE lower(it)
     DO iscl = 1, nscl
         DO iy = iys, iye
             DO ix = 1, nnx
-                tbc(ix, iy, iscl, 2) = - t(ix, iy, iscl, iz) + 2. * tsfcc(iscl)
+                dtdz     = 2.*(t(ix,iy,iscl,iz)-tsfcc(iscl))*dz_i
+                tbc(ix,iy,iscl,2) = t(ix,iy,iscl,iz) - dtdz*dzu(iz)
             END DO
         END DO
     END DO
