@@ -17,7 +17,7 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 compiler=intel       # options are [cray, intel, gnu]
 compile_mode=profile   # options useful on HPC are [debug, profile, fast]
 project=classic_smag # creates sub-directory within NCAR-LES folders
-job_name=comparison_case1_cpudev #${compiler}_${compile_mode}  # should be something unique at least for today
+job_name=comparison_cc #${compiler}_${compile_mode}  # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
 outfile=logfile.out
@@ -72,11 +72,11 @@ pwd
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $job_name
-#PBS -l walltime=04:00:00
+#PBS -l walltime=08:00:00
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
-#PBS -q develop
-####PBS -l job_priority=economy
+#PBS -q main
+#PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 

@@ -8,13 +8,13 @@ MODULE inputs
                        ihb = 30.0, &
                        cd_fac = 0.7, &
                        c_alk = 1.5, &
-                       c1 = 7.56903, &
-                       c2 = 1.67006e03, &
-                       c3 = 3.14655e02, &
-                       c4 = 2.96936e02, &
-                       c5 = 1.18909e02, &
-                       c6 = 6.30928e-03, &
-                       c7 = 9.60492, &
+                       c1 = 7.57, & ! carbon dioxide
+                       c2 = 1.67e03, & ! bicarboante
+                       c3 = 3.15e02, & ! carbonate
+                       c4 = 2.97e02, & ! B(OH)3
+                       c5 = 1.19e02, & ! B(OH)4
+                       c6 = 6.30928e-03, & !
+                       c7 = 9.6, & ! hydroxide 
                        ustokes = 5.75, &
                        Rgas = 0.0083143
 

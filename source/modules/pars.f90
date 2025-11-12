@@ -4,14 +4,14 @@ MODULE pars
 
     INTEGER, PARAMETER :: flg_stokes = 1    ! stokes on or off
     INTEGER, PARAMETER :: flg_lat = 0       ! solve using lat or utau. do not change, not working.
-    INTEGER, PARAMETER :: flg_reaction = 0  ! reaction model on or off
+    INTEGER, PARAMETER :: flg_reaction = 1  ! reaction model on or off
     INTEGER, PARAMETER :: chem0d = 0
     INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
     INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity. does nothing
     INTEGER, PARAMETER :: iti = 0, itmax = 35000, imean = 1, ihst = -1, itape = 500, &
                           itstr = 1, it_his = 500, i_viz = 120000
 
-    INTEGER, PARAMETER :: nscl = 1, nvar = (4 + nscl) !number of scalars and vars
+    INTEGER, PARAMETER :: nscl = 8, nvar = (4 + nscl) !number of scalars and vars, 8 = carbonate chemistry is on
     INTEGER, PARAMETER :: nxg1 = 128, nyg1 = 128, nzg1 = 128 !size of problem
     INTEGER, PARAMETER :: maxnx = 128, maxny = 128, maxnz = 128 !max size
     INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2, &
