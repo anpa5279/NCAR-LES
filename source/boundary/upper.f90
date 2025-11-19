@@ -33,7 +33,7 @@ SUBROUTINE upper
             END DO
         END DO
 
-        DO iscl = 2, nscl
+        DO iscl = 1, nscl
             ! FIRST GET AVERAGE SCALAR GRADIENT
             dtdzf(iscl) = 0.0
             DO iy = iys, iye
