@@ -12,7 +12,7 @@ MODULE pars
                           itstr = 1, it_his = 500, i_viz = 120000
 
     INTEGER, PARAMETER :: nscl = 1, nvar = (4 + nscl) !number of scalars and vars, 8 = carbonate chemistry is on
-    INTEGER, PARAMETER :: nxg1 = 128, nyg1 = 128, nzg1 = 128 !size of problem
+    INTEGER, PARAMETER :: nxg1 = 64, nyg1 = 64, nzg1 = 64 !size of problem
     INTEGER, PARAMETER :: maxnx = 128, maxny = 128, maxnz = 128 !max size
     INTEGER, PARAMETER :: maxnz1 = maxnz + 1, maxnz2 = maxnz + 2, &
                           maxnx2 = maxnx + 2, maxny2 = maxny + 2
