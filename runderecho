@@ -1,7 +1,6 @@
 #! /bin/bash
 #######################################################################
 ### Set case parameters
-### user: User
 ### jobn: The name of the output file in data directory
 ### pnum: Project number for charging/allocation purposes
 ### rnam: The name of the run
@@ -14,17 +13,16 @@
 ### dirm: Location of the submit script and output directory
 ### csrc: Directory containing code source
 
-user=apauls
 jobn=ncarles_test
 pnum=UCUB0167
-rnam=derecho_testrun
+rnam=original-test-run
 rtyp=main
 jpri=economy
-tihh=4
+tihh=12
 timm=0
 nnds=1
 runo=logfile.out
-rund=test
+rund=$rnam
 csrc=source
 
 
@@ -98,7 +96,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
 #PBS -l job_priority=$jpri
