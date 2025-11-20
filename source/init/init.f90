@@ -33,7 +33,7 @@ SUBROUTINE init
     fcor_h = 0.0
     ugcont = 0.0
     vgcont = 0.
-    wtsfc(1) = hflux !-5.0e-7
+    wtsfc(1) = hflux 
     qstar(1) = wtsfc(1)
 
     ! OTHER THERMODYNAMIC VARIABLES FOR HURRICANE TIME VARYING HEAT FLUXES
