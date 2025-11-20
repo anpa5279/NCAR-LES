@@ -69,8 +69,8 @@ SUBROUTINE init
   divgls  = 0.
   zo      = 0.0001
   zi      = -ihb
-  xl      = 160.0
-  yl      = 160.0
+  xl      = 320.0
+  yl      = 320.0
   zl      = -96.0
   izi     = NINT((zi/zl)*nnz)
 
