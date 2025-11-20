@@ -64,7 +64,7 @@ MODULE pars
     INTEGER, PARAMETER :: &
         ismlt = 0, ifree = 0, isfc = 0, iradup = 0, iupwnd = 1, ibuoy = 1, itcut = 1, &
         method = 3, idebug = 0, iz_space = 0, ivis0 = 0, ifix_dt = 0, new_vis = -1, &
-        i_dear = 2
+        i_dear = 1
     INTEGER, PARAMETER :: j_recl = 4 !record length in "bytes" for history file
     INTEGER, PARAMETER :: k8 = 8 !kind parameter for integers in mpi_io routines
 
