@@ -73,15 +73,6 @@ SUBROUTINE init
     yl = 320.0
     zl = -96.0
     izi = NINT((zi / zl) * nnz)
-    dtdzf(1)=0.010
-    dtjump  = 0.
-    divgls  = 0.
-    zo      = 0.0001
-    zi      = -ihb
-    xl      = 320.0
-    yl      = 320.0
-    zl      = -96.0
-    izi     = NINT((zi/zl)*nnz)
     ! IF STRETCHED GRID SPECIFY LOCATION OF FIRST POINT
     zw1 = -0.5
 
