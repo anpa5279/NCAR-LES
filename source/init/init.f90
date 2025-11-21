@@ -16,7 +16,7 @@ SUBROUTINE init
 
     ! CASE SPECIFIC DATA
     rho_a = 1.0
-    rho_w = 1000.0
+    rho_w = 1026.0
     t00 = 283.
     t00b = 5000.0
     cp_a = 1.0057e03
