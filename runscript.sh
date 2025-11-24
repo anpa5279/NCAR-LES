@@ -16,7 +16,7 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 ### EDIT AT WILL FOR EACH RUN
 compiler=intel       # options are [cray, intel, gnu]
 compile_mode=profile   # options useful on HPC are [debug, profile, fast]
-project=bc-debugging # creates sub-directory within NCAR-LES folders
+project=comparison-cases # creates sub-directory within NCAR-LES folders
 job_name=run1-fcor #${compiler}_${compile_mode}  # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
@@ -76,7 +76,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
 #PBS -q main
-#PBS -l job_priority=economy
+#PBS -l job_priority=premium
 #PBS -o exec.out
 #PBS -e exec.err
 
