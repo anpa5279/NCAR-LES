@@ -63,7 +63,7 @@ SUBROUTINE randoc
     ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
     idum = -1
     DO iz = izs, ize
-        IF (iz <= izi) THEN !izi
+        IF (iz <= 8) THEN !izi
 
             ! AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
             ampv = 0.01
