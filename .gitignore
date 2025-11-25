@@ -5,6 +5,7 @@
 **/*.dSYM
 **/lesmpi
 **/Makefile
+**/.DS_store 
 .DS_store 
 bin/*
 build/*
