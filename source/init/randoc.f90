@@ -21,7 +21,11 @@ SUBROUTINE randoc
         IF (iz <= izi) THEN
             DO iy = iys, iye
                 DO ix = 1, nnx
+                    u(ix, iy, iz) = ugcont - ugal
+                    v(ix, iy, iz) = vgcont
+                    w(ix, iy, iz) = 0.0
                     t(ix, iy, 1, iz) = tmixed
+                    e(ix, iy, iz) = 0.0
                 END DO
             END DO
         END IF
@@ -29,25 +33,23 @@ SUBROUTINE randoc
         IF (iz > izi) THEN
             DO iy = iys, iye
                 DO ix = 1, nnx
+                    u(ix, iy, iz) = ugcont - ugal
+                    v(ix, iy, iz) = vgcont
+                    w(ix, iy, iz) = 0.0
                     t(ix, iy, 1, iz) = tmixed + dtdzf(1) * (zz(iz) - zi)
+                    e(ix, iy, iz) = 0.0
                 END DO
             END DO
         END IF
 
         DO iy = iys, iye
             DO ix = 1, nnx
-                u(ix, iy, iz) = ugcont - ugal
-                v(ix, iy, iz) = vgcont
                 w(ix, iy, iz) = 0.0
-                e(ix, iy, iz) = 0.0
                 r1(ix, iy, iz) = 0.0
                 r2(ix, iy, iz) = 0.0
                 r3(ix, iy, iz) = 0.0
                 r4(ix, iy, 1, iz) = 0.0
                 r5(ix, iy, iz) = 0.0
-                vis_m(ix, iy, iz) = 0.0
-                vis_s(ix, iy, iz) = 0.0
-                vis_sv(ix, iy, iz) = 0.0
             END DO
         END DO
     END DO
@@ -63,7 +65,7 @@ SUBROUTINE randoc
     ! SET INITIAL RANDOM FIELD TO BE DIVERGENCE FREE
     idum = -1
     DO iz = izs, ize
-        IF (iz <= 8) THEN !izi
+        IF (iz <= 8) THEN
 
             ! AMPV AND AMPT ARE MAX AMPLITUDES OF RANDOM VELOCITY AND TEMPERATURE FIELDS
             ampv = 0.01
@@ -104,6 +106,7 @@ SUBROUTINE randoc
                     u(ix, iy, iz) = u(ix, iy, iz) - psiy(ix, iy, izs) * facv
                     v(ix, iy, iz) = v(ix, iy, iz) + psix(ix, iy) * facv
                     t(ix, iy, 1, iz) = t(ix, iy, 1, iz) + psi(ix, iy) * ampt
+                    !e(ix,iy,iz) = 0.0!0.0001
                 END DO
             END DO
         END IF
