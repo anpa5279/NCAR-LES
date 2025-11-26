@@ -106,7 +106,7 @@ SUBROUTINE randoc
                     u(ix, iy, iz) = u(ix, iy, iz) - psiy(ix, iy, izs) * facv
                     v(ix, iy, iz) = v(ix, iy, iz) + psix(ix, iy) * facv
                     t(ix, iy, 1, iz) = t(ix, iy, 1, iz) + psi(ix, iy) * ampt
-                    !e(ix,iy,iz) = 0.0!0.0001
+                    e(ix,iy,iz) = 0.0001
                 END DO
             END DO
         END IF
