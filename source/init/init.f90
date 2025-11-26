@@ -16,7 +16,7 @@ SUBROUTINE init
 
     ! CASE SPECIFIC DATA
     rho_a = 1.0
-    rho_w = 1026.0
+    rho_w = 1000.0
     t00 = 283.
     t00b = 5000.0
     cp_a = 1.0057e03
@@ -29,7 +29,7 @@ SUBROUTINE init
     turb_la = 0.3
     rlat = 30
 
-    fcor = 1.e-4!2.0 * pi2 * SIN(rlat * d_to_r) / (24.0 * 3600.0)!
+    fcor = 2.0 * pi2 * SIN(rlat * d_to_r) / (24.0 * 3600.0)!
     fcor_h = 0.0
     ugcont = 0.0
     vgcont = 0.
