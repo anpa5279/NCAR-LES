@@ -2,7 +2,7 @@ MODULE inputs
   IMPLICIT NONE
 
   ! base case for weak 20
-  REAL, PARAMETER ::  ws10 = 5.75,                           &
+  REAL, PARAMETER ::  ws10 = 0.0,                           &
                       iTsurf = 25.0,                         &
                       hflux = -5.0e-7,                    &
                       ihb = 30.0,                           &

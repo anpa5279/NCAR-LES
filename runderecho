@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run5-heat-flux
+rnam=original-nocoriolis-nowind
 rtyp=main
 jpri=economy
 tihh=12
