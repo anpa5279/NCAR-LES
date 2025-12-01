@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=original-nocoriolis-nowind
+rnam=original-cor-default
 rtyp=main
 jpri=economy
 tihh=12
