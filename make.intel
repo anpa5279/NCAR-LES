@@ -1,5 +1,5 @@
 # MODIFY THESE AS YOU NEED/LIKE ----------------------------------------------------------
-SRC_DIR := ../code
+SRC_DIR := ../source
 MPI := mpif90
 # note the use of = and not := here, allows deferring definitions of COMMON etc. to later
 FFLAGS = $(COMMON) $(OPT1) # choose DBG1/DBG2/DBG3 or OPT2/OPT3.
