@@ -16,9 +16,9 @@
 jobn=ncarles_test
 pnum=UCUB0166
 rnam=original-test-run-default-mpirun
-rtyp=main
+rtyp=develop
 jpri=economy
-tihh=12
+tihh=4
 timm=0
 nnds=1
 runo=logfile.out
