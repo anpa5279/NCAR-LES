@@ -95,7 +95,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=128:mpiprocs=128
+#PBS -l select=$nnds:ncpus=32:mpiprocs=32
 #PBS -A $pnum
 #PBS -q $rtyp
 ###PBS -l job_priority=$jpri
