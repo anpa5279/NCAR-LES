@@ -1,10 +1,10 @@
 # ----------------------------------------------------------------------------------------
 # EDIT THESE
-COMPILER := gnu
+COMPILER := intel
 FC := mpif90
 SRCDIR := source
-BUILDDIR := build/small-cor
-BINDIR := $(BUILDDIR)
+BUILDDIR := build
+BINDIR := bin
 EXECUTABLE := $(BINDIR)/lesmpi.exe
 
 # ----------------------------------------------------------------------------------------
@@ -15,12 +15,12 @@ $(shell mkdir -p $(BUILDDIR)) # make the build directory if it doesn't exist
 SRC_DIRS := $(sort $(filter-out $(SRCDIR), $(shell find $(SRCDIR) -type d)))
 
 # `shell find` gets all filenames, including directory paths, then `notdir` strips off directory paths
-MOD_SRCS := inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 ##tracerbc.f90 reaction.f90
+MOD_SRCS := inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90
 F90_SRCS := $(notdir $(shell find $(SRCDIR) -name '*.f90'))
 F90_SRCS := $(filter-out $(MOD_SRCS), $(F90_SRCS)) # strip out modules from other f90 files
 F_SRCS := $(notdir $(shell find $(SRCDIR) -name '*.f'))
 
-# Generate corresponding obmake ject file paths in the build directory
+# Generate corresponding object file paths in the build directory
 MOD_OBJS := $(MOD_SRCS:%.f90=$(BUILDDIR)/%.mod)
 F90_OBJS := $(F90_SRCS:%.f90=$(BUILDDIR)/%.o)
 F_OBJS := $(F_SRCS:%.f=$(BUILDDIR)/%.o)
