@@ -72,7 +72,7 @@ pwd
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $job_name
-#PBS -l walltime=12:00:00
+#PBS -l walltime=6:00:00
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
 #PBS -q develop
