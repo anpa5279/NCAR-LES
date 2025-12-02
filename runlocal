@@ -1,0 +1,76 @@
+#! /bin/sh
+
+
+######################################################
+### Set case parameters
+### rund: Name of the run directory where data are placed
+### csrc: Directory containing code source
+
+rund=small-cor
+csrc=source
+runo=logfile.out
+
+mkdir -p build/$rund
+
+echo '--------------------------------------'
+echo ' Creating Directory and Copying Files '
+echo '--------------------------------------'
+
+rm -rf build/$rund
+mkdir build/$rund
+mkdir build/$rund/code
+mkdir build/$rund/data
+echo '---> Directory Made'
+
+cp $csrc/boundary/* build/$rund/code/
+cp $csrc/deriv/* build/$rund/code/
+cp $csrc/diff/* build/$rund/code/
+cp $csrc/fft/* build/$rund/code/
+cp $csrc/get/* build/$rund/code/
+cp $csrc/grid/* build/$rund/code/
+cp $csrc/init/* build/$rund/code/
+cp $csrc/main/* build/$rund/code/
+cp $csrc/misc/* build/$rund/code/
+cp $csrc/modules/* build/$rund/code/
+cp $csrc/mpi/* build/$rund/code/
+cp $csrc/restart/* build/$rund/code/
+cp $csrc/rhs/* build/$rund/code/
+cp $csrc/save/* build/$rund/code/
+cp $csrc/setup/* build/$rund/code/
+cp $csrc/solve/* build/$rund/code/
+cp $csrc/stats/* build/$rund/code/
+cp $csrc/stokes/* build/$rund/code/
+cp $csrc/tracer/* build/$rund/code/
+cp $csrc/trans/* build/$rund/code/
+echo '---> Code Base Copied'
+
+cd build/$rund/code
+
+
+echo '--------------------------------------'
+echo '           Compile Program            '
+echo '--------------------------------------'
+
+# PRE-COMPILE
+gfortran -c inputs.f90
+gfortran  -O3 -c pars.f90 fields.f90 fftwk.f90 con_data.f90 con_stats.f90  tracerbc.f90 reaction.f90 -limf -lm
+
+# COMPILE CODE
+gfortran -g2 -O3 -o lesmpi *.f *.f90 -limf -lm -ffixed-line-length-132 -ffree-line-length-none
+
+# COPY EXECUTABLE TO MAIN DIRECTORY
+cd ../
+cp code/lesmpi .
+
+# EXECUTE SCRIPT
+cat > EXEC_STEP << EXEC
+
+mpirun ./lesmpi > $runo
+EXEC
+
+
+echo '--------------------------------------'
+echo '           Start Simulation           '
+echo '--------------------------------------'
+
+time
