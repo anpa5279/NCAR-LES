@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=original-test-run-nocor-mpirun1
+rnam=original-test-run-nocor-mpirun1-128
 rtyp=main
 jpri=economy
 tihh=12
@@ -98,7 +98,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
 #PBS -o exec.out
