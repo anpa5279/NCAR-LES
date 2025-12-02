@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=original-test-run-nocor-mpirun1-128
+rnam=original-test-run-small-mpirun-128
 rtyp=main
 jpri=economy
 tihh=12
