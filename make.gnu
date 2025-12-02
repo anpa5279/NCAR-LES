@@ -1,5 +1,5 @@
 # MODIFY THESE AS YOU NEED/LIKE ----------------------------------------------------------
-SRC_DIR := ../code
+SRC_DIR := source
 MPI := mpif90
 # note the use of = and not := here, allows deferring definitions of COMMON etc. to later
 FFLAGS = $(COMMON) $(DBG1) # from most hardcore debugging to hardcore optimization, choose DBG3..1 or OPT1..4
@@ -20,7 +20,7 @@ DBG3 := -O0 -g3 -ffpe-trap=invalid,zero,overflow,underflow -Wall -fcheck=all
 OPT1 := -O1
 OPT2 := -O2
 OPT3 := -O3
-OPT4 := -O3 -ffast-math -fno-protect-parens
+OPT4 := -O3 -ffast-math -fno-protect-parens -fallow-argument-mismatch
 
 # ----------------------------------------------------------------------------------------
 SRCS := $(shell find $(SRC_DIR) -name '*.f' -or -name '*.f90')
@@ -32,7 +32,7 @@ MODS := $(MOD_SRCS:.f90=.mod)
 
 .PHONY : clean realclean modules
 
-# The final make step. Call with just `make` or explicitly as `make lespmi`.
+# The final make step. Call with just `make` or explicitly as `make lesmpi`.
 lesmpi : $(MODS) 
 	$(MPI) $(FFLAGS) $(SRCS) -o $@ $(LDFLAGS)
 
