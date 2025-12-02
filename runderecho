@@ -15,9 +15,8 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=original-test-run-small-mpirun-128
+rnam=original-small-mpirun-128-o3
 rtyp=main
-jpri=economy
 tihh=12
 timm=0
 nnds=1
@@ -103,6 +102,8 @@ cat > EXEC_STEP << EXEC
 #PBS -q $rtyp
 #PBS -o exec.out
 #PBS -e exec.err
+#PBS -q develop
+###PBS -l job_priority=economy
 
 module --force purge
 module load ncarenv/23.06
