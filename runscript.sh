@@ -14,7 +14,7 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 
 ################################################################################
 ### EDIT AT WILL FOR EACH RUN
-compiler=gnu       # options are [cray, intel, gnu]
+compiler=intel       # options are [cray, intel, gnu]
 compile_mode=profile   # options useful on HPC are [debug, profile, fast]
 project=bc-debugging # creates sub-directory within NCAR-LES folders
 job_name=run13-temp-bot-bc #${compiler}_${compile_mode}  # should be something unique at least for today
