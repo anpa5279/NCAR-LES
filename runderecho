@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=test-1-compile
+rnam=test-1-128
 rtyp=develop
 jpri=economy
 tihh=4
@@ -73,10 +73,10 @@ module load openmpi/main
 echo '---> Modules Load Complete'
 
 # PRE-COMPILE
-mpif90 -r8 -132 -O2 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
+mpif90 -r8 -132 -O3 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
 echo '---> Precompile Complete'
 # COMPILE
-mpif90 -r8 -132 -O2 -o lesmpi *.f *.f90 -limf -lm
+mpif90 -r8 -132 -O3 -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY
@@ -96,7 +96,7 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
 #PBS -o exec.out
