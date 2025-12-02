@@ -102,8 +102,9 @@ cat > EXEC_STEP << EXEC
 #PBS -e exec.err
 
 module purge
-module load intel/17.0.1
-module load impi
+module load ncarenv/23.06
+module load intel/2023.0.0
+module load openmpi/main
 
 mpirun ./lesmpi > $runo
 EXEC
