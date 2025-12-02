@@ -26,6 +26,8 @@ rund=$rnam
 csrc=source
 
 
+csrc=source
+
 echo '--------------------------------------'
 echo ' Creating Directory and Copying Files '
 echo '--------------------------------------'
