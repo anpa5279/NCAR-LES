@@ -16,8 +16,8 @@ NOTEBOOK=${HOME}/LAB_NOTEBOOK/NCAR-LES
 ### EDIT AT WILL FOR EACH RUN
 compiler=intel       # options are [cray, intel, gnu]
 compile_mode=profile   # options useful on HPC are [debug, profile, fast]
-project=bc-debugging # creates sub-directory within NCAR-LES folders
-job_name=run13-temp-bot-bc #${compiler}_${compile_mode}  # should be something unique at least for today
+project=coriolis-issues # creates sub-directory within NCAR-LES folders
+job_name=original-nocor-mpirun-128-o2 #${compiler}_${compile_mode}  # should be something unique at least for today
 RUN_DIR=${TOP_DIR}/${project}/${today}/${job_name}
 NOTES=${NOTEBOOK}/${project}/${today}/${job_name}
 outfile=logfile.out
