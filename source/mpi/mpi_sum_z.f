@@ -22,7 +22,7 @@ c
 c -------- everyone gets the result
 c
          call mpi_allreduce(f(1),recv_b(1),nsend,mpi_real8,mpi_sum,
-     +                  mpi_comm_world,ierr) !takes an array of input elements on each process and returns an array of output elements to the root process. The output elements contain the reduced result.
+     +                  mpi_comm_world,ierr)
          do i=1,nsend
             f(i) = recv_b(i)
          enddo

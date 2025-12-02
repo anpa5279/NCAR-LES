@@ -1,5 +1,5 @@
 SUBROUTINE send_xtoy(f,ft,nx,ixs,ixe,iys,iye,izs,ize)
-!GRAB CORRECT CHUNK OF ARRAY TO BE SENT
+! GRAB CORRECT CHUNK OF ARRAY TO BE SENT
 
   REAL :: f(nx,iys:iye,izs:ize), ft(ixs:ixe,iys:iye,izs:ize)
 

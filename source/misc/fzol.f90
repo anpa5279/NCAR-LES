@@ -1,6 +1,6 @@
 SUBROUTINE fzol(zeta,phim,phis,psim,psis)
-!ESTIMATE THE STABILITY FUNCTION FOR MOMENTUM, M AND SCALARS, C FROM INPUT OF
-!THE STABILITY PARAMETER ZETA = Z/L
+! ESTIMATE THE STABILITY FUNCTION FOR MOMENTUM, M AND SCALARS, C FROM INPUT OF
+! THE STABILITY PARAMETER ZETA = Z/L
 
   DATA c1/5./
   DATA a3,b3,a4,b4/1.258,8.382,-28.862,98.9545/
@@ -23,7 +23,7 @@ SUBROUTINE fzol(zeta,phim,phis,psim,psis)
       phis = phim
       psis = psim
     ELSE
-      !USE LIMITING FORM
+      ! USE LIMITING FORM
       phim = c1 + zeta
       psim = (1.0 - c1)*(1.0 + ALOG(zeta) ) - zeta
       phis = phim
@@ -34,7 +34,7 @@ SUBROUTINE fzol(zeta,phim,phis,psim,psis)
       phim = 1.0 / Xm(zeta)
       psim = psimu(Xm(zeta))
     ELSE
-      !USE CONVECTIVE LIMIT FOR MOMENTUM
+      ! USE CONVECTIVE LIMIT FOR MOMENTUM
       X = (1.0 - b3/a3 * zeta)**(1.0/3.0)
       fm = a3**(-1.0/3.0)
       phim = fm / Xc(zeta,b3/a3)
@@ -42,12 +42,12 @@ SUBROUTINE fzol(zeta,phim,phis,psim,psis)
             psicu(Xc(zetam,b3/a3),fm)
     ENDIF
 
-    !UNSTABLE SCALARS
+    ! UNSTABLE SCALARS
     IF(zeta.ge.zetas) THEN
       phis = 1.0/Xs(zeta)
       psis = psisu(Xs(zeta))
     ELSE
-      !USE CONVECTIVE LIMIT FOR SCALARS
+      ! USE CONVECTIVE LIMIT FOR SCALARS
       fs =   ABS(a4)**(-1.0/3.0)*ABS(a4)/a4
       phis = (a4 - b4*zeta)**(-1.0/3.0)
       psis = psisu(Xs(zetas))+psicu(Xc(zeta,b4/a4),fs) - psicu(Xc(zetas,b4/a4),fs)

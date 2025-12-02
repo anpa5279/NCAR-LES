@@ -5,4 +5,13 @@
 **/*.dSYM
 **/lesmpi
 **/Makefile
+**/.DS_store 
+.DS_store 
+bin/*
+build/*
+original-test-run/
+original-test-run/*
 test/
+outputs/
+outputs/*
+EXEC_STEP

@@ -1,7 +1,6 @@
 #! /bin/bash
 #######################################################################
 ### Set case parameters
-### user: User
 ### jobn: The name of the output file in data directory
 ### pnum: Project number for charging/allocation purposes
 ### rnam: The name of the run
@@ -14,17 +13,16 @@
 ### dirm: Location of the submit script and output directory
 ### csrc: Directory containing code source
 
-user=apauls
 jobn=ncarles_test
-pnum=UCUB0167
-rnam=derecho_testrun
-rtyp=main
+pnum=UCUB0166
+rnam=test-1-128
+rtyp=develop
 jpri=economy
 tihh=4
 timm=0
 nnds=1
 runo=logfile.out
-rund=test
+rund=$rnam
 csrc=source
 
 
@@ -65,20 +63,20 @@ cd $rund/code
 
 
 echo '--------------------------------------'
-echo '      Compile Program      '
+echo '           Compile Program            '
 echo '--------------------------------------'
 
-module purge
+module --force purge
 module load ncarenv/23.06
-module load intel
+module load intel/2023.0.0
 module load openmpi/main
 echo '---> Modules Load Complete'
 
 # PRE-COMPILE
-mpif90 -r8 -132 -O2 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
+mpif90 -r8 -132 -O3 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
 echo '---> Precompile Complete'
 # COMPILE
-mpif90 -r8 -132 -O2 -o lesmpi *.f *.f90 -limf -lm
+mpif90 -r8 -132 -O3 -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY
@@ -98,14 +96,13 @@ cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $rund
 #PBS -l walltime=$tihh:$timm:00
-#PBS -l select=$nnds:ncpus=32:mpiprocs=32
+#PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
-#PBS -l job_priority=$jpri
 #PBS -o exec.out
 #PBS -e exec.err
 
-module purge
+module --force purge
 module load ncarenv/23.06
 module load intel/2023.0.0
 module load openmpi/main
@@ -115,7 +112,7 @@ EXEC
 
 
 echo '--------------------------------------'
-echo '       Execute Step       '
+echo '             Execute Step             '
 echo '--------------------------------------'
 
 echo '---> Running' $rund

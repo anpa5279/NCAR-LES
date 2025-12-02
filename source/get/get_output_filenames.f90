@@ -1,12 +1,12 @@
 SUBROUTINE get_output_filenames
-!BUILD FILE NAMES FOR VELOCITY, PRESSURE, AND CONSTANTS
+! BUILD FILE NAMES FOR VELOCITY, PRESSURE, AND CONSTANTS
 
   USE pars
   INCLUDE 'mpif.h'
 
   CHARACTER cgrid*10, num*5
 
-  !BUILD CHARACTER STRINGS FOR FNAME
+  ! BUILD CHARACTER STRINGS FOR FNAME
   cgrid = '.mp.'
   WRITE(num,'(i5.5)') itn
   iblnk = index(path_sav,' ')

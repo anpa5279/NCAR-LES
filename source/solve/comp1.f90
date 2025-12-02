@@ -1,26 +1,23 @@
 SUBROUTINE comp1(istep,it)
-  !called in les_mpi always
-!3RD ORDER RK (RK3) TIME STEPPING AND MONOTONE SCALAR FLUXES IN X,Y,Z DESIGNED TO USE
-!MPI IN X AND Y DIRECTIONS (aka designed to work with the x-y layers that span in the z-direction)
-!istep = istage = which step of RK3
-!it = iterations (the time stepping aspect)
-!T_DISS AND TR_TAU ARE IN COMP1
+! 3RD ORDER RK TIME STEPPING AND MONOTONE SCALAR FLUXES IN X,Y,Z DESIGNED TO USE
+! MPI IN X AND Y DIRECTIONS
+
   USE pars
   USE fields
   USE fftwk
   USE con_data
   USE con_stats
 
-  INCLUDE 'mpif.h' !this implements mpi for the Fortran interface. All program units that make MPI calls must include this. apparently discouraged and may be gone in future MPI versions
+  INCLUDE 'mpif.h'
 
-  INTEGER :: istatus(mpi_status_size) 
+  INTEGER :: istatus(mpi_status_size)
   INTEGER, PARAMETER ::                   &
-      js = 7,                            & !NUMBER OF NON-SCALAR STATS 
-      ns = 3                                !NUMBER OF SCALAR STATS
+      js = 7,                            & ! NUMBER OF NON-SCALAR STATS
+      ns = 3                                ! NUMBER OF SCALAR STATS
   INTEGER, PARAMETER :: nstat = js + ns*nscl
   REAL :: stat(1:nnz,nstat)
 
-  !TEMP ARRAYS TO HOLD RHS FROM STEP N-1 AND FIELD VARIABLES FROM STEP N
+  ! TEMP ARRAYS TO HOLD RHS FROM STEP N-1 AND FIELD VARIABLES FROM STEP N
   REAL :: urhs(nnx,iys:iye,izs:ize),vrhs(nnx,iys:iye,izs:ize),              &
           wrhs(nnx,iys:iye,izs:ize),erhs(nnx,iys:iye,izs:ize),              &
           trhs(nnx,iys:iye,nscl,izs:ize)
@@ -28,41 +25,35 @@ SUBROUTINE comp1(istep,it)
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx
-        !applying RK3
-        !rs are velocity defined in rhs/rhs_uvw
-        !dtzeta is the time*constant defined in les_mpi
         urhs(ix,iy,iz) = u(ix,iy,iz) + dtzeta*r1(ix,iy,iz)
         vrhs(ix,iy,iz) = v(ix,iy,iz) + dtzeta*r2(ix,iy,iz)
         wrhs(ix,iy,iz) = w(ix,iy,iz) + dtzeta*r3(ix,iy,iz)
-        !r5 is kinetic energy defined in diff/tke_vis
         erhs(ix,iy,iz) = e(ix,iy,iz) + dtzeta*r5(ix,iy,iz)
       ENDDO
     ENDDO
   ENDDO
 
-  DO iz=izs,ize !looping z
-    DO l=1,nscl !looping scalars
-      DO iy=iys,iye !looping y
-        DO ix=1,nnx !looping x
-        !applying RK3
-        !r4 is defined in rhs/rhs_scl
+  DO iz=izs,ize
+    DO l=1,nscl
+      DO iy=iys,iye
+        DO ix=1,nnx
           trhs(ix,iy,l,iz) = t(ix,iy,l,iz) + dtzeta*r4(ix,iy,l,iz)
         ENDDO
       ENDDO
     ENDDO
   ENDDO
 
-  !GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
-  CALL tke_vis(istep) !only called here
-  CALL rhs_uvw(istep) !only called here. updating values for RK3
+  ! GET VISCOSITY AND RHS OF (E,U,V,W) EQUATIONS AT NEXT STEP
+  CALL tke_vis(istep)
+  CALL rhs_uvw(istep)
 
-  !EVALUATE RHS OF SCALAR EQUATIONS=
-  DO l=1,nscl !looping scalars
-    CALL rhs_scl(istep,l,it)!only called here. updating values for RK3 for every scalar
+  ! EVALUATE RHS OF SCALAR EQUATIONS=
+  DO l=1,nscl
+    CALL rhs_scl(istep,l,it)
   ENDDO
 
-  !GATHER STAT SUMS ON ROOT PROCESSOR USING MPI_REDUCTION OVER ALL PROCESSORS
-  IF(istep == 1) THEN !if in the first step of RK3
+  ! GATHER STAT SUMS ON ROOT PROCESSOR USING MPI_REDUCTION OVER ALL PROCESSORS
+  IF(istep == 1) THEN
     DO j=1,nstat
       DO iz=1,nnz
         stat(iz,j) = 0.0
@@ -80,7 +71,7 @@ SUBROUTINE comp1(istep,it)
     ENDDO
 
     m1 = js
-    m2 = js + nscl !nscl= number of scalars and vars (nscl=1 is only physics)
+    m2 = js + nscl
     m3 = js + 2*nscl
     DO l=1,nscl
       DO iz=izs,ize
@@ -115,7 +106,7 @@ SUBROUTINE comp1(istep,it)
     ENDDO
   ENDIF
 
-  !SAVE OLD RHS IN FIELD VARIABLES FOR RK ADVANCEMENT
+  ! SAVE OLD RHS IN FIELD VARIABLES FOR RK ADVANCEMENT
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx
