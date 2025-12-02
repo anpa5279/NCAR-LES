@@ -17,7 +17,7 @@ jobn=ncarles_test
 pnum=UCUB0166
 rnam=original-test-run-nocor
 rtyp=main
-jpri=economy
+jpri=develop
 tihh=6
 timm=0
 nnds=1
@@ -82,7 +82,6 @@ echo '---> Compile Complete'
 # COPY EXECUTABLE TO MAIN DIRECTORY
 cd ../
 cp code/lesmpi .
-echo 4 > mach.file
 echo '---> Executable Made and Copied'
 echo '---> Complete Program Compile for' $rund
 echo ''
@@ -99,7 +98,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
-#PBS -l job_priority=$jpri
+###PBS -l job_priority=$jpri
 #PBS -o exec.out
 #PBS -e exec.err
 
