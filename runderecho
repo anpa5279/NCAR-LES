@@ -104,7 +104,7 @@ cat > EXEC_STEP << EXEC
 
 module purge
 module load ncarenv/23.06
-module load intel/2023.0.0
+module load intel
 module load openmpi/main
 
 mpirun ./lesmpi > $runo
