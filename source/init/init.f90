@@ -29,7 +29,7 @@ SUBROUTINE init
   turb_la = 0.3
   rlat    = 0.0
 
-  fcor    = 0.0!2.0*pi2*SIN(rlat*d_to_r)/(24.0*3600.0)
+  fcor    = 1.0e-7 !2.0*pi2*SIN(rlat*d_to_r)/(24.0*3600.0)
   fcor_h  = 0.0
   ugcont  = 0.0
   vgcont  = 0.
