@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=original-small-mpirun-128-o2
+rnam=original-nocor-mpirun-128-o2
 rtyp=main
 tihh=6
 timm=0
