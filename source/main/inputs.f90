@@ -15,7 +15,7 @@ MODULE inputs
                       c5  =  1.18909e02,             &
                       c6  =  6.30928e-03,           &
                       c7  =  9.60492,             &
-                      ustokes = 5.75,                       &
+                      ustokes = 6.0,                       &
                       Rgas = 0.0083143
 
 
