@@ -72,11 +72,11 @@ pwd
 cat > EXEC_STEP << EXEC
 #!/bin/sh
 #PBS -N $job_name
-#PBS -l walltime=12:00:00
+#PBS -l walltime=6:00:00
 #PBS -l select=$nnodes:ncpus=$ncpus:mpiprocs=$ncpus
 #PBS -A $acct
-#PBS -q main
-#PBS -l job_priority=economy
+#PBS -q develop
+####PBS -l job_priority=economy
 #PBS -o exec.out
 #PBS -e exec.err
 
