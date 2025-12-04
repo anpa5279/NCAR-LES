@@ -8,8 +8,8 @@ MODULE pars
     INTEGER, PARAMETER :: chem0d = 0
     INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
     INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity. does nothing
-    INTEGER, PARAMETER :: iti = 0, itmax = 120000, imean = 1, ihst = -1, itape = 1200, &
-                          itstr = 1, it_his = 1000, i_viz = 120000
+    INTEGER, PARAMETER :: iti = 0, itmax = 120000, imean = 1, ihst = 1200, itape = 1200, &
+                          itstr = 1, it_his = 2400, i_viz = 120000
 
     INTEGER, PARAMETER :: nscl = 1, nvar = (4 + nscl) !number of scalars and vars, 8 = carbonate chemistry is on
     INTEGER, PARAMETER :: nxg1 = 128, nyg1 = 128, nzg1 = 128 !size of problem
@@ -64,7 +64,7 @@ MODULE pars
     INTEGER, PARAMETER :: &
         ismlt = 0, ifree = 0, isfc = 0, iradup = 0, iupwnd = 1, ibuoy = 1, itcut = 1, &
         method = 3, idebug = 0, iz_space = 0, ivis0 = 0, ifix_dt = 0, new_vis = -1, &
-        i_dear = 2
+        i_dear = 0
     INTEGER, PARAMETER :: j_recl = 4 !record length in "bytes" for history file
     INTEGER, PARAMETER :: k8 = 8 !kind parameter for integers in mpi_io routines
 
