@@ -33,16 +33,16 @@ SUBROUTINE upper
       ENDDO
     ENDDO
 
-    DO iscl=1,nscl
+    !DO iscl=1,nscl
       ! FIRST GET AVERAGE SCALAR GRADIENT
-      dtdzf(iscl) = 0.0
-      DO iy=iys,iye
-        DO ix=1,nnx
-          dtdzf(iscl) = dtdzf(iscl) + (t(ix,iy,iscl,nnz) - t(ix,iy,iscl,nnz-1))*dzu_i(nnz)
-        ENDDO
-      ENDDO
-      dtdzf(iscl) = dtdzf(iscl)*fnxy
-    ENDDO
+    !  dtdzf(iscl) = 0.0
+    !  DO iy=iys,iye
+    !    DO ix=1,nnx
+    !      dtdzf(iscl) = dtdzf(iscl) + (t(ix,iy,iscl,nnz) - t(ix,iy,iscl,nnz-1))*dzu_i(nnz)
+    !    ENDDO
+    !  ENDDO
+    !  dtdzf(iscl) = dtdzf(iscl)*fnxy
+    !ENDDO
 
     CALL mpi_sum_xy(dtdzf,myid,iss,ise,nscl)
 
