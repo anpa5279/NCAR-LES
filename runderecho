@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run14-ps-sgs-1994-dTdz-avg-o3
+rnam=run14-ps-sgs-1994-dTdz-avg-o2
 rtyp=main
 jpri=economy
 tihh=12
@@ -73,10 +73,10 @@ module load openmpi/main
 echo '---> Modules Load Complete'
 
 # PRE-COMPILE
-mpif90 -r8 -132 -O3 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
+mpif90 -r8 -132 -O2 -c inputs.f90 pars.f90 con_data.f90 con_stats.f90 fftwk.f90 fields.f90 tracerbc.f90 reaction.f90 -limf -lm
 echo '---> Precompile Complete'
 # COMPILE
-mpif90 -r8 -132 -O3 -o lesmpi *.f *.f90 -limf -lm
+mpif90 -r8 -132 -O2 -o lesmpi *.f *.f90 -limf -lm
 echo '---> Compile Complete'
 
 # COPY EXECUTABLE TO MAIN DIRECTORY
