@@ -15,10 +15,10 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run14-ps-sgs-1994-dTdz-avg-o2
+rnam=run14-ps-sgs-1994-rho1026
 rtyp=main
 jpri=economy
-tihh=0
+tihh=4
 timm=30
 nnds=1
 runo=logfile.out
