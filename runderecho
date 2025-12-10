@@ -15,11 +15,11 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run14-ps-sgs-1994-rho1026
+rnam=run14-ps-sgs-1994-rho1026-premium
 rtyp=main
-jpri=economy
-tihh=4
-timm=30
+jpri=premium
+tihh=3
+timm=0
 nnds=1
 runo=logfile.out
 rund=$rnam
