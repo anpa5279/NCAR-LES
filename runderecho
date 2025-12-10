@@ -15,9 +15,9 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run14-ps-sgs-1994-rho1026-premium
+rnam=run15-ps-sgs-1994-ugrad
 rtyp=main
-jpri=premium
+jpri=economy
 tihh=3
 timm=0
 nnds=1
@@ -99,7 +99,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
-#PBS -l job_priority=$jpri
+####PBS -l job_priority=$jpri
 #PBS -o exec.out
 #PBS -e exec.err
 
