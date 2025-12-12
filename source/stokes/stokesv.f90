@@ -36,7 +36,7 @@ SUBROUTINE stokesv
   DO iz=1,nnzp1
     !z_pt = zz(iz)
     !CALL s_int(range_min,range_max,value)
-    stokes(iz) = value * exp(z / vertical_scale)!value
+    stokes(iz) = value * exp(zz(iz) / vertical_scale)!value
 
     ! FOR NO STOKES
     IF(flg_stokes /= 1) THEN
