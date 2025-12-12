@@ -25,10 +25,18 @@ SUBROUTINE stokesv
 
   range_min = 0.1
   range_max = 5000.0
+  
+  wavelength = 60.0
+  wavenumber = pi2 / wavelength 
+  frequency = (grav * wavenumber)**0.5 
+  vertical_scale = wavelength / (2*pi2)
+  z_pt = zz(1)
+  CALL s_int(range_min,range_max,value)
+
   DO iz=1,nnzp1
-    z_pt = zz(iz)
-    CALL s_int(range_min,range_max,value)
-    stokes(iz) = value
+    !z_pt = zz(iz)
+    !CALL s_int(range_min,range_max,value)
+    stokes(iz) = value * exp(z / vertical_scale)!value
 
     ! FOR NO STOKES
     IF(flg_stokes /= 1) THEN

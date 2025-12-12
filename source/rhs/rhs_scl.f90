@@ -120,7 +120,7 @@ SUBROUTINE rhs_scl(istep,iscl)
               fug = 400.0*exp(0.0413*(tscal-20.0))*1.0e-6   ! (WANNINKHOF, 2022)
               khen = t(ix,iy,iscl,iz)*(10**(-6))/fug         ! (EMERSON & HAMME, 2022)
               bet_ost = khen*Rgas*t(ix,iy,1,iz)*(1/0.101325)! (EMERSON & HAMME, 2022)
-              u_tau = SQRT(1.0*(8.5e-4)*ws10*ws10/1000.0)
+              u_tau = SQRT(rho_a*(8.5e-4)*ws10*ws10/rho_w)
               wh = 0.0246*ws10*ws10;
               wa = 4.02e-7*(u_tau*wh/(1.46e-5))**0.96
               kbub = (2450.0*wa)/(bet_ost*(1.0+(14.0*bet_ost*Sc**(-0.5))**  &
