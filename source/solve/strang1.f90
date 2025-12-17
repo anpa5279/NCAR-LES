@@ -35,7 +35,7 @@ SUBROUTINE strang1(it)
     DO l=2,nscl
       DO iy=iys,iye
         DO ix=1,nnx
-          t(ix,iy,l,iz) = t(ix,iy,l,iz) + trhs(ix,iy,l-1,iz)*dt*0.5
+          t(ix,iy,l,iz) = t(ix,iy,l,iz) + trhs(ix,iy,l,iz)*dt*0.5
         ENDDO
       ENDDO
     ENDDO
