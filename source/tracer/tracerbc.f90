@@ -50,7 +50,7 @@ module tracerbc
             !! passive tracers
             iscl = 2; ! carbon dioxide
             ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
-            asflux(iscl) = 0;   airval(iscl) = 0.0; !8.56056;
+            asflux(iscl) = 0;   airval(iscl) = 0; !8.56056;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
             iscl = 3; ! biocarbonate
@@ -85,13 +85,9 @@ module tracerbc
 
       do iscl = 2,nscl
          bnds=bnd(:,iscl); vals=val(iscl); 
-         if (it.eq.1) then
-            if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
-            if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
-         endif
+          if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
+          if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
          bnds = 0; vals = 0;
-         print *, "inside applytracerbc"
-         print *, t(:, :, 2, :)
       enddo
 
       if(flg_debug == 1) then

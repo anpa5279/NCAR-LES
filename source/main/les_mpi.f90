@@ -45,6 +45,9 @@ PROGRAM les_mpi
     ! CHOOSE ROUTINE FOR GETTING INITIAL GUESS
     CALL randoc
     CALL get_max
+
+    CALL applytracerbc(it)
+    
   ELSE
     igrdr = 3
     CALL restart
@@ -86,8 +89,6 @@ PROGRAM les_mpi
       CALL upper
     ENDIF
 
-    CALL applytracerbc(it)
-    print *, t(:, :, 2, :)
     CALL bcast_pbc
     CALL get_means(istage)
 
