@@ -47,7 +47,7 @@ PROGRAM les_mpi
     CALL get_max
 
     CALL applytracerbc(it)
-    
+
   ELSE
     igrdr = 3
     CALL restart
@@ -96,6 +96,7 @@ PROGRAM les_mpi
       CALL iso(it)
       CALL surfvis(it)
     ENDIF
+    print *, "after surfvis(it)"
     print *, t(:, :, 2, :)
 
     IF(istage == 1)THEN
