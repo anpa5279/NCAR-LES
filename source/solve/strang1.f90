@@ -18,7 +18,7 @@ SUBROUTINE strang1(it)
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx
-        DO i=1:nscl-1
+        DO i=1,nscl-1
           c_local(i) = t(ix,iy,i+1,iz)
         ENDDO
         print *, c_local
