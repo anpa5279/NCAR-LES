@@ -12,7 +12,6 @@ module tracerbc
   integer, dimension(2,nscl) :: bnd
   integer, dimension(2) :: bnds
   integer, dimension(3,nscl) :: point
-  integer, dimension(3) :: points
   real, dimension(nscl) :: val
   contains
 
@@ -46,7 +45,7 @@ module tracerbc
             iscl = 1;
             ictype(iscl) = 0;   val(iscl) = 273.15 + iTsurf;      tau(iscl)    = 0;
             asflux(iscl) = 0;   airval(iscl) = 0;
-            np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
+            np = 0;      zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
             !! passive tracers
             iscl = 2; ! carbon dioxide
@@ -85,12 +84,12 @@ module tracerbc
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
       do iscl = 2,nscl
-         bnds=bnd(:,iscl); vals=val(iscl); points=point(:,iscl);
+         bnds=bnd(:,iscl); vals=val(iscl); 
          if (it.eq.1) then
             if (ictype(iscl).eq.1) call hbndsource(iscl,bnds,vals);
             if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
          endif
-         bnds = 0; vals = 0; points = 0;
+         bnds = 0; vals = 0;
       enddo
 
       if(flg_debug == 1) then

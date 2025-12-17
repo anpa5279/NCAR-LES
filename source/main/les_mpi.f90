@@ -87,7 +87,6 @@ PROGRAM les_mpi
     ENDIF
 
     CALL applytracerbc(it)
-    print *, t
     CALL bcast_pbc
     CALL get_means(istage)
 
