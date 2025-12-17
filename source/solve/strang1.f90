@@ -19,7 +19,7 @@ SUBROUTINE strang1(it)
     DO iy=iys,iye
       DO ix=1,nnx
         DO i=2,nscl
-          c = t(ix,iy,i,iz)
+          c(i) = t(ix,iy,i,iz)
         ENDDO
         tmp = dydt(time, c, t(ix,iy,1,iz)) !react_src(ix,iy,1,iz)
         DO l=2,nscl
