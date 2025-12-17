@@ -13,11 +13,11 @@
 ### csrc: Directory containing code source
 
 pnum=UCUB0166
-rnam=cc-comparison
+rnam=cc-comparison-short
 rtyp=main
 jpri=premium
-tihh=12
-timm=0
+tihh=0
+timm=2
 nnds=1
 runo=logfile.out
 rund=$rnam
