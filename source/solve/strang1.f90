@@ -7,7 +7,7 @@ SUBROUTINE strang1(it)
   USE fftwk
   USE con_data
   USE con_stats
-  USE reaction, ONLY: react_src
+  USE reaction, ONLY: dydt !react_src
 
   INCLUDE 'mpif.h'
 
@@ -18,7 +18,8 @@ SUBROUTINE strang1(it)
   DO iz=izs,ize
     DO iy=iys,iye
       DO ix=1,nnx
-      tmp = react_src(ix,iy,1,iz)
+        c = t(ix,iy, 2:nscl,iz)
+        tmp = dydt(time, c, t(ix,iy,1,iz)+273.15) !react_src(ix,iy,1,iz)
         DO l=2,nscl
           trhs(ix,iy,l,iz) = tmp(l-1)
           IF(trhs(ix,iy,l,iz).le.1.0e-20)THEN
