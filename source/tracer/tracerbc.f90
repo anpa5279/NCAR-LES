@@ -51,7 +51,7 @@ module tracerbc
             !! passive tracers
             iscl = 2; ! carbon dioxide
             ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
-            asflux(iscl) = 1;   airval(iscl) = 8.56056;
+            asflux(iscl) = 0;   airval(iscl) = 0.0; !8.56056;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
             iscl = 3; ! biocarbonate
