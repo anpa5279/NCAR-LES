@@ -459,12 +459,12 @@ contains
     integer i
     real a1, a2, a3, a4, a5, a6, a7
     real b1, b2, b3, b4, b5, b6, b7
-    print *, temper
+    !print *, temper
     salt   = 35.0
     do i = 1,nscl-1
        c(i) = y(i)
     enddo
-    print *, c
+    !print *, c
     K1s = exp(-2307.1266/temper + 2.83655 - 1.5529413*log(temper) + &
          (-4.0484/temper - 0.20760841)*(salt**0.5) + 0.08468345*salt - &
          0.00654208*(salt**1.5) + log(1.0-0.001005*salt))*(1.0e6)
