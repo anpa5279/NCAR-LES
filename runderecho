@@ -15,7 +15,7 @@
 
 jobn=ncarles_test
 pnum=UCUB0166
-rnam=run16-exponential-stokes
+rnam=cc-comparison
 rtyp=main
 jpri=premium
 tihh=3
@@ -99,7 +99,7 @@ cat > EXEC_STEP << EXEC
 #PBS -l select=$nnds:ncpus=128:mpiprocs=128
 #PBS -A $pnum
 #PBS -q $rtyp
-####PBS -l job_priority=$jpri
+#PBS -l job_priority=$jpri
 #PBS -o exec.out
 #PBS -e exec.err
 
