@@ -8,7 +8,7 @@ MODULE inputs
                       ihb = 30.0,                           &
                       cd_fac = 0.7,                         &
                       c_alk = 1.5,                          &
-                      c1  =  7.56903,              & ! Carbon Dioxide
+                      c1  =  7.56903e03,              & ! Carbon Dioxide
                       c2  =  1.67006e03,             & !Bicarbonate
                       c3  =  3.14655e02,             & !carbonate
                       c4  =  2.96936e02,             & !BOH3
