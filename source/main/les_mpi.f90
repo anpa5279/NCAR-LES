@@ -97,7 +97,7 @@ PROGRAM les_mpi
       CALL surfvis(it)
     ENDIF
     print *, "after surfvis(it)"
-    print *, t(:, :, 2, :)
+    print *, t(:, :, 3, :)
 
     IF(istage == 1)THEN
       CALL xy_stats
