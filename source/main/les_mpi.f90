@@ -96,15 +96,12 @@ PROGRAM les_mpi
       CALL iso(it)
       CALL surfvis(it)
     ENDIF
-    print *, "after surfvis(it)"
-    print *, t(:, :, 3, :)
 
     IF(istage == 1)THEN
       CALL xy_stats
       CALL tke_budget
       CALL pbltop(itop)
     ENDIF
-    print *, t(:, :, 2, :)
 
     ! GET RHS FOR ALL EQUATIONS
     IF(istage==1 .AND. flg_reaction==1)THEN
