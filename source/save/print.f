@@ -58,9 +58,6 @@ c
          write(lu,4700) (iz,dfac(iz),iz=iz_strt,iz_end)
  4700    format(//,'   IZ',5x,'  DFAC',/,(1x,i4,3x,e15.6))
       endif
-      write(lu,5100) (iz,txym(iz,2),txym(iz,3),
-     +              txym(iz,4),txym(iz,5),txym(iz,6),
-     +              txym(iz,7),iz=iz_strt,iz_end)
       if (flg_reaction .eq. 1) then
          write(lu,5100) (iz,txym(iz,2),txym(iz,3),
      +              txym(iz,4),txym(iz,5),txym(iz,6),
