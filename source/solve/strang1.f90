@@ -19,7 +19,7 @@ SUBROUTINE strang1(it)
     DO iy=iys,iye
       DO ix=1,nnx
         c_local(:) = t(ix,iy,2:nscl,iz)
-        print(c_local)
+        print *, c_local
         tmp = dydt(time, c_local, t(ix,iy,1,iz)) !react_src(ix,iy,1,iz)
         DO l=2,nscl
           trhs(ix,iy,l,iz) = tmp(l-1)
