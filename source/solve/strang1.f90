@@ -14,6 +14,7 @@ SUBROUTINE strang1(it)
   ! TEMP SCALAR ARRAY TO HOLD RHS FROM STEP N-1 AND FIELD VARIABLES FROM STEP N
   REAL :: trhs(nnx,iys:iye,nscl,izs:ize)
   REAL, DIMENSION(nscl-1) :: tmp
+  REAL, DIMENSIONs(0:nscl-2) :: c(0:nscl-2)
 
   DO iz=izs,ize
     DO iy=iys,iye
