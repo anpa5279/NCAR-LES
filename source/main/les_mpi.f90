@@ -87,6 +87,7 @@ PROGRAM les_mpi
     ENDIF
 
     CALL applytracerbc(it)
+    print *, t(:, :, 2, :)
     CALL bcast_pbc
     CALL get_means(istage)
 
@@ -94,12 +95,14 @@ PROGRAM les_mpi
       CALL iso(it)
       CALL surfvis(it)
     ENDIF
+    print *, t(:, :, 2, :)
 
     IF(istage == 1)THEN
       CALL xy_stats
       CALL tke_budget
       CALL pbltop(itop)
     ENDIF
+    print *, t(:, :, 2, :)
 
     ! GET RHS FOR ALL EQUATIONS
     IF(istage==1 .AND. flg_reaction==1)THEN
