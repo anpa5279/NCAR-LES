@@ -465,6 +465,10 @@ contains
        c(i) = y(i)
     enddo
     !print *, c
+    if (c(1) == 0.0) then
+      print *, "WARNING: CO2 is zero"
+    endif
+
     K1s = exp(-2307.1266/temper + 2.83655 - 1.5529413*log(temper) + &
          (-4.0484/temper - 0.20760841)*(salt**0.5) + 0.08468345*salt - &
          0.00654208*(salt**1.5) + log(1.0-0.001005*salt))*(1.0e6)
