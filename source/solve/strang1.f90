@@ -24,9 +24,6 @@ SUBROUTINE strang1(it)
         tmp = dydt(time, c_local, t(ix,iy,1,iz)) !react_src(ix,iy,1,iz)
         DO l=2,nscl
           trhs(ix,iy,l,iz) = tmp(l-1)
-          IF(trhs(ix,iy,l,iz).le.1.0e-20)THEN
-            trhs(ix,iy,l,iz) = 1.0e-20
-          ENDIF
         ENDDO
       ENDDO
     ENDDO
@@ -37,6 +34,9 @@ SUBROUTINE strang1(it)
       DO iy=iys,iye
         DO ix=1,nnx
           t(ix,iy,l,iz) = t(ix,iy,l,iz) + trhs(ix,iy,l,iz)*dt*0.5
+          IF(t(ix,iy,l,iz).le.1.0e-20)THEN
+            t(ix,iy,l,iz) = 1.0e-20
+          ENDIF
         ENDDO
       ENDDO
     ENDDO
