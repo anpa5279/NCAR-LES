@@ -451,7 +451,7 @@ contains
   end function rkc_step
 
   function dydt(t_rkc, y, temper)
-    real, intent(in),  dimension(0:nscl-2) :: y
+    real, intent(in),  dimension(nscl-1) :: y
     real, dimension(0:nscl-2) :: dydt, dy
     real, dimension(nscl-1) :: c
     real, intent(in) :: t_rkc, temper
@@ -461,8 +461,8 @@ contains
     real b1, b2, b3, b4, b5, b6, b7
     print *, temper
     salt   = 35.0
-    do i = 0,nscl-2
-       c(i+1) = y(i)
+    do i = 1,nscl-1
+       c(i) = y(i)
     enddo
     print *, c
     K1s = exp(-2307.1266/temper + 2.83655 - 1.5529413*log(temper) + &

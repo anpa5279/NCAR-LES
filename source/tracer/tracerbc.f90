@@ -49,37 +49,37 @@ module tracerbc
             np = 0;      zt = 0;  rmodel(iscl) = 0;  bnd(:,iscl) = znptobnd(zt,np);
 
             !! passive tracers
-            iscl = 2;
+            iscl = 2; ! carbon dioxide
             ictype(iscl) = 1;   val(iscl) = c1;     tau(iscl)      = 1;
             asflux(iscl) = 1;   airval(iscl) = 8.56056;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 3;
+            iscl = 3; ! biocarbonate
             ictype(iscl) = 1;   val(iscl) = c2;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 4;
+            iscl = 4; ! carbonate
             ictype(iscl) = 1;   val(iscl) = c3;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 5;
+            iscl = 5; ! BOH3
             ictype(iscl) = 1;   val(iscl) = c4;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 6;
+            iscl = 6; ! BOH4
             ictype(iscl) = 1;   val(iscl) = c5;  tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 7;
+            iscl = 7; ! Hydrogen 
             ictype(iscl) = 1;   val(iscl) = c6; tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
 
-            iscl = 8;
+            iscl = 8; ! hydroxl
             ictype(iscl) = 1;   val(iscl) = c7;     tau(iscl)      = 1;
             asflux(iscl) = 0;   airval(iscl) = 0;
             np = nnz+2;  zt = 0;  rmodel(iscl) = 3;  bnd(:,iscl) = znptobnd(zt,np);
