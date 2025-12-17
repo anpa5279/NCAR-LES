@@ -30,7 +30,7 @@ SUBROUTINE get_dt(it,istart)
   ! CHOOSE FIXED OR VARIABLE TIME STEP
   IF(ifix_dt /= 0) THEN
     ! IF USED, CHANGE TO FIT PROBLEM
-    dt_new = 10.0
+    dt_new = 1.0e-6 !10.0
   ELSE
     ! NEW ESTIMATES OF BEST TIME STEP FROM CFL CONSTRAINT
     dt_new = AMIN1(cfl/vel_max, dt_max)
