@@ -90,6 +90,8 @@ module tracerbc
             if (ictype(iscl).eq.5) call vgradsource(iscl,bnds,vals);
          endif
          bnds = 0; vals = 0;
+         print *, "inside applytracerbc"
+         print *, t(:, :, 2, :)
       enddo
 
       if(flg_debug == 1) then
