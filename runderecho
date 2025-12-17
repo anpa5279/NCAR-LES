@@ -1,7 +1,6 @@
 #! /bin/bash
 #######################################################################
 ### Set case parameters
-### jobn: The name of the output file in data directory
 ### pnum: Project number for charging/allocation purposes
 ### rnam: The name of the run
 ### rtyp: The queue to submit
@@ -13,7 +12,6 @@
 ### dirm: Location of the submit script and output directory
 ### csrc: Directory containing code source
 
-jobn=ncarles_test
 pnum=UCUB0166
 rnam=cc-comparison
 rtyp=main
