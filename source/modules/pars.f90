@@ -12,8 +12,8 @@ MODULE pars
   INTEGER, PARAMETER :: chem0d = 0
   INTEGER, PARAMETER :: co2_asflux = 0    ! 2 => WB_param
   INTEGER, PARAMETER :: flg_alk = 0       ! changing alkalinity
-  INTEGER, PARAMETER :: iti=0, itmax=120000, imean=1, ihst=1200, itape=1200,        &
-  itstr=1, it_his=1200, i_viz=120000
+  INTEGER, PARAMETER :: iti=0, itmax=5000000, imean=1, ihst=100000, itape=100000,        &
+  itstr=1, it_his=100000, i_viz=5000000
 
   INTEGER, PARAMETER :: nscl = 1, nvar = (4+nscl) !number of scalars and vars
   INTEGER, PARAMETER :: nxg1  = 128, nyg1  = 128, nzg1  = 128 !size of problem
