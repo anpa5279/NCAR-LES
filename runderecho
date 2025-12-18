@@ -13,7 +13,7 @@
 ### csrc: Directory containing code source
 
 pnum=UCUB0166
-rnam=cc-comparison-32-positive
+rnam=cc-comparison-32-positive-dtsmaller
 rtyp=main
 jpri=premium
 tihh=12
